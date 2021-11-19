@@ -29,12 +29,13 @@ public class Project implements Serializable {
 
 	private String deliverables;
 
-	@Column(name="especific_objetive")
-	private String especificObjetive;
+	@Column(name="specific_objetive")
+	private String specificObjetive;
 
 	@Column(name="general_objetive")
 	private String generalObjetive;
 
+	@Column(name="justification")
 	private String justification;
 
 	@Column(name="project_methology")
@@ -96,12 +97,12 @@ public class Project implements Serializable {
 		this.deliverables = deliverables;
 	}
 
-	public String getEspecificObjetive() {
-		return this.especificObjetive;
+	public String getSpecificObjetive() {
+		return this.specificObjetive;
 	}
 
-	public void setEspecificObjetive(String especificObjetive) {
-		this.especificObjetive = especificObjetive;
+	public void setSpecificObjetive(String specificObjetive) {
+		this.specificObjetive = specificObjetive;
 	}
 
 	public String getGeneralObjetive() {

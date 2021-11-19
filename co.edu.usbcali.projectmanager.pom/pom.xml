@@ -1,43 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>co.edu.usbcali.projectmanager</groupId>
-  <artifactId>co.edu.usbcali.projectmanager.pom</artifactId>
-  <version>1.0.0</version>
-  <packaging>pom</packaging>
-  
-  	<name>Project Manager by Ubscali</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>co.edu.usbcali.projectmanager</groupId>
+	<artifactId>co.edu.usbcali.projectmanager.pom</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+
+	<name>Project Manager by Ubscali</name>
 	<description>Project Manager by Ubscali</description>
-  <modules>
-  	<module>co.edu.usbcali.projectmanager.persistence</module>
-  	<module>co.edu.usbcali.projectmanager.business</module>
-  	<module>co.edu.usbcali.projectmanager.fcd</module>
-  	<module>co.edu.usbcali.projectmanager.model</module>
-  </modules>
-  
-  <parent>
+	<modules>
+		<module>co.edu.usbcali.projectmanager.persistence</module>
+		<module>co.edu.usbcali.projectmanager.business</module>
+		<module>co.edu.usbcali.projectmanager.fcd</module>
+		<module>co.edu.usbcali.projectmanager.model</module>
+	</modules>
+
+	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.3.5.RELEASE</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
+
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
-	
-			<dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -50,20 +52,25 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.junit.platform</groupId>
 			<artifactId>junit-platform-runner</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-				<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
@@ -80,8 +87,8 @@
 			<artifactId>junit-jupiter-params</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-			<!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-engine -->
+
+		<!-- https://mvnrepository.com/artifact/org.junit.platform/junit-platform-engine -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
