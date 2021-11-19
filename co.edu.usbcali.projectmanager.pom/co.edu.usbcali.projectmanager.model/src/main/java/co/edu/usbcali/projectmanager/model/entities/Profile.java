@@ -1,22 +1,32 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
- * The persistent class for the profile database table.
+ * The persistent class for the "Profile" database table.
  * 
  */
 @Entity
+@Table(name="Profile")
 @NamedQuery(name="Profile.findAll", query="SELECT p FROM Profile p")
 public class Profile implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="profile_seq" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="profile_seq")
+	@SequenceGenerator(name="PROFILEID_GENERATOR", sequenceName="PROFILE_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROFILEID_GENERATOR")
 	@Column(name="profile_id")
 	private Long profileId;
 

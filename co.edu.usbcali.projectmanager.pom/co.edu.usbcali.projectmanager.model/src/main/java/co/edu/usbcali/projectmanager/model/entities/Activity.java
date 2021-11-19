@@ -1,23 +1,37 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
- * The persistent class for the activity database table.
+ * The persistent class for the "Activity" database table.
  * 
  */
 @Entity
+@Table(name="Activity")
 @NamedQuery(name="Activity.findAll", query="SELECT a FROM Activity a")
 public class Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="activity_seq" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="activity_seq")
+	@SequenceGenerator(name="ACTIVITYID_GENERATOR", sequenceName="ACTIVITY_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ACTIVITYID_GENERATOR")
 	@Column(name="activity_id")
 	private Long activityId;
 
@@ -27,22 +41,29 @@ public class Activity implements Serializable {
 	@Column(name="activity_state")
 	private String activityState;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name="date_from")
-	private Timestamp dateFrom;
+	private Date dateFrom;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name="date_until")
-	private Timestamp dateUntil;
+	private Date dateUntil;
 
 	//bi-directional many-to-one association to Project
 	@ManyToOne
 	@JoinColumn(name="project_id")
 	private Project project;
 
+	//bi-directional many-to-one association to State
+	@ManyToOne
+	@JoinColumn(name="id_state")
+	private State state;
+
 	//bi-directional many-to-one association to Comment
 	@OneToMany(mappedBy="activity")
 	private List<Comment> comments;
 
-	//bi-directional many-to-one association to LinkAttached
+	//bi-directional many-to-one association to Link_Attached
 	@OneToMany(mappedBy="activity")
 	private List<LinkAttached> linkAttacheds;
 
@@ -73,19 +94,19 @@ public class Activity implements Serializable {
 		this.activityState = activityState;
 	}
 
-	public Timestamp getDateFrom() {
+	public Date getDateFrom() {
 		return this.dateFrom;
 	}
 
-	public void setDateFrom(Timestamp dateFrom) {
+	public void setDateFrom(Date dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 
-	public Timestamp getDateUntil() {
+	public Date getDateUntil() {
 		return this.dateUntil;
 	}
 
-	public void setDateUntil(Timestamp dateUntil) {
+	public void setDateUntil(Date dateUntil) {
 		this.dateUntil = dateUntil;
 	}
 
@@ -95,6 +116,14 @@ public class Activity implements Serializable {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public State getState() {
+		return this.state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 
 	public List<Comment> getComments() {

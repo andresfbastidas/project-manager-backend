@@ -1,21 +1,32 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
- * The persistent class for the comment database table.
+ * The persistent class for the "Comment" database table.
  * 
  */
 @Entity
+@Table(name="Comment")
 @NamedQuery(name="Comment.findAll", query="SELECT c FROM Comment c")
 public class Comment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="comment_seq" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="comment_seq")
+	@SequenceGenerator(name="COMMENTID_GENERATOR", sequenceName="COMMENT_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="COMMENTID_GENERATOR")
 	@Column(name="comment_id")
 	private Long commentId;
 

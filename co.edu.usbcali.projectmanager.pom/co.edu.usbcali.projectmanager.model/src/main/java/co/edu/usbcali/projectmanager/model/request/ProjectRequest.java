@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import co.edu.usbcali.projectmanager.model.entities.Project;
 
-public class ProjectReq implements Serializable {
+public class ProjectRequest implements Serializable {
 
 	private Project project;
 

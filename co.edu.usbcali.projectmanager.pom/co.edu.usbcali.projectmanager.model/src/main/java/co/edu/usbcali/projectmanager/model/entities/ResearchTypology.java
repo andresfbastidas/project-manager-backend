@@ -5,18 +5,18 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the research_typology database table.
+ * The persistent class for the "Research_Typology" database table.
  * 
  */
 @Entity
-@Table(name="research_typology")
-@NamedQuery(name="ResearchTypology.findAll", query="SELECT r FROM ResearchTypology r")
+@Table(name="Research_Typology")
+@NamedQuery(name="Research_Typology.findAll", query="SELECT r FROM Research_Typology r")
 public class ResearchTypology implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="research_typology_seq" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="research_typology_seq")
+	@SequenceGenerator(name="PROJECTRESEARCHTYPOLOGYID_GENERATOR", sequenceName="RESEARCH_TYPOLOGY_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTRESEARCHTYPOLOGYID_GENERATOR")
 	@Column(name="project_research_typology_id")
 	private Long projectResearchTypologyId;
 

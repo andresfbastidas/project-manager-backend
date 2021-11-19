@@ -1,22 +1,32 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 
 /**
- * The persistent class for the project_user database table.
+ * The persistent class for the "Project_User" database table.
  * 
  */
 @Entity
-@Table(name="project_user")
-@NamedQuery(name="ProjectUser.findAll", query="SELECT p FROM ProjectUser p")
+@Table(name="Project_User")
+@NamedQuery(name="Project_User.findAll", query="SELECT p FROM Project_User p")
 public class ProjectUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="project_user_seq" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="project_user_seq")
+	@SequenceGenerator(name="PROJECTUSERID_GENERATOR", sequenceName="PROJECT_USER_SEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTUSERID_GENERATOR")
 	@Column(name="project_user_id")
 	private Long projectUserId;
 
