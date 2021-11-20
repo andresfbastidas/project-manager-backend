@@ -8,6 +8,6 @@ public class FcdConstants {
 
 	public static final String PROJECT = CONTEXT_API + "/project";
 	
-	public static final String CREATE_PROJECT = CONTEXT_API + "/createProject";
+	public static final String CREATE_PROJECT = "/createProject";
 
 }

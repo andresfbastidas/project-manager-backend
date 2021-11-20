@@ -43,6 +43,7 @@ public class Project implements Serializable {
 	@Column(name="date_until")
 	private Date dateUntil;
 
+	@Column(name="deliverables")
 	private String deliverables;
 
 	@Column(name="specific_objetive")
@@ -51,13 +52,14 @@ public class Project implements Serializable {
 	@Column(name="general_objetive")
 	private String generalObjetive;
 
+	@Column(name="justification")
 	private String justification;
 
 	@Column(name="project_methology")
 	private String projectMethology;
 
-	@Column(name="project_summay")
-	private String projectSummay;
+	@Column(name="project_summary")
+	private String projectSummary;
 
 	@Column(name="project_title")
 	private String projectTitle;
@@ -146,12 +148,12 @@ public class Project implements Serializable {
 		this.projectMethology = projectMethology;
 	}
 
-	public String getProjectSummay() {
-		return this.projectSummay;
+	public String getProjectSummary() {
+		return this.projectSummary;
 	}
 
-	public void setProjectSummay(String projectSummay) {
-		this.projectSummay = projectSummay;
+	public void setProjectSummary(String projectSummary) {
+		this.projectSummary = projectSummary;
 	}
 
 	public String getProjectTitle() {
