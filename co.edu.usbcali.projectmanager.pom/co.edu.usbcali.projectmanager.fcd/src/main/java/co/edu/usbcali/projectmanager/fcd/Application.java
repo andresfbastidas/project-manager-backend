@@ -1,5 +1,6 @@
 package co.edu.usbcali.projectmanager.fcd;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -16,8 +17,8 @@ public class Application {
 
 	public static final String ENV_PATH = "co.edu.usbcali.projectmanager.home";
 
-	public static void main(String[] args) {
-
+public static void main(String[] args) {
+		
 		SpringApplication.run(Application.class, args);
 	}
 

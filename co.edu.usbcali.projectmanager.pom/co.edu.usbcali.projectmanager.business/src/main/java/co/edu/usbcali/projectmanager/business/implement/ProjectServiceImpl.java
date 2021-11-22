@@ -14,6 +14,8 @@ import co.edu.usbcali.projectmanager.model.entities.State;
 import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagerExcepcion;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.repository.ProjectPersist;
+import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.persistence.ProjectPersist;
 
 @Service
 public class ProjectServiceImpl implements IProjectService {
@@ -41,6 +43,17 @@ public class ProjectServiceImpl implements IProjectService {
 
 	private Project buildProject(Long projectId, Date dateFrom, Date dateUntil, String deliverables,
 			String specificObjetive, String generalObjetive, String justification, String methology,
+	public void createProject(ProjectRequest projectRequest) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+		Project project = this.buildProject(projectRequest.getProject().getDateFrom(),
+				projectRequest.getProject().getDateUntil(), projectRequest.getProject().getSpecificObjetive(),
+				projectRequest.getProject().getGeneralObjetive(), projectRequest.getProject().getProjectSummary(),
+				projectRequest.getProject().getProjectTitle(), projectRequest.getState().getDescriptionState());
+
+		projectPersist.save(project);
+	}
+
+	private Project buildProject(Date dateFrom, Date dateUntil, String specificObjetive, String generalObjetive,
 			String projectSummary, String projectTitle, String stateDescription) {
 		Project project = new Project();
 		State state = new State();
@@ -51,6 +64,8 @@ public class ProjectServiceImpl implements IProjectService {
 		project.setDeliverables(deliverables);
 		project.setJustification(justification);
 		project.setProjectMethology(methology);
+		project.setDateFrom(dateFrom);
+		project.setDateUntil(dateUntil);
 		project.setProjectSummary(projectSummary);
 		project.setSpecificObjetive(specificObjetive);
 		project.setGeneralObjetive(generalObjetive);

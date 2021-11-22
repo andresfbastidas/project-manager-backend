@@ -1,7 +1,6 @@
 package co.edu.usbcali.projectmanager.fcd.controllers;
 
 import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,7 @@ import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 
 @RestController
+@CrossOrigin(origins = "${cross.origin}")
 @RequestMapping(path = FcdConstants.PROJECT)
 public class ProjectController {
 
@@ -28,6 +28,7 @@ public class ProjectController {
 	@PostMapping(path = FcdConstants.CREATE_PROJECT, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Object> createProject(@RequestBody ProjectRequest projectRequest)
 			throws ProjectManagerExcepcion, SQLException {
+			throws ProjectManagerExcepcion {
 		
 		projectService.createProject(projectRequest);
 		
