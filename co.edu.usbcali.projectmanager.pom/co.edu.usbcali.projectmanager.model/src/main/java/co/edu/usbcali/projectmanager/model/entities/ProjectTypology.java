@@ -20,12 +20,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Project_Typology")
-@NamedQuery(name="Project_Typology.findAll", query="SELECT p FROM Project_Typology p")
+@NamedQuery(name="ProjectTypology.findAll", query="SELECT p FROM ProjectTypology p")
 public class ProjectTypology implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECTTYPOLOGYID_GENERATOR", sequenceName="PROJECT_TYPOLOGY_SEQ")
+	@SequenceGenerator(name="PROJECTTYPOLOGYID_GENERATOR", sequenceName="PROJECT_TYPOLOGY_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTTYPOLOGYID_GENERATOR")
 	@Column(name="project_typology_id")
 	private Long projectTypologyId;

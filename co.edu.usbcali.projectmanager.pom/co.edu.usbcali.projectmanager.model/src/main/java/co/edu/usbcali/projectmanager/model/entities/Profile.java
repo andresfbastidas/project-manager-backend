@@ -25,7 +25,7 @@ public class Profile implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROFILEID_GENERATOR", sequenceName="PROFILE_SEQ")
+	@SequenceGenerator(name="PROFILEID_GENERATOR", sequenceName="PROFILE_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROFILEID_GENERATOR")
 	@Column(name="profile_id")
 	private Long profileId;
@@ -35,7 +35,7 @@ public class Profile implements Serializable {
 
 	//bi-directional many-to-one association to User
 	@OneToMany(mappedBy="profile")
-	private List<User> users;
+	private List<UserApp> users;
 
 	public Profile() {
 	}
@@ -56,22 +56,22 @@ public class Profile implements Serializable {
 		this.profileName = profileName;
 	}
 
-	public List<User> getUsers() {
+	public List<UserApp> getUsers() {
 		return this.users;
 	}
 
-	public void setUsers(List<User> users) {
+	public void setUsers(List<UserApp> users) {
 		this.users = users;
 	}
 
-	public User addUser(User user) {
+	public UserApp addUser(UserApp user) {
 		getUsers().add(user);
 		user.setProfile(this);
 
 		return user;
 	}
 
-	public User removeUser(User user) {
+	public UserApp removeUser(UserApp user) {
 		getUsers().remove(user);
 		user.setProfile(null);
 

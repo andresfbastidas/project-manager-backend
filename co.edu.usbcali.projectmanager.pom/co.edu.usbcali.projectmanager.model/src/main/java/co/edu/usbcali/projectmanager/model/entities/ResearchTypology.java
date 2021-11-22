@@ -10,13 +10,13 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="Research_Typology")
-@NamedQuery(name="Research_Typology.findAll", query="SELECT r FROM Research_Typology r")
+@NamedQuery(name="ResearchTypology.findAll", query="SELECT r FROM ResearchTypology r")
 public class ResearchTypology implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECTRESEARCHTYPOLOGYID_GENERATOR", sequenceName="RESEARCH_TYPOLOGY_SEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTRESEARCHTYPOLOGYID_GENERATOR")
+	@SequenceGenerator(name="RESEARCHTYPOLOGYID_GENERATOR", sequenceName="research_typology_seq", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RESEARCHTYPOLOGYID_GENERATOR")
 	@Column(name="project_research_typology_id")
 	private Long projectResearchTypologyId;
 

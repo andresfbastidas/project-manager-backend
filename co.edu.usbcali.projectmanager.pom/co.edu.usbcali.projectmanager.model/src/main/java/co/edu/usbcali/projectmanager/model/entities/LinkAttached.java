@@ -20,12 +20,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Link_Attached")
-@NamedQuery(name="Link_Attached.findAll", query="SELECT l FROM Link_Attached l")
+@NamedQuery(name="LinkAttached.findAll", query="SELECT l FROM LinkAttached l")
 public class LinkAttached implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="LINKATTACHEDID_GENERATOR", sequenceName="LINK_ATTACHED_SEQ")
+	@SequenceGenerator(name="LINKATTACHEDID_GENERATOR", sequenceName="LINK_ATTACHED_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LINKATTACHEDID_GENERATOR")
 	@Column(name="link_attached_id")
 	private Long linkAttachedId;

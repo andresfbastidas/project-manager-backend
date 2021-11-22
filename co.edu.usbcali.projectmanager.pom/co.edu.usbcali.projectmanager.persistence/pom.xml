@@ -5,7 +5,7 @@
     <artifactId>co.edu.usbcali.projectmanager.pom</artifactId>
     <version>1.0.0</version>
   </parent>
-  <artifactId>co.edu.usbcali.projectmanager.persistence</artifactId>
+  <artifactId>co.edu.usbcali.projectmanager.repository</artifactId>
   
    <dependencies>
 		<dependency>

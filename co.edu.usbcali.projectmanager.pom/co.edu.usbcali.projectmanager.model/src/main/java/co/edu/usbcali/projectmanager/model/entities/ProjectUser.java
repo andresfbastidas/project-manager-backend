@@ -20,11 +20,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Project_User")
-@NamedQuery(name="Project_User.findAll", query="SELECT p FROM Project_User p")
+@NamedQuery(name="ProjectUser.findAll", query="SELECT p FROM ProjectUser p")
 public class ProjectUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@SequenceGenerator(name="PROJECTUSERID_GENERATOR", sequenceName="PROJECT_USER_SEQ", allocationSize = 1)
 	@SequenceGenerator(name="PROJECTUSERID_GENERATOR", sequenceName="PROJECT_USER_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTUSERID_GENERATOR")
 	@Column(name="project_user_id")
@@ -38,7 +39,7 @@ public class ProjectUser implements Serializable {
 	//bi-directional many-to-one association to User
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	private User user;
+	private UserApp user;
 
 	public ProjectUser() {
 	}
@@ -59,12 +60,15 @@ public class ProjectUser implements Serializable {
 		this.project = project;
 	}
 
-	public User getUser() {
+	public UserApp getUser() {
 		return this.user;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(UserApp user) {
+    this.user = user;
+  }
+	public User getUser() {
+		return this.user;
 	}
 
 }

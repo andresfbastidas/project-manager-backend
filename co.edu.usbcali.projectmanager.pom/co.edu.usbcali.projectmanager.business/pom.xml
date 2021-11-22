@@ -16,7 +16,7 @@
 		
 		<dependency>
 			<groupId>co.edu.usbcali.projectmanager</groupId>
-			<artifactId>co.edu.usbcali.projectmanager.persistence</artifactId>
+			<artifactId>co.edu.usbcali.projectmanager.repository</artifactId>
 			<version>1.0.0</version>
 		</dependency>
 	</dependencies>

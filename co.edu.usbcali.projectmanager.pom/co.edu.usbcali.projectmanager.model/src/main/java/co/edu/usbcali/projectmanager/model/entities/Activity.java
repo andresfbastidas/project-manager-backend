@@ -30,6 +30,7 @@ public class Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@SequenceGenerator(name="ACTIVITYID_GENERATOR", sequenceName="ACTIVITY_SEQ", allocationSize = 1)
 	@SequenceGenerator(name="ACTIVITYID_GENERATOR", sequenceName="ACTIVITY_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ACTIVITYID_GENERATOR")
 	@Column(name="activity_id")
