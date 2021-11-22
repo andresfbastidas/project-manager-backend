@@ -26,7 +26,6 @@ public class ProjectUser implements Serializable {
 
 	@Id
 	@SequenceGenerator(name="PROJECTUSERID_GENERATOR", sequenceName="PROJECT_USER_SEQ", allocationSize = 1)
-	@SequenceGenerator(name="PROJECTUSERID_GENERATOR", sequenceName="PROJECT_USER_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTUSERID_GENERATOR")
 	@Column(name="project_user_id")
 	private Long projectUserId;
@@ -60,15 +59,12 @@ public class ProjectUser implements Serializable {
 		this.project = project;
 	}
 
-	public UserApp getUser() {
+	public UserApp getUserApp() {
 		return this.user;
 	}
 
-	public void setUser(UserApp user) {
+	public void setUserApp(UserApp user) {
     this.user = user;
   }
-	public User getUser() {
-		return this.user;
-	}
 
 }

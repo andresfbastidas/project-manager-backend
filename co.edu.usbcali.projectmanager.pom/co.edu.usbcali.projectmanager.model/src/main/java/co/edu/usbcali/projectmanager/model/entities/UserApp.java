@@ -155,14 +155,14 @@ public class UserApp implements Serializable, UserDetails {
 
 	public ProjectUser addProjectUser(ProjectUser projectUser) {
 		getProjectUsers().add(projectUser);
-		projectUser.setUser(this);
+		projectUser.setUserApp(this);
 
 		return projectUser;
 	}
 
 	public ProjectUser removeProjectUser(ProjectUser projectUser) {
 		getProjectUsers().remove(projectUser);
-		projectUser.setUser(null);
+		projectUser.setUserApp(null);
 
 		return projectUser;
 	}

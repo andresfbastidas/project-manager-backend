@@ -14,8 +14,6 @@ import co.edu.usbcali.projectmanager.model.entities.State;
 import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagerExcepcion;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.repository.ProjectPersist;
-import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
-import co.edu.usbcali.projectmanager.persistence.ProjectPersist;
 
 @Service
 public class ProjectServiceImpl implements IProjectService {
@@ -27,38 +25,26 @@ public class ProjectServiceImpl implements IProjectService {
 	public void createProject(ProjectRequest projectRequest) throws ProjectManagerExcepcion, SQLException {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-			Project project = this.buildProject(projectRequest.getProject().getProjectId(),
-					projectRequest.getProject().getDateFrom(), projectRequest.getProject().getDateUntil(),
-					projectRequest.getProject().getDeliverables(), projectRequest.getProject().getSpecificObjetive(),
-					projectRequest.getProject().getGeneralObjetive(), projectRequest.getProject().getJustification(),
-					projectRequest.getProject().getProjectMethology(), projectRequest.getProject().getProjectSummary(),
-					projectRequest.getProject().getProjectTitle(), projectRequest.getState().getDescriptionState());
+			Project project = this.buildProject(projectRequest.getProject().getDateFrom(),
+					projectRequest.getProject().getDateUntil(), projectRequest.getProject().getDeliverables(),
+					projectRequest.getProject().getSpecificObjetive(), projectRequest.getProject().getGeneralObjetive(),
+					projectRequest.getProject().getJustification(), projectRequest.getProject().getProjectMethology(),
+					projectRequest.getProject().getProjectSummary(), projectRequest.getProject().getProjectTitle(),
+					projectRequest.getState().getDescriptionState());
 
 			projectPersist.save(project);
 		} catch (Exception e) {
 			throw e;
 		}
-		
+
 	}
 
-	private Project buildProject(Long projectId, Date dateFrom, Date dateUntil, String deliverables,
-			String specificObjetive, String generalObjetive, String justification, String methology,
-	public void createProject(ProjectRequest projectRequest) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-		Project project = this.buildProject(projectRequest.getProject().getDateFrom(),
-				projectRequest.getProject().getDateUntil(), projectRequest.getProject().getSpecificObjetive(),
-				projectRequest.getProject().getGeneralObjetive(), projectRequest.getProject().getProjectSummary(),
-				projectRequest.getProject().getProjectTitle(), projectRequest.getState().getDescriptionState());
-
-		projectPersist.save(project);
-	}
-
-	private Project buildProject(Date dateFrom, Date dateUntil, String specificObjetive, String generalObjetive,
-			String projectSummary, String projectTitle, String stateDescription) {
+	private Project buildProject(Date dateFrom, Date dateUntil, String deliverables, String specificObjetive,
+			String generalObjetive, String justification, String methology, String projectSummary, String projectTitle,
+			String stateDescription) {
 		Project project = new Project();
 		State state = new State();
 		state.setDescriptionState(stateDescription);
-		project.setProjectId(projectId);
 		project.setDateFrom(dateFrom);
 		project.setDateUntil(dateUntil);
 		project.setDeliverables(deliverables);

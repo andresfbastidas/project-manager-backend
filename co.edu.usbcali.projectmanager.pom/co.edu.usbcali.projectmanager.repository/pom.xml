@@ -7,7 +7,7 @@
   </parent>
   <artifactId>co.edu.usbcali.projectmanager.repository</artifactId>
   
-   <dependencies>
+  <dependencies>
 		<dependency>
 			<groupId>co.edu.usbcali.projectmanager</groupId>
 			<artifactId>co.edu.usbcali.projectmanager.model</artifactId>
