@@ -1,18 +1,18 @@
 package co.edu.usbcali.projectmanager.model.excepcion;
 
-public class ProjectManagerExcepcion extends Exception {
+import java.io.Serializable;
+
+public class ProjectManagementExcepcion extends Exception implements Serializable {
 
 	private String code;
 	private String message;
 	private String type;
-	private String loggerReference;
 
-	public ProjectManagerExcepcion(String code, String message, String type, String loggerReference, Throwable cause) {
-		super(message, cause);
+	public ProjectManagementExcepcion(String code, String message, String type) {
+		super();
 		this.code = code;
 		this.message = message;
 		this.type = type;
-		this.loggerReference = loggerReference;
 	}
 
 	public String getCode() {
@@ -37,14 +37,6 @@ public class ProjectManagerExcepcion extends Exception {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getLoggerReference() {
-		return loggerReference;
-	}
-
-	public void setLoggerReference(String loggerReference) {
-		this.loggerReference = loggerReference;
 	}
 
 	private static final long serialVersionUID = -8067072434392824924L;

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.State;
-import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagerExcepcion;
+import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagementExcepcion;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.repository.ProjectPersist;
 
@@ -22,7 +22,7 @@ public class ProjectServiceImpl implements IProjectService {
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createProject(ProjectRequest projectRequest) throws ProjectManagerExcepcion, SQLException {
+	public void createProject(ProjectRequest projectRequest) throws ProjectManagementExcepcion, SQLException {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 			Project project = this.buildProject(projectRequest.getProject().getDateFrom(),

@@ -22,7 +22,7 @@ import co.edu.usbcali.projectmanager.business.implement.UserDetailsServiceImpl;
 import co.edu.usbcali.projectmanager.fcd.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.fcd.security.JwtUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
-import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagerExcepcion;
+import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagementExcepcion;
 import co.edu.usbcali.projectmanager.model.request.LoginRequest;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
@@ -60,7 +60,7 @@ public class UserSecurityController {
 
 	@PostMapping(FcdConstants.CREATE_USER)
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest)
-			throws ProjectManagerExcepcion {
+			throws ProjectManagementExcepcion {
 
 		userServiceImpl.registerUser(signUpRequest);
 		GenericResponse genericResponse = new GenericResponse();

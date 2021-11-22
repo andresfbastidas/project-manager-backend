@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import co.edu.usbcali.projectmanager.model.commons.ErrorType;
 import co.edu.usbcali.projectmanager.model.commons.Fault;
 import co.edu.usbcali.projectmanager.model.commons.FaultRoot;
-import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagerExcepcion;
+import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagementExcepcion;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,7 +37,7 @@ public class ExcepcionsHandler {
 				 content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 				 schema = @Schema(implementation = FaultRoot.class)))
 	//@formatter:on
-	public ResponseEntity<Object> handleControlApplicationException(ProjectManagerExcepcion cae) {
+	public ResponseEntity<Object> handleControlApplicationException(ProjectManagementExcepcion cae) {
 
 		ErrorType error = new ErrorType();
 		error.setCodeError(cae.getCode());

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.UserApp;
-import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagerExcepcion;
+import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagementExcepcion;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.repository.UserRepository;
 
@@ -35,9 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return UserDetailsImpl.build(user);
 	}
 
-	public void registerUser(SignupRequest signupRequest) throws ProjectManagerExcepcion {
+	public void registerUser(SignupRequest signupRequest) throws ProjectManagementExcepcion {
 		if (userRepository.existsByUsername(signupRequest.getUsername())) {
-			throw new ProjectManagerExcepcion("", "", null, null, null);
+			throw new ProjectManagementExcepcion("", "", "");
 		}
 
 		// Create new user's account
