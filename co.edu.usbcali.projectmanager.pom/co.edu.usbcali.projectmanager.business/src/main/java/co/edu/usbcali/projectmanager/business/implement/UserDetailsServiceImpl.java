@@ -2,56 +2,79 @@ package co.edu.usbcali.projectmanager.business.implement;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
+import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
+import co.edu.usbcali.projectmanager.model.dao.UserDetailsDAO;
 import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.UserApp;
-import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagementExcepcion;
+import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
-import co.edu.usbcali.projectmanager.repository.UserRepository;
+import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
+	private static final String CLASS_NAME = "UserDetailsServiceImpl";
 
 	@Autowired
-	private UserRepository userRepository;
-	
+	private UserAppRepository userAppRepository;
+
 	@Autowired
-	PasswordEncoder encoder;
+	private PasswordEncoder encoder;
 
 	@Override
 	@Transactional
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		UserApp user = userRepository.findByUsername(userName);
-		if (user == null) {
-
+	public UserDetails loadUserByUsername(String userName) throws BadCredentialsException {
+		UserApp user = null;
+		try {
+			user = userAppRepository.findByUserName(userName);
+			if (user == null) {
+				throw new BadCredentialsException(KeyConstants.USER_NOT_FOUND);
+			}
+		} catch (BadCredentialsException e) {
+			throw e;
 		}
 
-		return UserDetailsImpl.build(user);
+		return UserDetailsDAO.build(user);
 	}
 
-	public void registerUser(SignupRequest signupRequest) throws ProjectManagementExcepcion {
-		if (userRepository.existsByUsername(signupRequest.getUsername())) {
-			throw new ProjectManagementExcepcion("", "", "");
+	@Transactional
+	public void registerUser(SignupRequest signupRequest) throws ProjectManagementException {
+		try {
+			if (userAppRepository.existsByUserName(signupRequest.getUsername())) {
+				buildCustomException(KeyConstants.USER_EXISTS, KeyConstants.ERROR_CODE_EXISTS_USER);
+			}
+
+			UserApp user = new UserApp();
+			user.setUserName(signupRequest.getUsername());
+			user.setEmail(signupRequest.getEmail());
+			user.setPassword(encoder.encode(signupRequest.getPassword()));
+			user.setFirtsName(signupRequest.getFirstName());
+			user.setSurname(signupRequest.getSurname());
+			Profile profile = new Profile();
+			profile.setProfileId(signupRequest.getIdProfile());
+			user.setProfile(profile);
+
+			userAppRepository.save(user);
+
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.ERROR_INESPERADO_APP, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
-		// Create new user's account
-		UserApp user = new UserApp();
-		user.setUserName(signupRequest.getUsername());
-		user.setEmail(signupRequest.getEmail());
-		user.setPassword(encoder.encode(signupRequest.getPassword()));
-		user.setFirtsName(signupRequest.getFirstName());
-		user.setSurname(signupRequest.getSurname());
-		Profile profile = new Profile();
-		profile.setProfileId(signupRequest.getIdProfile());
-		user.setProfile(profile);
-
-		userRepository.save(user);
 	}
 
 }

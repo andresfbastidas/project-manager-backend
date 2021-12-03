@@ -1,4 +1,4 @@
-package co.edu.usbcali.projectmanager.fcd.constant;
+package co.edu.usbcali.projectmanager.model.constant;
 
 public class FcdConstants {
 

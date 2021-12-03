@@ -1,22 +1,9 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 
 /**
@@ -30,36 +17,33 @@ public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECTID_GENERATOR", sequenceName="project_seq", allocationSize = 1)
+	@SequenceGenerator(name="PROJECTID_GENERATOR", sequenceName="PROJECT_SEQ", allocationSize = 1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTID_GENERATOR")
 	@Column(name="project_id")
 	private Long projectId;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="date_from")
-	private Date dateFrom;
+	private Timestamp dateFrom;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="date_until")
-	private Date dateUntil;
+	private Timestamp dateUntil;
 
-	@Column(name="deliverables")
-	private String deliverables;
-
-	@Column(name="specific_objetive")
-	private String specificObjetive;
+	@Column(name="especific_objetive")
+	private String especificObjetive;
 
 	@Column(name="general_objetive")
 	private String generalObjetive;
 
-	@Column(name="justification")
 	private String justification;
 
 	@Column(name="project_methology")
 	private String projectMethology;
 
-	@Column(name="project_summary")
-	private String projectSummary;
+	@Column(name="project_research_typology_id")
+	private Long projectResearchTypologyId;
+
+	@Column(name="project_summay")
+	private String projectSummay;
 
 	@Column(name="project_title")
 	private String projectTitle;
@@ -70,14 +54,14 @@ public class Project implements Serializable {
 
 	//bi-directional many-to-one association to State
 	@ManyToOne
-	@JoinColumn(name="id_state")
+	@JoinColumn(name="state_id")
 	private State state;
 
-	//bi-directional many-to-one association to Project_Typology
+	//bi-directional many-to-one association to ProjectDelivery
 	@OneToMany(mappedBy="project")
-	private List<ProjectTypology> projectTypologies;
+	private List<ProjectDelivery> projectDeliveries;
 
-	//bi-directional many-to-one association to Project_User
+	//bi-directional many-to-one association to ProjectUser
 	@OneToMany(mappedBy="project")
 	private List<ProjectUser> projectUsers;
 
@@ -92,36 +76,28 @@ public class Project implements Serializable {
 		this.projectId = projectId;
 	}
 
-	public Date getDateFrom() {
+	public Timestamp getDateFrom() {
 		return this.dateFrom;
 	}
 
-	public void setDateFrom(Date dateFrom) {
+	public void setDateFrom(Timestamp dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 
-	public Date getDateUntil() {
+	public Timestamp getDateUntil() {
 		return this.dateUntil;
 	}
 
-	public void setDateUntil(Date dateUntil) {
+	public void setDateUntil(Timestamp dateUntil) {
 		this.dateUntil = dateUntil;
 	}
 
-	public String getDeliverables() {
-		return this.deliverables;
+	public String getEspecificObjetive() {
+		return this.especificObjetive;
 	}
 
-	public void setDeliverables(String deliverables) {
-		this.deliverables = deliverables;
-	}
-
-	public String getSpecificObjetive() {
-		return this.specificObjetive;
-	}
-
-	public void setSpecificObjetive(String specificObjetive) {
-		this.specificObjetive = specificObjetive;
+	public void setEspecificObjetive(String especificObjetive) {
+		this.especificObjetive = especificObjetive;
 	}
 
 	public String getGeneralObjetive() {
@@ -148,12 +124,20 @@ public class Project implements Serializable {
 		this.projectMethology = projectMethology;
 	}
 
-	public String getProjectSummary() {
-		return this.projectSummary;
+	public Long getProjectResearchTypologyId() {
+		return this.projectResearchTypologyId;
 	}
 
-	public void setProjectSummary(String projectSummary) {
-		this.projectSummary = projectSummary;
+	public void setProjectResearchTypologyId(Long projectResearchTypologyId) {
+		this.projectResearchTypologyId = projectResearchTypologyId;
+	}
+
+	public String getProjectSummay() {
+		return this.projectSummay;
+	}
+
+	public void setProjectSummay(String projectSummay) {
+		this.projectSummay = projectSummay;
 	}
 
 	public String getProjectTitle() {
@@ -194,26 +178,26 @@ public class Project implements Serializable {
 		this.state = state;
 	}
 
-	public List<ProjectTypology> getProjectTypologies() {
-		return this.projectTypologies;
+	public List<ProjectDelivery> getProjectDeliveries() {
+		return this.projectDeliveries;
 	}
 
-	public void setProjectTypologies(List<ProjectTypology> projectTypologies) {
-		this.projectTypologies = projectTypologies;
+	public void setProjectDeliveries(List<ProjectDelivery> projectDeliveries) {
+		this.projectDeliveries = projectDeliveries;
 	}
 
-	public ProjectTypology addProjectTypology(ProjectTypology projectTypology) {
-		getProjectTypologies().add(projectTypology);
-		projectTypology.setProject(this);
+	public ProjectDelivery addProjectDelivery(ProjectDelivery projectDelivery) {
+		getProjectDeliveries().add(projectDelivery);
+		projectDelivery.setProject(this);
 
-		return projectTypology;
+		return projectDelivery;
 	}
 
-	public ProjectTypology removeProjectTypology(ProjectTypology projectTypology) {
-		getProjectTypologies().remove(projectTypology);
-		projectTypology.setProject(null);
+	public ProjectDelivery removeProjectDelivery(ProjectDelivery projectDelivery) {
+		getProjectDeliveries().remove(projectDelivery);
+		projectDelivery.setProject(null);
 
-		return projectTypology;
+		return projectDelivery;
 	}
 
 	public List<ProjectUser> getProjectUsers() {

@@ -1,17 +1,8 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 
 /**
@@ -33,9 +24,9 @@ public class Profile implements Serializable {
 	@Column(name="profile_name")
 	private String profileName;
 
-	//bi-directional many-to-one association to User
+	//bi-directional many-to-one association to UserApp
 	@OneToMany(mappedBy="profile")
-	private List<UserApp> users;
+	private List<UserApp> userApps;
 
 	public Profile() {
 	}
@@ -56,26 +47,26 @@ public class Profile implements Serializable {
 		this.profileName = profileName;
 	}
 
-	public List<UserApp> getUsers() {
-		return this.users;
+	public List<UserApp> getUserApps() {
+		return this.userApps;
 	}
 
-	public void setUsers(List<UserApp> users) {
-		this.users = users;
+	public void setUserApps(List<UserApp> userApps) {
+		this.userApps = userApps;
 	}
 
-	public UserApp addUser(UserApp user) {
-		getUsers().add(user);
-		user.setProfile(this);
+	public UserApp addUserApp(UserApp userApp) {
+		getUserApps().add(userApp);
+		userApp.setProfile(this);
 
-		return user;
+		return userApp;
 	}
 
-	public UserApp removeUser(UserApp user) {
-		getUsers().remove(user);
-		user.setProfile(null);
+	public UserApp removeUserApp(UserApp userApp) {
+		getUserApps().remove(userApp);
+		userApp.setProfile(null);
 
-		return user;
+		return userApp;
 	}
 
 }

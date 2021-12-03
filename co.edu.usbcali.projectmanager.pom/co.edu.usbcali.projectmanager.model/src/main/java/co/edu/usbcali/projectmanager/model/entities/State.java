@@ -16,17 +16,11 @@ public class State implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="IDSTATE_GENERATOR", sequenceName="STATE_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="IDSTATE_GENERATOR")
-	@Column(name="id_state")
-	private Long idState;
+	@Column(name="state_id")
+	private Long stateId;
 
-	@Column(name="description_state")
-	private String descriptionState;
-
-	//bi-directional many-to-one association to Activity
-	@OneToMany(mappedBy="state")
-	private List<Activity> activities;
+	@Column(name="state_name")
+	private String stateName;
 
 	//bi-directional many-to-one association to Project
 	@OneToMany(mappedBy="state")
@@ -35,42 +29,20 @@ public class State implements Serializable {
 	public State() {
 	}
 
-	public Long getIdState() {
-		return this.idState;
+	public Long getStateId() {
+		return this.stateId;
 	}
 
-	public void setIdState(Long idState) {
-		this.idState = idState;
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 
-	public String getDescriptionState() {
-		return this.descriptionState;
+	public String getStateName() {
+		return this.stateName;
 	}
 
-	public void setDescriptionState(String descriptionState) {
-		this.descriptionState = descriptionState;
-	}
-
-	public List<Activity> getActivities() {
-		return this.activities;
-	}
-
-	public void setActivities(List<Activity> activities) {
-		this.activities = activities;
-	}
-
-	public Activity addActivity(Activity activity) {
-		getActivities().add(activity);
-		activity.setState(this);
-
-		return activity;
-	}
-
-	public Activity removeActivity(Activity activity) {
-		getActivities().remove(activity);
-		activity.setState(null);
-
-		return activity;
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
 	}
 
 	public List<Project> getProjects() {

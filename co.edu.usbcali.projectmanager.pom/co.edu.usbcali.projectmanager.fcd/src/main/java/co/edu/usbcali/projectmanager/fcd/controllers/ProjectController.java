@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
-import co.edu.usbcali.projectmanager.fcd.constant.FcdConstants;
+import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
-import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagementExcepcion;
+import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 
@@ -28,7 +28,7 @@ public class ProjectController {
 
 	@PostMapping(path = FcdConstants.CREATE_PROJECT, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Object> createProject(@RequestBody ProjectRequest projectRequest)
-			throws ProjectManagementExcepcion, SQLException  {
+			throws ProjectManagementException, SQLException  {
 		
 		projectService.createProject(projectRequest);
 		

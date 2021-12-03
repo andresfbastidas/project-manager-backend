@@ -1,4 +1,4 @@
-package co.edu.usbcali.projectmanager.business.implement;
+package co.edu.usbcali.projectmanager.model.dao;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import co.edu.usbcali.projectmanager.model.entities.UserApp;
 
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsDAO implements UserDetails {
+
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
@@ -27,20 +28,21 @@ public class UserDetailsImpl implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long id, String userName, String email, String password,
+	public UserDetailsDAO(Long id, String userName, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
 		this.authorities = authorities;
+		this.email = email;
 	}
 
-	public static UserDetailsImpl build(UserApp user) {
-		List<GrantedAuthority> authorities = user.getProfile().getUsers().stream()
+	public static UserDetailsDAO build(UserApp user) {
+		List<GrantedAuthority> authorities = user.getProfile().getUserApps().stream()
 				.map(profile -> new SimpleGrantedAuthority(profile.getProfile().getProfileName()))
 				.collect(Collectors.toList());
 
-		return new UserDetailsImpl(user.getUserId(), user.getUsername(), user.getEmail(), user.getPassword(),
+		return new UserDetailsDAO(user.getUserId(), user.getUserName(), user.getEmail(), user.getPassword(),
 				authorities);
 	}
 
@@ -93,7 +95,7 @@ public class UserDetailsImpl implements UserDetails {
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		UserDetailsImpl user = (UserDetailsImpl) o;
+		UserDetailsDAO user = (UserDetailsDAO) o;
 		return Objects.equals(id, user.id);
 	}
 }

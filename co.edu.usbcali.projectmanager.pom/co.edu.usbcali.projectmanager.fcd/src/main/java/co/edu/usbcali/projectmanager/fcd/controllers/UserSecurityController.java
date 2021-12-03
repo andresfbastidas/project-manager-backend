@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.usbcali.projectmanager.business.implement.UserDetailsImpl;
 import co.edu.usbcali.projectmanager.business.implement.UserDetailsServiceImpl;
-import co.edu.usbcali.projectmanager.fcd.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.fcd.security.JwtUtils;
+import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
-import co.edu.usbcali.projectmanager.model.excepcion.ProjectManagementExcepcion;
+import co.edu.usbcali.projectmanager.model.dao.UserDetailsDAO;
+import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.LoginRequest;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
@@ -33,13 +33,13 @@ import co.edu.usbcali.projectmanager.model.response.JwtResponse;
 public class UserSecurityController {
 
 	@Autowired
-	AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 
 	@Autowired
-	JwtUtils jwtUtils;
+	private JwtUtils jwtUtils;
 
 	@Autowired
-	UserDetailsServiceImpl userServiceImpl;
+	private UserDetailsServiceImpl userServiceImpl;
 
 	@PostMapping(FcdConstants.LOGIN)
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -50,7 +50,7 @@ public class UserSecurityController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 
-		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		UserDetailsDAO userDetails = (UserDetailsDAO) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
@@ -60,7 +60,7 @@ public class UserSecurityController {
 
 	@PostMapping(FcdConstants.CREATE_USER)
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest)
-			throws ProjectManagementExcepcion {
+			throws ProjectManagementException {
 
 		userServiceImpl.registerUser(signUpRequest);
 		GenericResponse genericResponse = new GenericResponse();

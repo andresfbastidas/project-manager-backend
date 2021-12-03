@@ -1,25 +1,15 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
- * The persistent class for the "Link_Attached" database table.
+ * The persistent class for the "LinkAttached" database table.
  * 
  */
 @Entity
-@Table(name="Link_Attached")
+@Table(name="LinkAttached")
 @NamedQuery(name="LinkAttached.findAll", query="SELECT l FROM LinkAttached l")
 public class LinkAttached implements Serializable {
 	private static final long serialVersionUID = 1L;

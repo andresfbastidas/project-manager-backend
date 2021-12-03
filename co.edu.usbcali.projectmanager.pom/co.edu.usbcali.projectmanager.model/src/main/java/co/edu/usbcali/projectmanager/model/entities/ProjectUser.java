@@ -1,25 +1,15 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 /**
- * The persistent class for the "Project_User" database table.
+ * The persistent class for the "ProjectUser" database table.
  * 
  */
 @Entity
-@Table(name="Project_User")
+@Table(name="ProjectUser")
 @NamedQuery(name="ProjectUser.findAll", query="SELECT p FROM ProjectUser p")
 public class ProjectUser implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -35,10 +25,10 @@ public class ProjectUser implements Serializable {
 	@JoinColumn(name="project_id")
 	private Project project;
 
-	//bi-directional many-to-one association to User
+	//bi-directional many-to-one association to UserApp
 	@ManyToOne
 	@JoinColumn(name="user_id")
-	private UserApp user;
+	private UserApp userApp;
 
 	public ProjectUser() {
 	}
@@ -60,11 +50,11 @@ public class ProjectUser implements Serializable {
 	}
 
 	public UserApp getUserApp() {
-		return this.user;
+		return this.userApp;
 	}
 
-	public void setUserApp(UserApp user) {
-    this.user = user;
-  }
+	public void setUserApp(UserApp userApp) {
+		this.userApp = userApp;
+	}
 
 }
