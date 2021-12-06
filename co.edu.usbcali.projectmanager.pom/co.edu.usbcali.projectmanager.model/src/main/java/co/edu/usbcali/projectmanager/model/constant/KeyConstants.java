@@ -13,5 +13,8 @@ public class KeyConstants {
 	public static final String ERROR_INESPERADO_APP = "Error inesperado en el aplicativo";
 	//Error Codes
 	public static final String ERROR_CODE_EXISTS_USER = "101";
+	
+	//Constants
+	public static final Long DEFAULT_STATE = 1L;
 
 }

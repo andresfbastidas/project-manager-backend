@@ -2,6 +2,8 @@ package co.edu.usbcali.projectmanager.fcd.controllers;
 
 import java.sql.SQLException;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class ProjectController {
 	private IProjectService projectService;
 
 	@PostMapping(path = FcdConstants.CREATE_PROJECT, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Object> createProject(@RequestBody ProjectRequest projectRequest)
+	public ResponseEntity<Object> createProject(@Valid @RequestBody ProjectRequest projectRequest)
 			throws ProjectManagementException, SQLException  {
 		
 		projectService.createProject(projectRequest);

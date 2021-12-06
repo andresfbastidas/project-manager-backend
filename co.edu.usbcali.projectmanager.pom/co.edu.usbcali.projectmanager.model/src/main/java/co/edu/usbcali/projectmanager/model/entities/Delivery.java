@@ -4,26 +4,28 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the "Delivery" database table.
  * 
  */
 @Entity
-@Table(name="Delivery")
-@NamedQuery(name="Delivery.findAll", query="SELECT d FROM Delivery d")
+@Table(name = "Delivery")
+@NamedQuery(name = "Delivery.findAll", query = "SELECT d FROM Delivery d")
 public class Delivery implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="delivery_id")
+	@Column(name = "delivery_id")
 	private Long deliveryId;
 
-	@Column(name="delivery_name")
-	private Long deliveryName;
+	@Column(name = "delivery_name")
+	private String deliveryName;
 
-	//bi-directional many-to-one association to ProjectDelivery
-	@OneToMany(mappedBy="delivery")
+	@Column(name = "delivery_type")
+	private String deliveryType;
+
+	// bi-directional many-to-one association to ProjectDelivery
+	@OneToMany(mappedBy = "delivery")
 	private List<ProjectDelivery> projectDeliveries;
 
 	public Delivery() {
@@ -37,12 +39,20 @@ public class Delivery implements Serializable {
 		this.deliveryId = deliveryId;
 	}
 
-	public Long getDeliveryName() {
+	public String getDeliveryName() {
 		return this.deliveryName;
 	}
 
-	public void setDeliveryName(Long deliveryName) {
+	public void setDeliveryName(String deliveryName) {
 		this.deliveryName = deliveryName;
+	}
+
+	public String getDeliveryType() {
+		return deliveryType;
+	}
+
+	public void setDeliveryType(String deliveryType) {
+		this.deliveryType = deliveryType;
 	}
 
 	public List<ProjectDelivery> getProjectDeliveries() {

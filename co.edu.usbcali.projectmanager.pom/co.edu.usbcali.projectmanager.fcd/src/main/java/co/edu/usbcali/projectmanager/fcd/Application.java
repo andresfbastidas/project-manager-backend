@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @PropertySource("classpath:errmessages.properties")
 @ComponentScan("co.edu")
-@EnableJpaRepositories("co.edu.usbcali.projectmanager.repository")
+@EnableJpaRepositories("co.edu.usbcali.projectmanager")
 @EntityScan("co.edu")
 public class Application {
 

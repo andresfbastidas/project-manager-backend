@@ -1,68 +1,89 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  * The persistent class for the "Project" database table.
  * 
  */
 @Entity
-@Table(name="Project")
-@NamedQuery(name="Project.findAll", query="SELECT p FROM Project p")
+@Table(name = "Project")
+@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p")
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECTID_GENERATOR", sequenceName="PROJECT_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTID_GENERATOR")
-	@Column(name="project_id")
+	@SequenceGenerator(name = "PROJECTID_GENERATOR", sequenceName = "PROJECT_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROJECTID_GENERATOR")
+	@Column(name = "project_id")
 	private Long projectId;
 
-	@Column(name="date_from")
-	private Timestamp dateFrom;
+	@NotNull
+	@Column(name = "date_from")
+	private Date dateFrom;
 
-	@Column(name="date_until")
-	private Timestamp dateUntil;
+	@NotNull
+	@Column(name = "date_until")
+	private Date dateUntil;
 
-	@Column(name="especific_objetive")
-	private String especificObjetive;
+	@NotNull
+	@Column(name = "specific_objetive")
+	private String specificObjetive;
 
-	@Column(name="general_objetive")
+	@NotNull
+	@Column(name = "general_objetive")
 	private String generalObjetive;
 
+	@NotNull
+	@Column(name = "justification")
 	private String justification;
 
-	@Column(name="project_methology")
+	@NotNull
+	@Column(name = "project_methology")
 	private String projectMethology;
 
-	@Column(name="project_research_typology_id")
+	@NotNull
+	@Column(name = "project_research_typology_id")
 	private Long projectResearchTypologyId;
 
-	@Column(name="project_summay")
-	private String projectSummay;
+	@NotNull
+	@Column(name = "project_summary")
+	private String projectSummary;
 
-	@Column(name="project_title")
+	@NotNull
+	@Column(name = "project_title")
 	private String projectTitle;
 
-	//bi-directional many-to-one association to Activity
-	@OneToMany(mappedBy="project")
+	// bi-directional many-to-one association to Activity
+	@OneToMany(mappedBy = "project")
 	private List<Activity> activities;
 
-	//bi-directional many-to-one association to State
+	// bi-directional many-to-one association to State
 	@ManyToOne
-	@JoinColumn(name="state_id")
+	@JoinColumn(name = "state_id")
 	private State state;
 
-	//bi-directional many-to-one association to ProjectDelivery
-	@OneToMany(mappedBy="project")
+	// bi-directional many-to-one association to ProjectDelivery
+	@OneToMany(mappedBy = "project")
 	private List<ProjectDelivery> projectDeliveries;
 
-	//bi-directional many-to-one association to ProjectUser
-	@OneToMany(mappedBy="project")
+	// bi-directional many-to-one association to ProjectUser
+	@OneToMany(mappedBy = "project")
 	private List<ProjectUser> projectUsers;
 
 	public Project() {
@@ -76,28 +97,28 @@ public class Project implements Serializable {
 		this.projectId = projectId;
 	}
 
-	public Timestamp getDateFrom() {
+	public Date getDateFrom() {
 		return this.dateFrom;
 	}
 
-	public void setDateFrom(Timestamp dateFrom) {
+	public void setDateFrom(Date dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 
-	public Timestamp getDateUntil() {
+	public Date getDateUntil() {
 		return this.dateUntil;
 	}
 
-	public void setDateUntil(Timestamp dateUntil) {
+	public void setDateUntil(Date dateUntil) {
 		this.dateUntil = dateUntil;
 	}
 
-	public String getEspecificObjetive() {
-		return this.especificObjetive;
+	public String getSpecificObjetive() {
+		return specificObjetive;
 	}
 
-	public void setEspecificObjetive(String especificObjetive) {
-		this.especificObjetive = especificObjetive;
+	public void setSpecificObjetive(String specificObjetive) {
+		this.specificObjetive = specificObjetive;
 	}
 
 	public String getGeneralObjetive() {
@@ -132,12 +153,12 @@ public class Project implements Serializable {
 		this.projectResearchTypologyId = projectResearchTypologyId;
 	}
 
-	public String getProjectSummay() {
-		return this.projectSummay;
+	public String getProjectSummary() {
+		return this.projectSummary;
 	}
 
-	public void setProjectSummay(String projectSummay) {
-		this.projectSummay = projectSummay;
+	public void setProjectSummary(String projectSummary) {
+		this.projectSummary = projectSummary;
 	}
 
 	public String getProjectTitle() {
