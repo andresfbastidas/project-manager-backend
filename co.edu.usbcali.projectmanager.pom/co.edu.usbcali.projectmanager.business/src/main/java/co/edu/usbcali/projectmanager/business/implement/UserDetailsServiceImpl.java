@@ -71,7 +71,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
-			LOGGER.error(KeyConstants.ERROR_INESPERADO_APP, e);
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 

@@ -10,9 +10,10 @@ public class KeyConstants {
 	public static final String USER_NOT_FOUND = "El usuario no se encuentra registrado en el sistema";
 	public static final String USER_EXISTS = "El usuario ya se encuentra registrado";
 	public static final String COMMON_ERROR = "Error inesperado en el aplicativo. clase [%s]";
-	public static final String ERROR_INESPERADO_APP = "Error inesperado en el aplicativo";
+	public static final String UNEXPECTED_ERROR = "Error inesperado en el aplicativo";
 	//Error Codes
 	public static final String ERROR_CODE_EXISTS_USER = "101";
+	public static final String UNEXPECTED_ERROR_CODE = "100";
 	
 	//Constants
 	public static final Long DEFAULT_STATE = 1L;

@@ -40,9 +40,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					projectRequest.getProject().getSpecificObjetive(), projectRequest.getProject().getJustification(),
 					projectRequest.getProject().getProjectResearchTypologyId());
 
-			ProjectDelivery projectDelivery = this.saveProjectDelivery(projectRequest.getDeliveries(), project);
-			projectRepository.save(project);
-			projectDeliveryRepository.save(projectDelivery);
+			projectRepository.saveAndFlush(project);
+			this.saveProjectDelivery(projectRequest.getDeliveries(), project);
 
 		} catch (Exception e) {
 			throw e;
@@ -50,15 +49,27 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	}
 
-	public ProjectDelivery saveProjectDelivery(List<Delivery> listDeliveries, Project project) {
-		ProjectDelivery projectDelivery = new ProjectDelivery();
-		for (Delivery delivery : listDeliveries) {
-			projectDelivery.setDelivery(delivery);
-			projectDelivery.setProject(project);
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public ProjectDelivery saveProjectDelivery(List<Delivery> listDeliveries, Project project)
+			throws ProjectManagementException {
+		ProjectDelivery projectDelivery = null;
+		try {
+			if (project != null || !listDeliveries.isEmpty()) {
+				for (Delivery delivery : listDeliveries) {
+					projectDelivery = new ProjectDelivery();
+					projectDelivery.setDelivery(delivery);
+					projectDelivery.setProject(project);
+					projectDeliveryRepository.saveAndFlush(projectDelivery);
+				}
+			} else {
+				buildCustomException(KeyConstants.ERROR_CODE_EXISTS_USER, KeyConstants.UNEXPECTED_ERROR_CODE);
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
 		}
 
 		return projectDelivery;
-
 	}
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
