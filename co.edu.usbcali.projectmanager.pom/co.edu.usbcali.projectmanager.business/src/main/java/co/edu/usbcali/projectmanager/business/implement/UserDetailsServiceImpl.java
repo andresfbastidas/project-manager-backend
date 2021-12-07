@@ -15,7 +15,7 @@ import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dao.UserDetailsDAO;
 import co.edu.usbcali.projectmanager.model.entities.Profile;
-import co.edu.usbcali.projectmanager.model.entities.UserApp;
+import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.repository.UserAppRepository;
@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String userName) throws BadCredentialsException {
-		UserApp user = null;
+		Userapp user = null;
 		try {
 			user = userAppRepository.findByUserName(userName);
 			if (user == null) {
@@ -56,7 +56,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 				buildCustomException(KeyConstants.USER_EXISTS, KeyConstants.ERROR_CODE_EXISTS_USER);
 			}
 
-			UserApp user = new UserApp();
+			Userapp user = new Userapp();
 			user.setUserName(signupRequest.getUsername());
 			user.setEmail(signupRequest.getEmail());
 			user.setPassword(encoder.encode(signupRequest.getPassword()));

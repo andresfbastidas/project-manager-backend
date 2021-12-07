@@ -1,4 +1,4 @@
-package co.edu.usbcali.projectmanager.model.entities;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -33,7 +33,6 @@ public class Project implements Serializable {
 	@Column(name="general_objetive")
 	private String generalObjetive;
 
-	@Column(name="justification")
 	private String justification;
 
 	@Column(name="project_methology")
@@ -42,8 +41,8 @@ public class Project implements Serializable {
 	@Column(name="project_research_typology_id")
 	private Long projectResearchTypologyId;
 
-	@Column(name="project_summary")
-	private String projectSummary;
+	@Column(name="project_summay")
+	private String projectSummay;
 
 	@Column(name="project_title")
 	private String projectTitle;
@@ -127,12 +126,12 @@ public class Project implements Serializable {
 		this.projectResearchTypologyId = projectResearchTypologyId;
 	}
 
-	public String getProjectSummary() {
-		return this.projectSummary;
+	public String getProjectSummay() {
+		return this.projectSummay;
 	}
 
-	public void setProjectSummary(String projectSummary) {
-		this.projectSummary = projectSummary;
+	public void setProjectSummay(String projectSummay) {
+		this.projectSummay = projectSummay;
 	}
 
 	public String getProjectTitle() {

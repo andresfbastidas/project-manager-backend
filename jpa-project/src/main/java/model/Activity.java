@@ -1,4 +1,4 @@
-package co.edu.usbcali.projectmanager.model.entities;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.*;

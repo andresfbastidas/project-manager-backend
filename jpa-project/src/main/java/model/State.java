@@ -1,4 +1,4 @@
-package co.edu.usbcali.projectmanager.model.entities;
+package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -16,6 +16,8 @@ public class State implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@SequenceGenerator(name="STATE_STATEID_GENERATOR" )
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STATE_STATEID_GENERATOR")
 	@Column(name="state_id")
 	private Long stateId;
 

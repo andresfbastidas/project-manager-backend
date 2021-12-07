@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import co.edu.usbcali.projectmanager.model.entities.UserApp;
+import co.edu.usbcali.projectmanager.model.entities.Userapp;
 
 public class UserDetailsDAO implements UserDetails {
 
@@ -37,8 +37,8 @@ public class UserDetailsDAO implements UserDetails {
 		this.email = email;
 	}
 
-	public static UserDetailsDAO build(UserApp user) {
-		List<GrantedAuthority> authorities = user.getProfile().getUserApps().stream()
+	public static UserDetailsDAO build(Userapp user) {
+		List<GrantedAuthority> authorities = user.getProfile().getUserapps().stream()
 				.map(profile -> new SimpleGrantedAuthority(profile.getProfile().getProfileName()))
 				.collect(Collectors.toList());
 
