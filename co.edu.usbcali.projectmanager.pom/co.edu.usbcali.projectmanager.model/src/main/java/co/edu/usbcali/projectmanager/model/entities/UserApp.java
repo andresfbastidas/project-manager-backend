@@ -4,51 +4,47 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
 
-
 /**
  * The persistent class for the userapp database table.
  * 
  */
 @Entity
-@Table(name="Userapp")
-@NamedQuery(name="Userapp.findAll", query="SELECT u FROM Userapp u")
+@Table(name = "Userapp")
+@NamedQuery(name = "Userapp.findAll", query = "SELECT u FROM Userapp u")
 public class Userapp implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="USERAPP_USERID_GENERATOR", sequenceName="USER_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USERAPP_USERID_GENERATOR")
-	@Column(name="user_id")
+	@SequenceGenerator(name = "USERAPP_USERID_GENERATOR", sequenceName = "USER_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USERAPP_USERID_GENERATOR")
+	@Column(name = "user_id")
 	private Long userId;
 
 	private String email;
 
-	@Column(name="firts_name")
+	@Column(name = "firts_name")
 	private String firtsName;
 
 	private String password;
 
-	@Column(name="second_name")
+	@Column(name = "second_name")
 	private String secondName;
 
-	@Column(name="second_surname")
+	@Column(name = "second_surname")
 	private String secondSurname;
 
 	private String surname;
 
-	@Column(name="user_name")
+	@Column(name = "user_name")
 	private String userName;
 
-	@Column(name="user_state")
-	private String userState;
-
-	//bi-directional many-to-one association to ProjectUser
-	@OneToMany(mappedBy="userapp")
+	// bi-directional many-to-one association to ProjectUser
+	@OneToMany(mappedBy = "userapp")
 	private List<ProjectUser> projectUsers;
 
-	//bi-directional many-to-one association to Profile
+	// bi-directional many-to-one association to Profile
 	@ManyToOne
-	@JoinColumn(name="profile_id")
+	@JoinColumn(name = "profile_id")
 	private Profile profile;
 
 	public Userapp() {
@@ -116,14 +112,6 @@ public class Userapp implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-
-	public String getUserState() {
-		return this.userState;
-	}
-
-	public void setUserState(String userState) {
-		this.userState = userState;
 	}
 
 	public List<ProjectUser> getProjectUsers() {

@@ -15,6 +15,7 @@ import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
+import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 
@@ -34,6 +35,18 @@ public class ProjectController {
 		
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.SUCCESS_CREATE_PROJECT);
+		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+
+	}
+	
+	@PostMapping(path = FcdConstants.ASSOCIATED_PROJECT_USER, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Object> associatedProjectUser(@Valid @RequestBody AssociatedUserProjectRequest associatedUserProjectRequest)
+			throws ProjectManagementException  {
+		
+		projectService.associateUser(associatedUserProjectRequest);
+		
+		GenericResponse genericResponse = new GenericResponse();
+		genericResponse.setMessage(KeyConstants.SUCCESS_ASSOCIATED_PROJECT_USER);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 
 	}

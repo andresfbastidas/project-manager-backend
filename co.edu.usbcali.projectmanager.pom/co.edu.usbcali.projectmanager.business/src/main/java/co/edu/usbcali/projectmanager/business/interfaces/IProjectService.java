@@ -5,7 +5,9 @@ import java.util.List;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
+import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
+import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 
 public interface IProjectService {
@@ -15,4 +17,8 @@ public interface IProjectService {
 	public ProjectDelivery saveProjectDelivery(List<Delivery> listDeliveries, Project project) throws ProjectManagementException;
 	
 	public Project findByProjectId (Long projectId) throws ProjectManagementException; 
+	
+	public void associateUser (AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException; 
+	
+	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException;
 }

@@ -16,11 +16,16 @@ import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
+import co.edu.usbcali.projectmanager.model.entities.ProjectUser;
 import co.edu.usbcali.projectmanager.model.entities.State;
+import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
+import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
+import co.edu.usbcali.projectmanager.repository.ProjectUserRepository;
+import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
 public class ProjectServiceImpl extends ServiceUtils implements IProjectService {
@@ -34,6 +39,12 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Autowired
 	private ProjectDeliveryRepository projectDeliveryRepository;
+
+	@Autowired
+	private UserAppRepository userAppRepository;
+
+	@Autowired
+	private ProjectUserRepository projectUserRepository;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -72,7 +83,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					projectDeliveryRepository.saveAndFlush(projectDelivery);
 				}
 			} else {
-				buildCustomException(KeyConstants.ERROR_CODE_EXISTS_USER, KeyConstants.UNEXPECTED_ERROR_CODE);
+				buildCustomException(KeyConstants.ERROR_CODE_PROJECT_NOT_SAVE, KeyConstants.PROJECT_NOT_SAVE);
 			}
 		} catch (ProjectManagementException e) {
 			throw e;
@@ -94,7 +105,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			if (project == null) {
 				buildCustomException(KeyConstants.ERROR_CODE_PROJECT_NULL, KeyConstants.PROJECT_NOT_EXISTS);
 			}
-			
+
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -102,8 +113,53 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 		return project;
-		
 
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void associateUser(AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException {
+		Userapp userapp = null;
+		try {
+			userapp = userAppRepository.findByUserName(associatedUserProject.getUserapp().getUserName());
+
+			if (userapp == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_USER_NOT_EXISTS, KeyConstants.USER_NOT_FOUND);
+			}
+
+			Project project = this.findByProjectId(associatedUserProject.getProject().getProjectId());
+			this.saveProjectUser(project, userapp);
+
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException {
+		ProjectUser projectUser = null;
+		try {
+			projectUser = projectUserRepository.findUserExists(userapp.getUserId(), project.getProjectId());
+			if (projectUser != null) {
+				buildCustomException(KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER,
+						KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_EXISTS);
+			}
+			projectUser = new ProjectUser();
+			projectUser.setProject(project);
+			projectUser.setUserapp(userapp);
+			projectUserRepository.saveAndFlush(projectUser);
+
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
 	}
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,

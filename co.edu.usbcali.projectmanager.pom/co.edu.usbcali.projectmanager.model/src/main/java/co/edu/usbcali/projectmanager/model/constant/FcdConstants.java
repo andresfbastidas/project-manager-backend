@@ -14,6 +14,8 @@ public class FcdConstants {
 
 	public static final String CREATE_PROJECT = "/createProject";
 	
+	public static final String ASSOCIATED_PROJECT_USER = "/associatedProjectUser";
+	
 	public static final String CREATE_ACTIVITY = "/createActivity";
 
 	public static final String LOGIN = "/authenticate";
