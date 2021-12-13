@@ -3,6 +3,8 @@ package co.edu.usbcali.projectmanager.business.implement;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,6 +24,10 @@ import co.edu.usbcali.projectmanager.repository.ProjectRepository;
 
 @Service
 public class ProjectServiceImpl extends ServiceUtils implements IProjectService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+
+	private static final String CLASS_NAME = "ProjectServiceImpl";
 
 	@Autowired
 	private ProjectRepository projectRepository;
@@ -43,8 +49,11 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			projectRepository.saveAndFlush(project);
 			this.saveProjectDelivery(projectRequest.getDeliveries(), project);
 
-		} catch (Exception e) {
+		} catch (ProjectManagementException e) {
 			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
 	}
@@ -67,9 +76,34 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			}
 		} catch (ProjectManagementException e) {
 			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
 		return projectDelivery;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Project findByProjectId(Long projectId) throws ProjectManagementException {
+		Project project = null;
+		try {
+			project = projectRepository.findByProjectId(projectId);
+
+			if (project == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_PROJECT_NULL, KeyConstants.PROJECT_NOT_EXISTS);
+			}
+			
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return project;
+		
+
 	}
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
