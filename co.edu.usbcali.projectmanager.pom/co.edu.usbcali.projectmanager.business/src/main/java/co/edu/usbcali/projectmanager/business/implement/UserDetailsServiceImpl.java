@@ -18,6 +18,7 @@ import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
+import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
@@ -47,6 +48,27 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 		}
 
 		return UserDetailsDAO.build(user);
+	}
+
+	@Transactional
+	public UserNameResponse findByUserName(String userName) throws ProjectManagementException {
+		Userapp userApp = null;
+		UserNameResponse userNameResponse = null;
+		try {
+			userApp = userAppRepository.findByUserName(userName);
+			if (userApp == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_USER_NOT_EXISTS, KeyConstants.USER_NOT_FOUND);
+			}
+			userNameResponse = new UserNameResponse();
+			userNameResponse.setUserapp(userApp);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+		return userNameResponse;
 	}
 
 	@Transactional

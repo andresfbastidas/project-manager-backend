@@ -12,9 +12,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.projectmanager.business.implement.UserDetailsServiceImpl;
@@ -27,10 +30,11 @@ import co.edu.usbcali.projectmanager.model.request.LoginRequest;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.JwtResponse;
+import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 
 @RestController
 @RequestMapping(path = FcdConstants.USER)
-public class UserSecurityController {
+public class UserAppController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
@@ -66,6 +70,14 @@ public class UserSecurityController {
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.SUCCESS_CREATE_USER);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FIND_USER_NAME)
+	@ResponseBody
+	public ResponseEntity<?> findUserName(@Valid @PathVariable String userName) throws ProjectManagementException {
+
+		UserNameResponse userNameResponse = userServiceImpl.findByUserName(userName);
+		return new ResponseEntity<>(userNameResponse, HttpStatus.OK);
 	}
 
 }

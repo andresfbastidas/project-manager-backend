@@ -22,10 +22,10 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectUserRepository;
-import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
 public class ProjectServiceImpl extends ServiceUtils implements IProjectService {
@@ -41,7 +41,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	private ProjectDeliveryRepository projectDeliveryRepository;
 
 	@Autowired
-	private UserAppRepository userAppRepository;
+	private UserDetailsServiceImpl userDetailsServiceImpl;
 
 	@Autowired
 	private ProjectUserRepository projectUserRepository;
@@ -119,16 +119,12 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void associateUser(AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException {
-		Userapp userapp = null;
+		UserNameResponse userNameResponse = null;
 		try {
-			userapp = userAppRepository.findByUserName(associatedUserProject.getUserapp().getUserName());
-
-			if (userapp == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_USER_NOT_EXISTS, KeyConstants.USER_NOT_FOUND);
-			}
+			userNameResponse = userDetailsServiceImpl.findByUserName(associatedUserProject.getUserapp().getUserName());
 
 			Project project = this.findByProjectId(associatedUserProject.getProject().getProjectId());
-			this.saveProjectUser(project, userapp);
+			this.saveProjectUser(project, userNameResponse.getUserapp());
 
 		} catch (ProjectManagementException e) {
 			throw e;
