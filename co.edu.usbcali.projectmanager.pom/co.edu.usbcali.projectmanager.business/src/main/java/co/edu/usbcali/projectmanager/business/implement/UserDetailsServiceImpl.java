@@ -1,5 +1,7 @@
 package co.edu.usbcali.projectmanager.business.implement;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
+import co.edu.usbcali.projectmanager.model.response.UsersProfileListResponse;
 import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
@@ -69,6 +72,29 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 		}
 
 		return userNameResponse;
+	}
+
+	@Transactional
+	public UsersProfileListResponse findAllUsersProfile() throws ProjectManagementException {
+		List<Userapp> userapps = null;
+		UsersProfileListResponse usersProfileListResponse = null;
+		try {
+			usersProfileListResponse = new UsersProfileListResponse();
+			userapps = userAppRepository.findAllDirectorsRol(KeyConstants.ROL_DIRECTOR);
+			usersProfileListResponse.setUserappsList(userapps);
+			if (usersProfileListResponse.getUserappsList().isEmpty()
+					|| usersProfileListResponse.getUserappsList() == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_LIST_USERS_EMPTY, KeyConstants.USERS_LIST_EMPTY);
+			}
+
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return usersProfileListResponse;
+
 	}
 
 	@Transactional

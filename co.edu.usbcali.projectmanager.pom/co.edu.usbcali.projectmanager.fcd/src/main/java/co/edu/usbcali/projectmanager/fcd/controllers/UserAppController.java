@@ -31,6 +31,7 @@ import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.JwtResponse;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
+import co.edu.usbcali.projectmanager.model.response.UsersProfileListResponse;
 
 @RestController
 @RequestMapping(path = FcdConstants.USER)
@@ -78,6 +79,14 @@ public class UserAppController {
 
 		UserNameResponse userNameResponse = userServiceImpl.findByUserName(userName);
 		return new ResponseEntity<>(userNameResponse, HttpStatus.OK);
+	}
+	
+	@GetMapping(FcdConstants.FINDALL_USERS_PROFILE)
+	@ResponseBody
+	public ResponseEntity<?> findAllUsersProfile() throws ProjectManagementException {
+
+		UsersProfileListResponse usersProfileListResponse = userServiceImpl.findAllUsersProfile();
+		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 
 }
