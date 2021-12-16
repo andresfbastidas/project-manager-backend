@@ -11,6 +11,8 @@ public class FcdConstants {
 	public static final String ACTIVITY = CONTEXT_API + "/activity";
 
 	public static final String USER = CONTEXT_API + "/user";
+	
+	public static final String GENERIC_LIST = CONTEXT_API + "/genericList";
 
 	public static final String CREATE_PROJECT = "/createProject";
 	
@@ -25,5 +27,9 @@ public class FcdConstants {
 	public static final String FIND_USER_NAME = "/findByUserName/{userName}";
 	
 	public static final String FINDALL_USERS_PROFILE = "/findAllUsersProfile";
+	
+	public static final String FINDALL_DELIVERYS = "/findAllDeliverys";
+	
+	public static final String FINDALL_RESEARCH_TYPOLOGYS = "/findAllResearchTypologys";
 
 }

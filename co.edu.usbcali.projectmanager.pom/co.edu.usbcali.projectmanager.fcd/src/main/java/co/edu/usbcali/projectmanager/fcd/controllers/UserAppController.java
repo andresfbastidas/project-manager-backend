@@ -47,7 +47,7 @@ public class UserAppController {
 	@Autowired
 	private UserDetailsServiceImpl userServiceImpl;
 
-	@PostMapping(FcdConstants.LOGIN)
+	@PostMapping(path = FcdConstants.LOGIN, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
 		Authentication authentication = authenticationManager.authenticate(
@@ -64,7 +64,7 @@ public class UserAppController {
 				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
 	}
 
-	@PostMapping(FcdConstants.CREATE_USER)
+	@PostMapping(path = FcdConstants.CREATE_USER, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest)
 			throws ProjectManagementException {
 
@@ -82,7 +82,7 @@ public class UserAppController {
 		return new ResponseEntity<>(userNameResponse, HttpStatus.OK);
 	}
 	
-	@GetMapping(FcdConstants.FINDALL_USERS_PROFILE)
+	@GetMapping(path = FcdConstants.FINDALL_USERS_PROFILE)
 	@ResponseBody
 	public ResponseEntity<?> findAllUsersProfile() throws ProjectManagementException {
 

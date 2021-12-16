@@ -2,6 +2,9 @@ package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -28,6 +31,7 @@ public class Delivery implements Serializable {
 	private String deliveryType;
 
 	//bi-directional many-to-one association to ProjectDelivery
+	@JsonIgnore
 	@OneToMany(mappedBy="delivery")
 	private List<ProjectDelivery> projectDeliveries;
 

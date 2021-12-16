@@ -17,7 +17,10 @@ public class KeyConstants {
 	public static final String PROJECT_NOT_SAVE = "No fue posible crear el proyecto";
 	public static final String USERS_LIST_EMPTY = "La lista de usuarios se encuentra vacia";
 	public static final String ERROR_ASSOCIATED_PROJECT_USER_EXISTS = "El usuario ya se encuentra asociado al proyecto";
+	public static final String GENERIC_LIST_EMPTY = "La lista generica se encuentra vacia";
+	
 	// Error Codes
+	public static final String ERROR_CODE_GENERIC_LIST_EMPTY = "106";
 	public static final String ERROR_CODE_LIST_USERS_EMPTY = "105";
 	public static final String ERROR_CODE_ASSOCIATED_PROJECT_USER = "104";
 	public static final String ERROR_CODE_PROJECT_NOT_SAVE = "104";

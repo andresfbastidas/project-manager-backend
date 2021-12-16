@@ -74,18 +74,18 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 		return userNameResponse;
 	}
 
-	@Transactional
 	public GenericListResponse<Userapp> findAllUsersProfile() throws ProjectManagementException {
 		List<Userapp> userapps = null;
 		GenericListResponse<Userapp> usersProfileListResponse = null;
 		try {
 			usersProfileListResponse = new GenericListResponse<Userapp>();
 			userapps = userAppRepository.findAllDirectorsRol(KeyConstants.ROL_DIRECTOR);
-			usersProfileListResponse.setGenericList(userapps);
-			if (usersProfileListResponse.getGenericList().isEmpty()
-					|| usersProfileListResponse.getGenericList() == null) {
+
+			if (userapps.isEmpty()
+					|| userapps == null) {
 				buildCustomException(KeyConstants.ERROR_CODE_LIST_USERS_EMPTY, KeyConstants.USERS_LIST_EMPTY);
 			}
+			usersProfileListResponse.setGenericList(userapps);
 
 		} catch (ProjectManagementException e) {
 			throw e;
