@@ -25,13 +25,14 @@ import co.edu.usbcali.projectmanager.fcd.security.JwtUtils;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dao.UserDetailsDAO;
+import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.LoginRequest;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.JwtResponse;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
-import co.edu.usbcali.projectmanager.model.response.UsersProfileListResponse;
+import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 
 @RestController
 @RequestMapping(path = FcdConstants.USER)
@@ -85,7 +86,7 @@ public class UserAppController {
 	@ResponseBody
 	public ResponseEntity<?> findAllUsersProfile() throws ProjectManagementException {
 
-		UsersProfileListResponse usersProfileListResponse = userServiceImpl.findAllUsersProfile();
+		GenericListResponse<Userapp> usersProfileListResponse = userServiceImpl.findAllUsersProfile();
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 

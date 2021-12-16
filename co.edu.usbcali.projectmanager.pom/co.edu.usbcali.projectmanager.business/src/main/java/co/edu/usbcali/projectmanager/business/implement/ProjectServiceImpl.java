@@ -55,7 +55,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					projectRequest.getProject().getGeneralObjetive(), projectRequest.getProject().getProjectSummary(),
 					projectRequest.getProject().getProjectMethology(),
 					projectRequest.getProject().getSpecificObjetive(), projectRequest.getProject().getJustification(),
-					projectRequest.getProject().getProjectResearchTypologyId());
+					projectRequest.getProject().getProjectResearchTypologyId(), projectRequest.getState());
 
 			projectRepository.saveAndFlush(project);
 			this.saveProjectDelivery(projectRequest.getDeliveries(), project);
@@ -160,10 +160,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
 			String projectSummary, String projectMethology, String specificObjetive, String justification,
-			Long projectResearchId) {
+			Long projectResearchId, State state) {
 		Project project = new Project();
-		State state = new State();
-		state.setStateId(KeyConstants.DEFAULT_STATE);
 		project.setDateFrom(dateFrom);
 		project.setDateUntil(dateUntil);
 		project.setProjectTitle(projectTitle);

@@ -21,7 +21,7 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
-import co.edu.usbcali.projectmanager.model.response.UsersProfileListResponse;
+import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
@@ -75,15 +75,15 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 	}
 
 	@Transactional
-	public UsersProfileListResponse findAllUsersProfile() throws ProjectManagementException {
+	public GenericListResponse<Userapp> findAllUsersProfile() throws ProjectManagementException {
 		List<Userapp> userapps = null;
-		UsersProfileListResponse usersProfileListResponse = null;
+		GenericListResponse<Userapp> usersProfileListResponse = null;
 		try {
-			usersProfileListResponse = new UsersProfileListResponse();
+			usersProfileListResponse = new GenericListResponse<Userapp>();
 			userapps = userAppRepository.findAllDirectorsRol(KeyConstants.ROL_DIRECTOR);
-			usersProfileListResponse.setUserappsList(userapps);
-			if (usersProfileListResponse.getUserappsList().isEmpty()
-					|| usersProfileListResponse.getUserappsList() == null) {
+			usersProfileListResponse.setGenericList(userapps);
+			if (usersProfileListResponse.getGenericList().isEmpty()
+					|| usersProfileListResponse.getGenericList() == null) {
 				buildCustomException(KeyConstants.ERROR_CODE_LIST_USERS_EMPTY, KeyConstants.USERS_LIST_EMPTY);
 			}
 
