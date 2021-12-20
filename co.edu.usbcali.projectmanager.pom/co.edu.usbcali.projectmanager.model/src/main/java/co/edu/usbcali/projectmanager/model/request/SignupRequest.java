@@ -2,73 +2,31 @@ package co.edu.usbcali.projectmanager.model.request;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.Size;
+import co.edu.usbcali.projectmanager.model.entities.Profile;
+import co.edu.usbcali.projectmanager.model.entities.Userapp;
 
 public class SignupRequest implements Serializable {
 
-	@Size(min = 3, max = 20)
-	private String username;
+	private Userapp userapp;
 
-	@Size(max = 50)
-	private String email;
+	private Profile profile;
 
-	private Long idProfile;
-
-	@Size(min = 6, max = 40)
-	private String password;
-
-	private String firstName;
-
-	private String surname;
-
-	public String getFirstName() {
-		return firstName;
+	public Profile getProfile() {
+		return profile;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
-	public String getSurname() {
-		return surname;
+	public Userapp getUserapp() {
+		return userapp;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setUserapp(Userapp userapp) {
+		this.userapp = userapp;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Long getIdProfile() {
-		return idProfile;
-	}
-
-	public void setIdProfile(Long idProfile) {
-		this.idProfile = idProfile;
-	}
-	
 	private static final long serialVersionUID = -486180400748210308L;
 
 }

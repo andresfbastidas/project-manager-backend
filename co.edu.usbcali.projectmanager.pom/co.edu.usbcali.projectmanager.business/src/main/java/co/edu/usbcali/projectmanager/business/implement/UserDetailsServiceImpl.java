@@ -20,8 +20,8 @@ import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
-import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
+import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
@@ -81,8 +81,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			usersProfileListResponse = new GenericListResponse<Userapp>();
 			userapps = userAppRepository.findAllDirectorsRol(KeyConstants.ROL_DIRECTOR);
 
-			if (userapps.isEmpty()
-					|| userapps == null) {
+			if (userapps.isEmpty() || userapps == null) {
 				buildCustomException(KeyConstants.ERROR_CODE_LIST_USERS_EMPTY, KeyConstants.USERS_LIST_EMPTY);
 			}
 			usersProfileListResponse.setGenericList(userapps);
@@ -100,18 +99,20 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 	@Transactional
 	public void registerUser(SignupRequest signupRequest) throws ProjectManagementException {
 		try {
-			if (userAppRepository.existsByUserName(signupRequest.getUsername())) {
+			if (userAppRepository.existsByUserName(signupRequest.getUserapp().getUserName())) {
 				buildCustomException(KeyConstants.USER_EXISTS, KeyConstants.ERROR_CODE_EXISTS_USER);
 			}
 
 			Userapp user = new Userapp();
-			user.setUserName(signupRequest.getUsername());
-			user.setEmail(signupRequest.getEmail());
-			user.setPassword(encoder.encode(signupRequest.getPassword()));
-			user.setFirtsName(signupRequest.getFirstName());
-			user.setSurname(signupRequest.getSurname());
+			user.setUserName(signupRequest.getUserapp().getUserName());
+			user.setEmail(signupRequest.getUserapp().getEmail());
+			user.setPassword(encoder.encode(signupRequest.getUserapp().getPassword()));
+			user.setFirtsName(signupRequest.getUserapp().getFirtsName());
+			user.setSurname(signupRequest.getUserapp().getSurname());
+		    user.setSecondName(signupRequest.getUserapp().getSecondName());
+		    user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
 			Profile profile = new Profile();
-			profile.setProfileId(signupRequest.getIdProfile());
+			profile.setProfileId(signupRequest.getProfile().getProfileId());
 			user.setProfile(profile);
 
 			userAppRepository.save(user);

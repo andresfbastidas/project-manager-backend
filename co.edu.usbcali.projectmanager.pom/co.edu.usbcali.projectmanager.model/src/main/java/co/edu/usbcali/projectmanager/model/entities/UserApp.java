@@ -36,6 +36,7 @@ public class Userapp implements Serializable {
 	@Column(name="second_surname")
 	private String secondSurname;
 
+	@Column(name="surname")
 	private String surname;
 
 	@Column(name="user_name")
