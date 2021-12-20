@@ -16,8 +16,6 @@ public class StateActivity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="STATE_ACTIVITY_STATEACTIVITYID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="STATE_ACTIVITY_STATEACTIVITYID_GENERATOR")
 	@Column(name="state_activity_id")
 	private Long stateActivityId;
 

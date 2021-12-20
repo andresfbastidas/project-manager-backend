@@ -11,13 +11,12 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="Project")
 @NamedQuery(name="Project.findAll", query="SELECT p FROM Project p")
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECT_PROJECTID_GENERATOR", sequenceName="PROJECT_SEQ", allocationSize = 1)
+	@SequenceGenerator(name="PROJECT_PROJECTID_GENERATOR", sequenceName="PROJECT_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECT_PROJECTID_GENERATOR")
 	@Column(name="project_id")
 	private Long projectId;
@@ -41,8 +40,8 @@ public class Project implements Serializable {
 	@Column(name="project_research_typology_id")
 	private Long projectResearchTypologyId;
 
-	@Column(name="project_summay")
-	private String projectSummay;
+	@Column(name="project_summary")
+	private String projectSummary;
 
 	@Column(name="project_title")
 	private String projectTitle;
@@ -62,6 +61,10 @@ public class Project implements Serializable {
 	//bi-directional many-to-one association to ProjectDelivery
 	@OneToMany(mappedBy="project")
 	private List<ProjectDelivery> projectDeliveries;
+
+	//bi-directional many-to-one association to ProjectRequest
+	@OneToMany(mappedBy="project")
+	private List<ProjectRequest> projectRequests;
 
 	//bi-directional many-to-one association to ProjectUser
 	@OneToMany(mappedBy="project")
@@ -126,12 +129,12 @@ public class Project implements Serializable {
 		this.projectResearchTypologyId = projectResearchTypologyId;
 	}
 
-	public String getProjectSummay() {
-		return this.projectSummay;
+	public String getProjectSummary() {
+		return this.projectSummary;
 	}
 
-	public void setProjectSummay(String projectSummay) {
-		this.projectSummay = projectSummay;
+	public void setProjectSummary(String projectSummary) {
+		this.projectSummary = projectSummary;
 	}
 
 	public String getProjectTitle() {
@@ -200,6 +203,28 @@ public class Project implements Serializable {
 		projectDelivery.setProject(null);
 
 		return projectDelivery;
+	}
+
+	public List<ProjectRequest> getProjectRequests() {
+		return this.projectRequests;
+	}
+
+	public void setProjectRequests(List<ProjectRequest> projectRequests) {
+		this.projectRequests = projectRequests;
+	}
+
+	public ProjectRequest addProjectRequest(ProjectRequest projectRequest) {
+		getProjectRequests().add(projectRequest);
+		projectRequest.setProject(this);
+
+		return projectRequest;
+	}
+
+	public ProjectRequest removeProjectRequest(ProjectRequest projectRequest) {
+		getProjectRequests().remove(projectRequest);
+		projectRequest.setProject(null);
+
+		return projectRequest;
 	}
 
 	public List<ProjectUser> getProjectUsers() {

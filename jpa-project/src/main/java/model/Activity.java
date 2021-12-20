@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -11,13 +11,12 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="Activity")
 @NamedQuery(name="Activity.findAll", query="SELECT a FROM Activity a")
 public class Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ACTIVITY_ACTIVITYID_GENERATOR", sequenceName="ACTIVITY_SEQ", allocationSize = 1)
+	@SequenceGenerator(name="ACTIVITY_ACTIVITYID_GENERATOR", sequenceName="ACTIVITY_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ACTIVITY_ACTIVITYID_GENERATOR")
 	@Column(name="activity_id")
 	private Long activityId;
@@ -25,14 +24,16 @@ public class Activity implements Serializable {
 	@Column(name="activity_name")
 	private String activityName;
 
-	@Column(name="activity_state")
-	private String activityState;
+	@Column(name="assigned_user")
+	private String assignedUser;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name="date_from")
-	private Timestamp dateFrom;
+	private Date dateFrom;
 
+	@Temporal(TemporalType.DATE)
 	@Column(name="date_until")
-	private Timestamp dateUntil;
+	private Date dateUntil;
 
 	//bi-directional many-to-one association to Project
 	@ManyToOne
@@ -71,27 +72,27 @@ public class Activity implements Serializable {
 		this.activityName = activityName;
 	}
 
-	public String getActivityState() {
-		return this.activityState;
+	public String getAssignedUser() {
+		return this.assignedUser;
 	}
 
-	public void setActivityState(String activityState) {
-		this.activityState = activityState;
+	public void setAssignedUser(String assignedUser) {
+		this.assignedUser = assignedUser;
 	}
 
-	public Timestamp getDateFrom() {
+	public Date getDateFrom() {
 		return this.dateFrom;
 	}
 
-	public void setDateFrom(Timestamp dateFrom) {
+	public void setDateFrom(Date dateFrom) {
 		this.dateFrom = dateFrom;
 	}
 
-	public Timestamp getDateUntil() {
+	public Date getDateUntil() {
 		return this.dateUntil;
 	}
 
-	public void setDateUntil(Timestamp dateUntil) {
+	public void setDateUntil(Date dateUntil) {
 		this.dateUntil = dateUntil;
 	}
 

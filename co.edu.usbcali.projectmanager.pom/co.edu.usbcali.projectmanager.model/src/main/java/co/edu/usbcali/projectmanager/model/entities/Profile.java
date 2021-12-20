@@ -10,14 +10,11 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="Profile")
 @NamedQuery(name="Profile.findAll", query="SELECT p FROM Profile p")
 public class Profile implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROFILE_PROFILEID_GENERATOR", sequenceName="PROFILE_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROFILE_PROFILEID_GENERATOR")
 	@Column(name="profile_id")
 	private Long profileId;
 

@@ -11,7 +11,6 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="Project")
 @NamedQuery(name="Project.findAll", query="SELECT p FROM Project p")
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -33,7 +32,6 @@ public class Project implements Serializable {
 	@Column(name="general_objetive")
 	private String generalObjetive;
 
-	@Column(name="justification")
 	private String justification;
 
 	@Column(name="project_methology")
@@ -63,6 +61,10 @@ public class Project implements Serializable {
 	//bi-directional many-to-one association to ProjectDelivery
 	@OneToMany(mappedBy="project")
 	private List<ProjectDelivery> projectDeliveries;
+
+	//bi-directional many-to-one association to ProjectRequest
+	@OneToMany(mappedBy="project")
+	private List<ProjectRequest> projectRequests;
 
 	//bi-directional many-to-one association to ProjectUser
 	@OneToMany(mappedBy="project")
@@ -201,6 +203,28 @@ public class Project implements Serializable {
 		projectDelivery.setProject(null);
 
 		return projectDelivery;
+	}
+
+	public List<ProjectRequest> getProjectRequests() {
+		return this.projectRequests;
+	}
+
+	public void setProjectRequests(List<ProjectRequest> projectRequests) {
+		this.projectRequests = projectRequests;
+	}
+
+	public ProjectRequest addProjectRequest(ProjectRequest projectRequest) {
+		getProjectRequests().add(projectRequest);
+		projectRequest.setProject(this);
+
+		return projectRequest;
+	}
+
+	public ProjectRequest removeProjectRequest(ProjectRequest projectRequest) {
+		getProjectRequests().remove(projectRequest);
+		projectRequest.setProject(null);
+
+		return projectRequest;
 	}
 
 	public List<ProjectUser> getProjectUsers() {

@@ -10,13 +10,12 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="Userapp")
 @NamedQuery(name="Userapp.findAll", query="SELECT u FROM Userapp u")
 public class Userapp implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="USERAPP_USERID_GENERATOR", sequenceName="USER_SEQ", allocationSize = 1)
+	@SequenceGenerator(name="USERAPP_USERID_GENERATOR", sequenceName="USER_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USERAPP_USERID_GENERATOR")
 	@Column(name="user_id")
 	private Long userId;
@@ -39,8 +38,9 @@ public class Userapp implements Serializable {
 	@Column(name="user_name")
 	private String userName;
 
-	@Column(name="user_state")
-	private String userState;
+	//bi-directional many-to-one association to ProjectRequest
+	@OneToMany(mappedBy="userapp")
+	private List<ProjectRequest> projectRequests;
 
 	//bi-directional many-to-one association to ProjectUser
 	@OneToMany(mappedBy="userapp")
@@ -118,12 +118,26 @@ public class Userapp implements Serializable {
 		this.userName = userName;
 	}
 
-	public String getUserState() {
-		return this.userState;
+	public List<ProjectRequest> getProjectRequests() {
+		return this.projectRequests;
 	}
 
-	public void setUserState(String userState) {
-		this.userState = userState;
+	public void setProjectRequests(List<ProjectRequest> projectRequests) {
+		this.projectRequests = projectRequests;
+	}
+
+	public ProjectRequest addProjectRequest(ProjectRequest projectRequest) {
+		getProjectRequests().add(projectRequest);
+		projectRequest.setUserapp(this);
+
+		return projectRequest;
+	}
+
+	public ProjectRequest removeProjectRequest(ProjectRequest projectRequest) {
+		getProjectRequests().remove(projectRequest);
+		projectRequest.setUserapp(null);
+
+		return projectRequest;
 	}
 
 	public List<ProjectUser> getProjectUsers() {

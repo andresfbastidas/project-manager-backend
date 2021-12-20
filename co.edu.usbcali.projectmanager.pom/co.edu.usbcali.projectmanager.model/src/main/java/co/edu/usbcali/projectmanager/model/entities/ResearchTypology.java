@@ -15,8 +15,6 @@ public class ResearchTypology implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="RESEARCH_TYPOLOGY_PROJECTRESEARCHTYPOLOGYID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="RESEARCH_TYPOLOGY_PROJECTRESEARCHTYPOLOGYID_GENERATOR")
 	@Column(name="project_research_typology_id")
 	private Long projectResearchTypologyId;
 

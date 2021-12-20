@@ -15,7 +15,7 @@ public class ProjectUser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECT_USER_PROJECTUSERID_GENERATOR", sequenceName="PROJECT_USER_SEQ", allocationSize = 1)
+	@SequenceGenerator(name="PROJECT_USER_PROJECTUSERID_GENERATOR", sequenceName="PROJECT_USER_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECT_USER_PROJECTUSERID_GENERATOR")
 	@Column(name="project_user_id")
 	private Long projectUserId;

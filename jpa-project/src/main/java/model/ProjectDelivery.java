@@ -15,7 +15,7 @@ public class ProjectDelivery implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECT_DELIVERY_PROJECTDELIVERYID_GENERATOR", sequenceName="PROJECTDELIVERY_SEQ", allocationSize = 1)
+	@SequenceGenerator(name="PROJECT_DELIVERY_PROJECTDELIVERYID_GENERATOR", sequenceName="PROJECTDELIVERY_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECT_DELIVERY_PROJECTDELIVERYID_GENERATOR")
 	@Column(name="project_delivery_id")
 	private Long projectDeliveryId;

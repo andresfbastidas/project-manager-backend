@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="jpa-project">
-		<class>model.Delivery</class>
 		<class>model.Activity</class>
 		<class>model.Comment</class>
+		<class>model.Delivery</class>
 		<class>model.LinkAttached</class>
 		<class>model.Profile</class>
 		<class>model.Project</class>
 		<class>model.ProjectDelivery</class>
+		<class>model.ProjectRequest</class>
 		<class>model.ProjectUser</class>
 		<class>model.ResearchTypology</class>
 		<class>model.State</class>
 		<class>model.StateActivity</class>
+		<class>model.StateProjectRequest</class>
 		<class>model.Userapp</class>
 	</persistence-unit>
 </persistence>

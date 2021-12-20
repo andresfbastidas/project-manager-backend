@@ -1,65 +1,56 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 /**
  * The persistent class for the activity database table.
  * 
  */
 @Entity
-@Table(name = "Activity")
-@NamedQuery(name = "Activity.findAll", query = "SELECT a FROM Activity a")
+@NamedQuery(name="Activity.findAll", query="SELECT a FROM Activity a")
 public class Activity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name = "ACTIVITY_ACTIVITYID_GENERATOR", sequenceName = "ACTIVITY_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ACTIVITY_ACTIVITYID_GENERATOR")
-	@Column(name = "activity_id")
+	@SequenceGenerator(name="ACTIVITY_ACTIVITYID_GENERATOR", sequenceName="ACTIVITY_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ACTIVITY_ACTIVITYID_GENERATOR")
+	@Column(name="activity_id")
 	private Long activityId;
 
-	@Column(name = "activity_name")
+	@Column(name="activity_name")
 	private String activityName;
 
-	@Column(name = "date_from")
-	private Date dateFrom;
-
-	@Column(name = "date_until")
-	private Date dateUntil;
-
-	@Column(name = "assigned_user")
+	@Column(name="assigned_user")
 	private String assignedUser;
 
-	// bi-directional many-to-one association to Project
+	@Temporal(TemporalType.DATE)
+	@Column(name="date_from")
+	private Date dateFrom;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="date_until")
+	private Date dateUntil;
+
+	//bi-directional many-to-one association to Project
 	@ManyToOne
-	@JoinColumn(name = "project_id")
+	@JoinColumn(name="project_id")
 	private Project project;
 
-	// bi-directional many-to-one association to StateActivity
+	//bi-directional many-to-one association to StateActivity
 	@ManyToOne
-	@JoinColumn(name = "state_activity_id")
+	@JoinColumn(name="state_activity_id")
 	private StateActivity stateActivity;
 
-	// bi-directional many-to-one association to Comment
-	@OneToMany(mappedBy = "activity")
+	//bi-directional many-to-one association to Comment
+	@OneToMany(mappedBy="activity")
 	private List<Comment> comments;
 
-	// bi-directional many-to-one association to LinkAttached
-	@OneToMany(mappedBy = "activity")
+	//bi-directional many-to-one association to LinkAttached
+	@OneToMany(mappedBy="activity")
 	private List<LinkAttached> linkAttacheds;
 
 	public Activity() {
@@ -81,8 +72,16 @@ public class Activity implements Serializable {
 		this.activityName = activityName;
 	}
 
+	public String getAssignedUser() {
+		return this.assignedUser;
+	}
+
+	public void setAssignedUser(String assignedUser) {
+		this.assignedUser = assignedUser;
+	}
+
 	public Date getDateFrom() {
-		return dateFrom;
+		return this.dateFrom;
 	}
 
 	public void setDateFrom(Date dateFrom) {
@@ -90,7 +89,7 @@ public class Activity implements Serializable {
 	}
 
 	public Date getDateUntil() {
-		return dateUntil;
+		return this.dateUntil;
 	}
 
 	public void setDateUntil(Date dateUntil) {
@@ -111,14 +110,6 @@ public class Activity implements Serializable {
 
 	public void setStateActivity(StateActivity stateActivity) {
 		this.stateActivity = stateActivity;
-	}
-
-	public String getAssignedUser() {
-		return assignedUser;
-	}
-
-	public void setAssignedUser(String assignedUser) {
-		this.assignedUser = assignedUser;
 	}
 
 	public List<Comment> getComments() {

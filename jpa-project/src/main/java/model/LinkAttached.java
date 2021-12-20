@@ -15,7 +15,7 @@ public class LinkAttached implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="LINK_ATTACHED_LINKATTACHEDID_GENERATOR", sequenceName="LINK_ATTACHED_SEQ", allocationSize = 1)
+	@SequenceGenerator(name="LINK_ATTACHED_LINKATTACHEDID_GENERATOR", sequenceName="LINK_ATTACHED_SEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LINK_ATTACHED_LINKATTACHEDID_GENERATOR")
 	@Column(name="link_attached_id")
 	private Long linkAttachedId;

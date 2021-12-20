@@ -13,14 +13,11 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="Delivery")
 @NamedQuery(name="Delivery.findAll", query="SELECT d FROM Delivery d")
 public class Delivery implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="DELIVERY_DELIVERYID_GENERATOR" )
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DELIVERY_DELIVERYID_GENERATOR")
 	@Column(name="delivery_id")
 	private Long deliveryId;
 
@@ -31,8 +28,8 @@ public class Delivery implements Serializable {
 	private String deliveryType;
 
 	//bi-directional many-to-one association to ProjectDelivery
-	@JsonIgnore
 	@OneToMany(mappedBy="delivery")
+	@JsonIgnore
 	private List<ProjectDelivery> projectDeliveries;
 
 	public Delivery() {
