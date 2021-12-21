@@ -9,6 +9,8 @@ import co.edu.usbcali.projectmanager.model.entities.ProjectUser;
 @Repository
 public interface ProjectUserRepository extends JpaRepository<ProjectUser, Long> {
 
-	@Query(value = "select * from public.project_user p where p.user_id = ?1 and p.project_id = ?2", nativeQuery = true)
-	public ProjectUser findUserExists(Long userId, Long projectId);
+	@Query(value = "select * from public.project_user p inner join userapp u ON p.user_id = u.user_id\n"
+			+ "	and u.user_name = ?1 inner join project pr ON p.project_id = pr.project_id\n"
+			+ "	and pr.project_id = ?2", nativeQuery = true)
+	public ProjectUser findUserExists(String userName, Long projectId);
 }

@@ -140,7 +140,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException {
 		ProjectUser projectUser = null;
 		try {
-			projectUser = projectUserRepository.findUserExists(userapp.getUserId(), project.getProjectId());
+			projectUser = projectUserRepository.findUserExists(userapp.getUserName(), project.getProjectId());
 			if (projectUser != null) {
 				buildCustomException(KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER,
 						KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_EXISTS);
