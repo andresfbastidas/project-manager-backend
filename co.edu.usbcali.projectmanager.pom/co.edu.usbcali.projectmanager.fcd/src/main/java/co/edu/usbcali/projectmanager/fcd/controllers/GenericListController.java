@@ -13,6 +13,7 @@ import co.edu.usbcali.projectmanager.business.interfaces.IGenericListService;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.ResearchTypology;
+import co.edu.usbcali.projectmanager.model.entities.State;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 
@@ -38,6 +39,14 @@ public class GenericListController {
 
 		GenericListResponse<ResearchTypology> usersProfileListResponse = genericListService
 				.findAllResearchTypologyList();
+		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FINDALL_STATES)
+	@ResponseBody
+	public ResponseEntity<?> findAllStates() throws ProjectManagementException {
+
+		GenericListResponse<State> usersProfileListResponse = genericListService.findAllStates();
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 }

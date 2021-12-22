@@ -31,5 +31,7 @@ public class FcdConstants {
 	public static final String FINDALL_DELIVERYS = "/findAllDeliverys";
 	
 	public static final String FINDALL_RESEARCH_TYPOLOGYS = "/findAllResearchTypologys";
+	
+	public static final String FINDALL_STATES = "/findAllStates";
 
 }

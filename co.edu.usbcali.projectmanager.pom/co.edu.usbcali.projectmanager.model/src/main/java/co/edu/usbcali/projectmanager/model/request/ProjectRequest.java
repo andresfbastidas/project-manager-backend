@@ -13,8 +13,6 @@ public class ProjectRequest implements Serializable {
 
 	private State state;
 
-	private Long deliveryId;
-
 	private List<Delivery> deliveries;
 
 	public State getState() {
@@ -31,14 +29,6 @@ public class ProjectRequest implements Serializable {
 
 	public void setProject(Project project) {
 		this.project = project;
-	}
-
-	public Long getDeliveryId() {
-		return deliveryId;
-	}
-
-	public void setDeliveryId(Long deliveryId) {
-		this.deliveryId = deliveryId;
 	}
 
 	public List<Delivery> getDeliveries() {

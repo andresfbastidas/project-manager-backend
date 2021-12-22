@@ -32,6 +32,7 @@ public class Project implements Serializable {
 	@Column(name="general_objetive")
 	private String generalObjetive;
 
+	@Column(name="justification")
 	private String justification;
 
 	@Column(name="project_methology")
