@@ -59,6 +59,10 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 			projectRepository.saveAndFlush(project);
 			this.saveProjectDelivery(projectRequest.getDeliveries(), project);
+			AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
+			associatedUserProjectRequest.setProject(project);
+			associatedUserProjectRequest.setUserapp(projectRequest.getUserapp());
+			this.associateUser(associatedUserProjectRequest);
 
 		} catch (ProjectManagementException e) {
 			throw e;

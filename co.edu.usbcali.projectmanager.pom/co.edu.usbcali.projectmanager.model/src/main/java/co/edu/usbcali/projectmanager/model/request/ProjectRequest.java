@@ -6,6 +6,7 @@ import java.util.List;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.State;
+import co.edu.usbcali.projectmanager.model.entities.Userapp;
 
 public class ProjectRequest implements Serializable {
 
@@ -14,6 +15,16 @@ public class ProjectRequest implements Serializable {
 	private State state;
 
 	private List<Delivery> deliveries;
+
+	private Userapp userapp;
+
+	public Userapp getUserapp() {
+		return userapp;
+	}
+
+	public void setUserapp(Userapp userapp) {
+		this.userapp = userapp;
+	}
 
 	public State getState() {
 		return state;
