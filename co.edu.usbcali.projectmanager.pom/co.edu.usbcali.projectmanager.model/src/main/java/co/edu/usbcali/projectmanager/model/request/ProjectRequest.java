@@ -1,7 +1,7 @@
 package co.edu.usbcali.projectmanager.model.request;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
@@ -14,7 +14,7 @@ public class ProjectRequest implements Serializable {
 
 	private State state;
 
-	private List<Delivery> deliveries;
+	private ArrayList<Delivery> deliveries;
 
 	private Userapp userapp;
 
@@ -42,11 +42,11 @@ public class ProjectRequest implements Serializable {
 		this.project = project;
 	}
 
-	public List<Delivery> getDeliveries() {
+	public ArrayList<Delivery> getDeliveries() {
 		return deliveries;
 	}
 
-	public void setDeliveries(List<Delivery> deliveries) {
+	public void setDeliveries(ArrayList<Delivery> deliveries) {
 		this.deliveries = deliveries;
 	}
 
