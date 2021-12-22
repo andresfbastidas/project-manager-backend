@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,7 @@ import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 
 @RestController
 @RequestMapping(path = FcdConstants.USER)
+@CrossOrigin(origins = "${cross.origin}")
 public class UserAppController {
 
 	@Autowired
