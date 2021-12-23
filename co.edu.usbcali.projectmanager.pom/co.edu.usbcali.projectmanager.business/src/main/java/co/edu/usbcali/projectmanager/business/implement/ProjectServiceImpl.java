@@ -150,6 +150,12 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 				buildCustomException(KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER,
 						KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_EXISTS);
 			}
+			projectUser = projectUserRepository.findExistsMoreDirectors(KeyConstants.ROL_DIRECTORID,
+					project.getProjectId());
+			if (projectUser != null) {
+				buildCustomException(KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER,
+						KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR);
+			}
 			projectUser = new ProjectUser();
 			projectUser.setProject(project);
 			projectUser.setUserapp(userapp);
