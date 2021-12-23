@@ -1,6 +1,7 @@
 package co.edu.usbcali.projectmanager.business.interfaces;
 
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
+import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.ResearchTypology;
 import co.edu.usbcali.projectmanager.model.entities.State;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
@@ -13,4 +14,6 @@ public interface IGenericListService {
 	public GenericListResponse<ResearchTypology> findAllResearchTypologyList() throws ProjectManagementException;
 	
 	public GenericListResponse<State> findAllStates() throws ProjectManagementException;
+	
+	public GenericListResponse<Profile> findAllProfiles() throws ProjectManagementException;
 }

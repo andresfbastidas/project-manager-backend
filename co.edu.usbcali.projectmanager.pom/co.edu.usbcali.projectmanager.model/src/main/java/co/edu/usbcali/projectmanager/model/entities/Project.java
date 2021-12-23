@@ -2,6 +2,9 @@ package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +55,7 @@ public class Project implements Serializable {
 
 	//bi-directional many-to-one association to Activity
 	@OneToMany(mappedBy="project")
+	@JsonIgnore
 	private List<Activity> activities;
 
 	//bi-directional many-to-one association to State
@@ -61,14 +65,17 @@ public class Project implements Serializable {
 
 	//bi-directional many-to-one association to ProjectDelivery
 	@OneToMany(mappedBy="project")
+	@JsonIgnore
 	private List<ProjectDelivery> projectDeliveries;
 
 	//bi-directional many-to-one association to ProjectRequest
 	@OneToMany(mappedBy="project")
+	@JsonIgnore
 	private List<ProjectRequest> projectRequests;
 
 	//bi-directional many-to-one association to ProjectUser
 	@OneToMany(mappedBy="project")
+	@JsonIgnore
 	private List<ProjectUser> projectUsers;
 
 	public Project() {

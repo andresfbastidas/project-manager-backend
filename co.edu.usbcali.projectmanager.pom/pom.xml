@@ -9,6 +9,7 @@
 
 	<name>Project Manager by Ubscali</name>
 	<description>Project Manager by Ubscali</description>
+	
 	<modules>
 		<module>co.edu.usbcali.projectmanager.repository</module>
 		<module>co.edu.usbcali.projectmanager.business</module>

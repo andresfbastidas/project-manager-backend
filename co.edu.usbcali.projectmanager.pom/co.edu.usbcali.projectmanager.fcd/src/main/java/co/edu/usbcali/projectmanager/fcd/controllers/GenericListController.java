@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.usbcali.projectmanager.business.interfaces.IGenericListService;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
+import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.ResearchTypology;
 import co.edu.usbcali.projectmanager.model.entities.State;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
@@ -47,6 +48,14 @@ public class GenericListController {
 	public ResponseEntity<?> findAllStates() throws ProjectManagementException {
 
 		GenericListResponse<State> usersProfileListResponse = genericListService.findAllStates();
+		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FINDALL_PROFILES)
+	@ResponseBody
+	public ResponseEntity<?> findAllProfiles() throws ProjectManagementException {
+
+		GenericListResponse<Profile> usersProfileListResponse = genericListService.findAllProfiles();
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 }

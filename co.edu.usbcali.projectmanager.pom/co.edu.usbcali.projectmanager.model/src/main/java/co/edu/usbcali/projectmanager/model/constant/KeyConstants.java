@@ -18,8 +18,10 @@ public class KeyConstants {
 	public static final String USERS_LIST_EMPTY = "La lista de usuarios se encuentra vacia";
 	public static final String ERROR_ASSOCIATED_PROJECT_USER_EXISTS = "El usuario ya se encuentra asociado al proyecto";
 	public static final String GENERIC_LIST_EMPTY = "La lista generica se encuentra vacia";
+	public static final String PROJECT_LIST_EMPTY = "La lista de proyectos se encuentra vacia";
 	
 	// Error Codes
+	public static final String ERROR_CODE_PROJECT_LIST_EMPTY = "107";
 	public static final String ERROR_CODE_GENERIC_LIST_EMPTY = "106";
 	public static final String ERROR_CODE_LIST_USERS_EMPTY = "105";
 	public static final String ERROR_CODE_ASSOCIATED_PROJECT_USER = "104";
@@ -31,6 +33,7 @@ public class KeyConstants {
 
 	// Constants
 	public static final Long DEFAULT_STATE = 1L;
+	public static final Long AVALAIBLE_STATE = 5L;
 	public static final String ROL_DIRECTOR = "DIRECTOR";
 
 }

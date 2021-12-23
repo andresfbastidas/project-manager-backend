@@ -6,18 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
+import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 
 @RestController
 @CrossOrigin(origins = "${cross.origin}")
@@ -29,26 +34,43 @@ public class ProjectController {
 
 	@PostMapping(path = FcdConstants.CREATE_PROJECT, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Object> createProject(@Valid @RequestBody ProjectRequest projectRequest)
-			throws ProjectManagementException  {
-		
+			throws ProjectManagementException {
+
 		projectService.createProject(projectRequest);
-		
+
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.SUCCESS_CREATE_PROJECT);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 
 	}
-	
+
 	@PostMapping(path = FcdConstants.ASSOCIATED_PROJECT_USER, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Object> associatedProjectUser(@Valid @RequestBody AssociatedUserProjectRequest associatedUserProjectRequest)
-			throws ProjectManagementException  {
-		
+	public ResponseEntity<Object> associatedProjectUser(
+			@Valid @RequestBody AssociatedUserProjectRequest associatedUserProjectRequest)
+			throws ProjectManagementException {
+
 		projectService.associateUser(associatedUserProjectRequest);
-		
+
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.SUCCESS_ASSOCIATED_PROJECT_USER);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 
+	}
+
+	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_STATE)
+	@ResponseBody
+	public ResponseEntity<?> findAllProjectsByState() throws ProjectManagementException {
+
+		ProjectListResponse<Project> projectListResponse = projectService.findAllProjectByState();
+		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
+	}
+	
+	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_USER_NAME)
+	@ResponseBody
+	public ResponseEntity<?> findAllProjectsByUserName(@Valid @PathVariable String userName) throws ProjectManagementException {
+
+		ProjectListResponse<Project> projectListResponse = projectService.findAllProjectsByUserName(userName);
+		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 
 }

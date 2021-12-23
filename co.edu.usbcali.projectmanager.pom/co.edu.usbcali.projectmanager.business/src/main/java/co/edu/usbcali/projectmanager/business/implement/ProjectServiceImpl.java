@@ -22,6 +22,7 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
@@ -160,6 +161,49 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
+	}
+
+	@Override
+	public ProjectListResponse<Project> findAllProjectByState() throws ProjectManagementException {
+		ProjectListResponse<Project> projectListResponse = null;
+		List<Project> projects = null;
+		try {
+			projectListResponse = new ProjectListResponse<Project>();
+			projects = projectRepository.findAllByProjectState(KeyConstants.AVALAIBLE_STATE);
+			if (projects.isEmpty() || projects == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+			}
+			projectListResponse.setProjectList(projects);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return projectListResponse;
+	}
+
+	@Override
+	public ProjectListResponse<Project> findAllProjectsByUserName(String userName) throws ProjectManagementException {
+		ProjectListResponse<Project> projectListResponse = null;
+		List<Project> projectList = null;
+		try {
+			projectListResponse = new ProjectListResponse<Project>();
+			UserNameResponse userNameResponse = userDetailsServiceImpl.findByUserName(userName);
+			projectList = projectRepository.findAllProjectsByUserName(userNameResponse.getUserapp().getUserName());
+			if (projectList.isEmpty() || projectList == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY, KeyConstants.PROJECT_LIST_EMPTY);
+			}
+
+			projectListResponse.setProjectList(projectList);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+		return projectListResponse;
 	}
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,

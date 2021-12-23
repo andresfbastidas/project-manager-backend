@@ -2,6 +2,9 @@ package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -23,6 +26,7 @@ public class Profile implements Serializable {
 
 	//bi-directional many-to-one association to Userapp
 	@OneToMany(mappedBy="profile")
+	@JsonIgnore
 	private List<Userapp> userapps;
 
 	public Profile() {

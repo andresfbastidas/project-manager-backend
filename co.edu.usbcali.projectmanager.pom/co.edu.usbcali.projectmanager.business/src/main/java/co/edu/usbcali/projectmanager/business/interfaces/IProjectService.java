@@ -9,6 +9,7 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 
 public interface IProjectService {
 
@@ -21,4 +22,8 @@ public interface IProjectService {
 	public void associateUser (AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException; 
 	
 	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException;
+	
+	public ProjectListResponse<Project> findAllProjectByState() throws ProjectManagementException;
+	
+	public ProjectListResponse<Project> findAllProjectsByUserName(String userName) throws ProjectManagementException;
 }
