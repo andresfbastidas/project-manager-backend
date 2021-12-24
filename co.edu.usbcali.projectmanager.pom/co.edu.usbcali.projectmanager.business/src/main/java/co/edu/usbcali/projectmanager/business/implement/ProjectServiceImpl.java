@@ -59,6 +59,11 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					projectRequest.getProject().getProjectResearchTypologyId(), projectRequest.getState(),
 					projectRequest.getUserapp().getUserName());
 
+			UserNameResponse userNameResponse = new UserNameResponse();
+			userNameResponse = userDetailsServiceImpl.findByUserName(projectRequest.getUserapp().getUserName());
+			if (userNameResponse.getUserapp().getProfile().getProfileId() != KeyConstants.ROL_DIRECTORID) {
+				buildCustomException(KeyConstants.ERROR_PROJECTUSER_ROL, KeyConstants.ERROR_CODE_PROJECT_USER_ROL);
+			}
 			projectRepository.saveAndFlush(project);
 			this.saveProjectDelivery(projectRequest.getDeliveries(), project);
 			AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
@@ -178,7 +183,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			projectListResponse = new ProjectListResponse<Project>();
 			projects = projectRepository.findAllByProjectState(KeyConstants.AVALAIBLE_STATE);
 			if (projects.isEmpty() || projects == null) {
-				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY, KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR);
+				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY,
+						KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR);
 			}
 			projectListResponse.setProjectList(projects);
 		} catch (ProjectManagementException e) {
