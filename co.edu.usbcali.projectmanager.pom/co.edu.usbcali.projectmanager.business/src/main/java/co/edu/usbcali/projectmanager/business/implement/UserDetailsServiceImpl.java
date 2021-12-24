@@ -60,7 +60,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 		try {
 			userApp = userAppRepository.findByUserName(userName);
 			if (userApp == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_USER_NOT_EXISTS, KeyConstants.USER_NOT_FOUND);
+				buildCustomException(KeyConstants.USER_NOT_FOUND, KeyConstants.ERROR_CODE_USER_NOT_EXISTS);
 			}
 			userNameResponse = new UserNameResponse();
 			userNameResponse.setUserapp(userApp);
@@ -82,7 +82,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			userapps = userAppRepository.findAllDirectorsRol(KeyConstants.ROL_DIRECTOR);
 
 			if (userapps.isEmpty() || userapps == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_LIST_USERS_EMPTY, KeyConstants.USERS_LIST_EMPTY);
+				buildCustomException(KeyConstants.USERS_LIST_EMPTY, KeyConstants.ERROR_CODE_LIST_USERS_EMPTY);
 			}
 			usersProfileListResponse.setGenericList(userapps);
 

@@ -56,7 +56,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					projectRequest.getProject().getGeneralObjetive(), projectRequest.getProject().getProjectSummary(),
 					projectRequest.getProject().getProjectMethology(),
 					projectRequest.getProject().getSpecificObjetive(), projectRequest.getProject().getJustification(),
-					projectRequest.getProject().getProjectResearchTypologyId(), projectRequest.getState());
+					projectRequest.getProject().getProjectResearchTypologyId(), projectRequest.getState(),
+					projectRequest.getUserapp().getUserName());
 
 			projectRepository.saveAndFlush(project);
 			this.saveProjectDelivery(projectRequest.getDeliveries(), project);
@@ -88,7 +89,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					projectDeliveryRepository.saveAndFlush(projectDelivery);
 				}
 			} else {
-				buildCustomException(KeyConstants.ERROR_CODE_PROJECT_NOT_SAVE, KeyConstants.PROJECT_NOT_SAVE);
+				buildCustomException(KeyConstants.PROJECT_NOT_SAVE, KeyConstants.ERROR_CODE_LIST_USERS_EMPTY);
 			}
 		} catch (ProjectManagementException e) {
 			throw e;
@@ -108,7 +109,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			project = projectRepository.findByProjectId(projectId);
 
 			if (project == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_PROJECT_NULL, KeyConstants.PROJECT_NOT_EXISTS);
+				buildCustomException(KeyConstants.PROJECT_NOT_EXISTS, KeyConstants.ERROR_CODE_LIST_USERS_EMPTY);
 			}
 
 		} catch (ProjectManagementException e) {
@@ -147,14 +148,14 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		try {
 			projectUser = projectUserRepository.findUserExists(userapp.getUserName(), project.getProjectId());
 			if (projectUser != null) {
-				buildCustomException(KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER,
-						KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_EXISTS);
+				buildCustomException(KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_EXISTS,
+						KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER);
 			}
 			projectUser = projectUserRepository.findExistsMoreDirectors(KeyConstants.ROL_DIRECTORID,
 					project.getProjectId());
 			if (projectUser != null) {
-				buildCustomException(KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER,
-						KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR);
+				buildCustomException(KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR,
+						KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER);
 			}
 			projectUser = new ProjectUser();
 			projectUser.setProject(project);
@@ -177,7 +178,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			projectListResponse = new ProjectListResponse<Project>();
 			projects = projectRepository.findAllByProjectState(KeyConstants.AVALAIBLE_STATE);
 			if (projects.isEmpty() || projects == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY, KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR);
 			}
 			projectListResponse.setProjectList(projects);
 		} catch (ProjectManagementException e) {
@@ -198,7 +199,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			UserNameResponse userNameResponse = userDetailsServiceImpl.findByUserName(userName);
 			projectList = projectRepository.findAllProjectsByUserName(userNameResponse.getUserapp().getUserName());
 			if (projectList.isEmpty() || projectList == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY, KeyConstants.PROJECT_LIST_EMPTY);
+				buildCustomException(KeyConstants.PROJECT_LIST_EMPTY, KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY);
 			}
 
 			projectListResponse.setProjectList(projectList);
@@ -214,7 +215,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
 			String projectSummary, String projectMethology, String specificObjetive, String justification,
-			Long projectResearchId, State state) {
+			Long projectResearchId, State state, String projectDirector) {
 		Project project = new Project();
 		project.setDateFrom(dateFrom);
 		project.setDateUntil(dateUntil);
@@ -226,6 +227,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		project.setJustification(justification);
 		project.setProjectResearchTypologyId(projectResearchId);
 		project.setState(state);
+		project.setProjectDirector(projectDirector);
 		return project;
 	}
 

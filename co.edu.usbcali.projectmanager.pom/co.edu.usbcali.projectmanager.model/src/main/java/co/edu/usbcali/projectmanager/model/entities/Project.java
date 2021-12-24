@@ -8,73 +8,75 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * The persistent class for the project database table.
  * 
  */
 @Entity
-@NamedQuery(name="Project.findAll", query="SELECT p FROM Project p")
+@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p")
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECT_PROJECTID_GENERATOR", sequenceName="PROJECT_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECT_PROJECTID_GENERATOR")
-	@Column(name="project_id")
+	@SequenceGenerator(name = "PROJECT_PROJECTID_GENERATOR", sequenceName = "PROJECT_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROJECT_PROJECTID_GENERATOR")
+	@Column(name = "project_id")
 	private Long projectId;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="date_from")
+	@Column(name = "date_from")
 	private Date dateFrom;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="date_until")
+	@Column(name = "date_until")
 	private Date dateUntil;
 
-	@Column(name="general_objetive")
+	@Column(name = "general_objetive")
 	private String generalObjetive;
 
-	@Column(name="justification")
+	@Column(name = "justification")
 	private String justification;
 
-	@Column(name="project_methology")
+	@Column(name = "project_methology")
 	private String projectMethology;
 
-	@Column(name="project_research_typology_id")
+	@Column(name = "project_research_typology_id")
 	private Long projectResearchTypologyId;
 
-	@Column(name="project_summary")
+	@Column(name = "project_summary")
 	private String projectSummary;
 
-	@Column(name="project_title")
+	@Column(name = "project_title")
 	private String projectTitle;
 
-	@Column(name="specific_objetive")
+	@Column(name = "specific_objetive")
 	private String specificObjetive;
 
-	//bi-directional many-to-one association to Activity
-	@OneToMany(mappedBy="project")
+	@Column(name = "project_director")
+	private String projectDirector;
+
+	// bi-directional many-to-one association to Activity
+	@OneToMany(mappedBy = "project")
 	@JsonIgnore
 	private List<Activity> activities;
 
-	//bi-directional many-to-one association to State
+	// bi-directional many-to-one association to State
 	@ManyToOne
-	@JoinColumn(name="state_id")
+	@JoinColumn(name = "state_id")
 	private State state;
 
-	//bi-directional many-to-one association to ProjectDelivery
-	@OneToMany(mappedBy="project")
+	// bi-directional many-to-one association to ProjectDelivery
+	@OneToMany(mappedBy = "project")
 	@JsonIgnore
 	private List<ProjectDelivery> projectDeliveries;
 
-	//bi-directional many-to-one association to ProjectRequest
-	@OneToMany(mappedBy="project")
+	// bi-directional many-to-one association to ProjectRequest
+	@OneToMany(mappedBy = "project")
 	@JsonIgnore
 	private List<ProjectRequest> projectRequests;
 
-	//bi-directional many-to-one association to ProjectUser
-	@OneToMany(mappedBy="project")
+	// bi-directional many-to-one association to ProjectUser
+	@OneToMany(mappedBy = "project")
 	@JsonIgnore
 	private List<ProjectUser> projectUsers;
 
@@ -189,6 +191,14 @@ public class Project implements Serializable {
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	public String getProjectDirector() {
+		return projectDirector;
+	}
+
+	public void setProjectDirector(String projectDirector) {
+		this.projectDirector = projectDirector;
 	}
 
 	public List<ProjectDelivery> getProjectDeliveries() {

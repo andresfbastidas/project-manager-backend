@@ -55,7 +55,6 @@ public class Userapp implements Serializable {
 	//bi-directional many-to-one association to Profile
 	@ManyToOne
 	@JoinColumn(name="profile_id")
-	@JsonIgnore
 	private Profile profile;
 
 	public Userapp() {
