@@ -14,10 +14,4 @@ public interface ProjectUserRepository extends JpaRepository<ProjectUser, Long> 
 			+ "	and pr.project_id = ?2", nativeQuery = true)
 	public ProjectUser findUserExists(String userName, Long projectId);
 	
-	@Query(value = "select p.project_user_id, p.project_id, p.user_id, u.user_name, u.profile_id from public.project_user p inner join userapp u ON p.user_id = u.user_id\n"
-			+ "			inner join project pr ON p.project_id = pr.project_id\n"
-			+ "			and u.profile_id = ?1 and pr.project_id= ?2", nativeQuery = true)
-	public ProjectUser findExistsMoreDirectors(Long profileId, Long projectId);
-	
-	
 }

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
+import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
@@ -22,10 +23,12 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
+import co.edu.usbcali.projectmanager.repository.ProjectUserDirectorNameRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectUserRepository;
 
 @Service
@@ -46,6 +49,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Autowired
 	private ProjectUserRepository projectUserRepository;
+
+	@Autowired
+	private ProjectUserDirectorNameRepository projectUserDirectorNameRepository;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -156,9 +162,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 				buildCustomException(KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_EXISTS,
 						KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER);
 			}
-			projectUser = projectUserRepository.findExistsMoreDirectors(KeyConstants.ROL_DIRECTORID,
-					project.getProjectId());
-			if (projectUser != null) {
+			UserNameResponse userNameResponse = new UserNameResponse();
+			userNameResponse = userDetailsServiceImpl.findByUserName(userapp.getUserName());
+			if (userNameResponse.getUserapp().getProfile().getProfileId() == KeyConstants.ROL_DIRECTORID) {
 				buildCustomException(KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR,
 						KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER);
 			}
@@ -176,11 +182,11 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	}
 
 	@Override
-	public ProjectListResponse<Project> findAllProjectByState() throws ProjectManagementException {
-		ProjectListResponse<Project> projectListResponse = null;
+	public ProjectListByStateResponse<Project> findAllProjectByState() throws ProjectManagementException {
+		ProjectListByStateResponse<Project> projectListResponse = null;
 		List<Project> projects = null;
 		try {
-			projectListResponse = new ProjectListResponse<Project>();
+			projectListResponse = new ProjectListByStateResponse<Project>();
 			projects = projectRepository.findAllByProjectState(KeyConstants.AVALAIBLE_STATE);
 			if (projects.isEmpty() || projects == null) {
 				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY,
@@ -197,13 +203,14 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	}
 
 	@Override
-	public ProjectListResponse<Project> findAllProjectsByUserName(String userName) throws ProjectManagementException {
-		ProjectListResponse<Project> projectListResponse = null;
-		List<Project> projectList = null;
+	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName)
+			throws ProjectManagementException {
+		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = null;
+		List<ProjectUserDirectorNameDTO> projectList = null;
 		try {
-			projectListResponse = new ProjectListResponse<Project>();
-			UserNameResponse userNameResponse = userDetailsServiceImpl.findByUserName(userName);
-			projectList = projectRepository.findAllProjectsByUserName(userNameResponse.getUserapp().getUserName());
+			projectListResponse = new ProjectListResponse<ProjectUserDirectorNameDTO>();
+			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(KeyConstants.ROL_DIRECTORID,
+					userName);
 			if (projectList.isEmpty() || projectList == null) {
 				buildCustomException(KeyConstants.PROJECT_LIST_EMPTY, KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY);
 			}

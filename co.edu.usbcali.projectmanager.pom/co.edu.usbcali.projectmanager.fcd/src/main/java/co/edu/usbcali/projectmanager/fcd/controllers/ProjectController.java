@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
+import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 
 @RestController
@@ -61,15 +63,17 @@ public class ProjectController {
 	@ResponseBody
 	public ResponseEntity<?> findAllProjectsByState() throws ProjectManagementException {
 
-		ProjectListResponse<Project> projectListResponse = projectService.findAllProjectByState();
+		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState();
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_USER_NAME)
 	@ResponseBody
-	public ResponseEntity<?> findAllProjectsByUserName(@Valid @PathVariable String userName) throws ProjectManagementException {
+	public ResponseEntity<?> findAllProjectsByUserName(@Valid @PathVariable String userName)
+			throws ProjectManagementException {
 
-		ProjectListResponse<Project> projectListResponse = projectService.findAllProjectsByUserName(userName);
+		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = projectService
+				.findAllProjectsByUserName(userName);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 

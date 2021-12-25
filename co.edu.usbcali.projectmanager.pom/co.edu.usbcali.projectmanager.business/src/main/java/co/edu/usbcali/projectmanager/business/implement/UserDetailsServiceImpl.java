@@ -107,7 +107,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			user.setUserName(signupRequest.getUserapp().getUserName());
 			user.setEmail(signupRequest.getUserapp().getEmail());
 			user.setPassword(encoder.encode(signupRequest.getUserapp().getPassword()));
-			user.setFirtsName(signupRequest.getUserapp().getFirtsName());
+			user.setFirstName(signupRequest.getUserapp().getFirstName());
 			user.setSurname(signupRequest.getUserapp().getSurname());
 		    user.setSecondName(signupRequest.getUserapp().getSecondName());
 		    user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());

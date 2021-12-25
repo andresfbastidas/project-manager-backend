@@ -25,8 +25,8 @@ public class Userapp implements Serializable {
 
 	private String email;
 
-	@Column(name="firts_name")
-	private String firtsName;
+	@Column(name="first_name")
+	private String firstName;
 
 	private String password;
 
@@ -76,12 +76,12 @@ public class Userapp implements Serializable {
 		this.email = email;
 	}
 
-	public String getFirtsName() {
-		return this.firtsName;
+	public String getFirstName() {
+		return this.firstName;
 	}
 
-	public void setFirtsName(String firtsName) {
-		this.firtsName = firtsName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public String getPassword() {

@@ -3,17 +3,17 @@ package co.edu.usbcali.projectmanager.model.response;
 import java.io.Serializable;
 import java.util.List;
 
-import co.edu.usbcali.projectmanager.model.entities.Project;
+import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 
 public class ProjectListResponse<T> implements Serializable {
 
-	private List<Project> projectList;
+	private List<ProjectUserDirectorNameDTO> projectList;
 
-	public List<Project> getProjectList() {
+	public List<ProjectUserDirectorNameDTO> getProjectList() {
 		return projectList;
 	}
 
-	public void setProjectList(List<Project> projectList) {
+	public void setProjectList(List<ProjectUserDirectorNameDTO> projectList) {
 		this.projectList = projectList;
 	}
 

@@ -2,6 +2,7 @@ package co.edu.usbcali.projectmanager.business.interfaces;
 
 import java.util.List;
 
+import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
@@ -9,6 +10,7 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 
 public interface IProjectService {
@@ -23,7 +25,7 @@ public interface IProjectService {
 	
 	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException;
 	
-	public ProjectListResponse<Project> findAllProjectByState() throws ProjectManagementException;
+	public ProjectListByStateResponse<Project> findAllProjectByState() throws ProjectManagementException;
 	
-	public ProjectListResponse<Project> findAllProjectsByUserName(String userName) throws ProjectManagementException;
+	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName) throws ProjectManagementException;
 }
