@@ -22,8 +22,10 @@ public class KeyConstants {
 	public static final String PROJECT_LIST_EMPTY = "El usuario no tiene proyectos asociados";
 	public static final String ERROR_PROJECTUSER_ROL = "El usuario debe tener rol de director";
 	public static final String ERROR_ACTIVITIES_LIST_NOT_FOUND = "No se encontraron actividades asociadas al proyecto";
+	public static final String ERROR_USERS_BY_PROJECT = "No se encontraron usuarios asociados en el proyecto";
 	
 	// Error Codes
+	public static final String ERROR_CODE_USERS_BY_PROJECT = "110";
 	public static final String ERROR_CODE_ACTIVITIES_NOT_FOUND = "109";
 	public static final String ERROR_CODE_PROJECT_USER_ROL = "108";
 	public static final String ERROR_CODE_PROJECT_LIST_EMPTY = "107";

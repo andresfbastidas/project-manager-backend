@@ -18,11 +18,13 @@ import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
+import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
+import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 
@@ -75,6 +77,15 @@ public class ProjectController {
 		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = projectService
 				.findAllProjectsByUserName(userName);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FINDALL_USERS_BY_PROJECT)
+	@ResponseBody
+	public ResponseEntity<?> listUsersByProject(@Valid @PathVariable Long projectId) throws ProjectManagementException {
+
+		ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProjectResponse = projectService
+				.listUsersByProject(projectId);
+		return new ResponseEntity<>(listUsersByProjectResponse, HttpStatus.OK);
 	}
 
 }

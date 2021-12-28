@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
+import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
@@ -23,6 +24,7 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
@@ -30,6 +32,7 @@ import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectUserDirectorNameRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectUserRepository;
+import co.edu.usbcali.projectmanager.repository.UsersByProjectsRepository;
 
 @Service
 public class ProjectServiceImpl extends ServiceUtils implements IProjectService {
@@ -52,6 +55,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Autowired
 	private ProjectUserDirectorNameRepository projectUserDirectorNameRepository;
+
+	@Autowired
+	private UsersByProjectsRepository usersByProjectsRepository;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -163,14 +169,14 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 						KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER);
 			}
 			/*
-			UserNameResponse userNameResponse = new UserNameResponse();
-			userNameResponse = userDetailsServiceImpl.findByUserName(userapp.getUserName());
-			
-			if (userNameResponse.getUserapp().getProfile().getProfileId() == KeyConstants.ROL_DIRECTORID) {
-				buildCustomException(KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR,
-						KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER);
-			}
-			*/
+			 * UserNameResponse userNameResponse = new UserNameResponse(); userNameResponse
+			 * = userDetailsServiceImpl.findByUserName(userapp.getUserName());
+			 * 
+			 * if (userNameResponse.getUserapp().getProfile().getProfileId() ==
+			 * KeyConstants.ROL_DIRECTORID) { buildCustomException(KeyConstants.
+			 * ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR,
+			 * KeyConstants.ERROR_CODE_ASSOCIATED_PROJECT_USER); }
+			 */
 			projectUser = new ProjectUser();
 			projectUser.setProject(project);
 			projectUser.setUserapp(userapp);
@@ -185,6 +191,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ProjectListByStateResponse<Project> findAllProjectByState() throws ProjectManagementException {
 		ProjectListByStateResponse<Project> projectListResponse = null;
 		List<Project> projects = null;
@@ -206,6 +213,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName)
 			throws ProjectManagementException {
 		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = null;
@@ -245,6 +253,28 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		project.setState(state);
 		project.setProjectDirector(projectDirector);
 		return project;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Long projectId)
+			throws ProjectManagementException {
+		List<UsersByProjectDTO> listUsersByProjectDTOs = null;
+		ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProjectResponse = null;
+		try {
+			listUsersByProjectDTOs = usersByProjectsRepository.listAllUsersByProject(projectId);
+			if (listUsersByProjectDTOs.isEmpty() || listUsersByProjectDTOs == null) {
+				buildCustomException(KeyConstants.ERROR_USERS_BY_PROJECT, KeyConstants.ERROR_CODE_USERS_BY_PROJECT);
+			}
+			listUsersByProjectResponse = new ListUsersByProjectResponse<UsersByProjectDTO>();
+			listUsersByProjectResponse.setListUsers(listUsersByProjectDTOs);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return listUsersByProjectResponse;
 	}
 
 }
