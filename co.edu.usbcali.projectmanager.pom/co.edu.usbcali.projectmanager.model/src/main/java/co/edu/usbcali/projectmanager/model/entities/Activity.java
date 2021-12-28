@@ -2,6 +2,9 @@ package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.List;
 
@@ -47,10 +50,12 @@ public class Activity implements Serializable {
 
 	//bi-directional many-to-one association to Comment
 	@OneToMany(mappedBy="activity")
+	@JsonIgnore
 	private List<Comment> comments;
 
 	//bi-directional many-to-one association to LinkAttached
 	@OneToMany(mappedBy="activity")
+	@JsonIgnore
 	private List<LinkAttached> linkAttacheds;
 
 	public Activity() {

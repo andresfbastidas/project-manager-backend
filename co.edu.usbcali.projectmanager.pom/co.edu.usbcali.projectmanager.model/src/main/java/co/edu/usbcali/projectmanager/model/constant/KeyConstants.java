@@ -21,8 +21,10 @@ public class KeyConstants {
 	public static final String GENERIC_LIST_EMPTY = "La lista generica se encuentra vacia";
 	public static final String PROJECT_LIST_EMPTY = "El usuario no tiene proyectos asociados";
 	public static final String ERROR_PROJECTUSER_ROL = "El usuario debe tener rol de director";
+	public static final String ERROR_ACTIVITIES_LIST_NOT_FOUND = "No se encontraron actividades asociadas al proyecto";
 	
 	// Error Codes
+	public static final String ERROR_CODE_ACTIVITIES_NOT_FOUND = "109";
 	public static final String ERROR_CODE_PROJECT_USER_ROL = "108";
 	public static final String ERROR_CODE_PROJECT_LIST_EMPTY = "107";
 	public static final String ERROR_CODE_GENERIC_LIST_EMPTY = "106";

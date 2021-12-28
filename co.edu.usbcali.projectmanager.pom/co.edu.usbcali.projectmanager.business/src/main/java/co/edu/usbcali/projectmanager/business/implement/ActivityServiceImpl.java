@@ -1,6 +1,7 @@
 package co.edu.usbcali.projectmanager.business.implement;
 
 import java.util.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.StateActivity;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ActivityRequest;
+import co.edu.usbcali.projectmanager.model.response.ListActivitiesResponse;
 import co.edu.usbcali.projectmanager.repository.ActivityRepository;
 
 @Service
@@ -65,6 +67,27 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 		activity.setProject(project);
 		activity.setAssignedUser(assignedUser);
 		return activity;
+	}
+
+	@Override
+	public ListActivitiesResponse findActivitiesByProject(Long projectId) throws ProjectManagementException {
+		List<Activity> lisActivities = null;
+		ListActivitiesResponse listActivitiesResponse = null;
+		try {
+			listActivitiesResponse = new ListActivitiesResponse();
+			lisActivities = activityRepository.findActivitiesByProjectId(projectId);
+			if (lisActivities.isEmpty() || lisActivities == null) {
+				buildCustomException(KeyConstants.ERROR_ACTIVITIES_LIST_NOT_FOUND,
+						KeyConstants.ERROR_CODE_ACTIVITIES_NOT_FOUND);
+			}
+			listActivitiesResponse.setListActivities(lisActivities);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return listActivitiesResponse;
 	}
 
 }

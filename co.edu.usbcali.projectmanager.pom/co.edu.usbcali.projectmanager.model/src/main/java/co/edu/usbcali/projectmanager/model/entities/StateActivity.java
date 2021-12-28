@@ -2,6 +2,9 @@ package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -24,6 +27,7 @@ public class StateActivity implements Serializable {
 
 	//bi-directional many-to-one association to Activity
 	@OneToMany(mappedBy="stateActivity")
+	@JsonIgnore
 	private List<Activity> activities;
 
 	public StateActivity() {
