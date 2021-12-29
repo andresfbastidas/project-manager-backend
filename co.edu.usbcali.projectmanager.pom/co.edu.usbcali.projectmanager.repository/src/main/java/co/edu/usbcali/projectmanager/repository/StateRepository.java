@@ -9,6 +9,11 @@ import co.edu.usbcali.projectmanager.model.entities.State;
 
 public interface StateRepository extends JpaRepository<State, Long> {
 
-	@Query(value = "SELECT * FROM state", nativeQuery = true)
-	public List<State> findAllStates();
+	@Query(value = "SELECT state_id, state_name\n"
+			+ "	FROM public.state where state_id=?1 or state_id=?2", nativeQuery = true)
+	public List<State> findStatesProjectDirector(Long stateProgress, Long stateAavlaible);
+	
+	@Query(value = "SELECT state_id, state_name\n"
+			+ "	FROM public.state where state_id=?1", nativeQuery = true)
+	public List<State> findStatesProjectStudent(Long stateSolini);
 }

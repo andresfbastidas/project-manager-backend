@@ -43,11 +43,19 @@ public class GenericListController {
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 
-	@GetMapping(path = FcdConstants.FINDALL_STATES)
+	@GetMapping(path = FcdConstants.FIND_STATES_PROGRESS_AVALAIBLE)
 	@ResponseBody
 	public ResponseEntity<?> findAllStates() throws ProjectManagementException {
 
-		GenericListResponse<State> usersProfileListResponse = genericListService.findAllStates();
+		GenericListResponse<State> usersProfileListResponse = genericListService.findStatesProgressAndAvalaible();
+		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
+	}
+	
+	@GetMapping(path = FcdConstants.FIND_STATE_SOLINI)
+	@ResponseBody
+	public ResponseEntity<?> findStateSolini() throws ProjectManagementException {
+
+		GenericListResponse<State> usersProfileListResponse = genericListService.findStatesSolini();
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 

@@ -16,6 +16,6 @@ public interface UserAppRepository extends JpaRepository<Userapp, Long> {
 	public Boolean existsByUserName(String userName);
 	
 	@Query(value = "select * from public.userapp usr INNER JOIN public.profile p ON usr.profile_id = p.profile_id\n"
-			+ "and p.profile_name = ?1", nativeQuery = true)
-	public List<Userapp> findAllDirectorsRol(String profileName);
+			+ "and p.profile_id = ?1", nativeQuery = true)
+	public List<Userapp> findAllDirectorsRol(Long profileId);
 }

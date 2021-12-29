@@ -81,12 +81,13 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 	}
 
 	@Override
-	public GenericListResponse<State> findAllStates() throws ProjectManagementException {
+	public GenericListResponse<State> findStatesProgressAndAvalaible() throws ProjectManagementException {
 		GenericListResponse<State> genericListResponse = null;
 		List<State> states = null;
 		try {
 			genericListResponse = new GenericListResponse<State>();
-			states = stateRepository.findAllStates();
+			states = stateRepository.findStatesProjectDirector(KeyConstants.AVALAIBLE_STATE,
+					KeyConstants.PROGRESS_STATE);
 			if (states.isEmpty() || states == null) {
 				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
 			}
@@ -111,6 +112,26 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
 			}
 			genericListResponse.setGenericList(profiles);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return genericListResponse;
+	}
+
+	@Override
+	public GenericListResponse<State> findStatesSolini() throws ProjectManagementException {
+		GenericListResponse<State> genericListResponse = null;
+		List<State> states = null;
+		try {
+			genericListResponse = new GenericListResponse<State>();
+			states = stateRepository.findStatesProjectStudent(KeyConstants.SOLINI_STATE);
+			if (states.isEmpty() || states == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+			}
+			genericListResponse.setGenericList(states);
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {

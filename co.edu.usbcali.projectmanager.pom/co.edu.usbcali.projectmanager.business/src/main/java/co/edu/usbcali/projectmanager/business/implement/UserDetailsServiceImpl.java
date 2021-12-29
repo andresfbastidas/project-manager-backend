@@ -79,7 +79,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 		GenericListResponse<Userapp> usersProfileListResponse = null;
 		try {
 			usersProfileListResponse = new GenericListResponse<Userapp>();
-			userapps = userAppRepository.findAllDirectorsRol(KeyConstants.ROL_DIRECTOR);
+			userapps = userAppRepository.findAllDirectorsRol(KeyConstants.ROL_DIRECTORID);
 
 			if (userapps.isEmpty() || userapps == null) {
 				buildCustomException(KeyConstants.USERS_LIST_EMPTY, KeyConstants.ERROR_CODE_LIST_USERS_EMPTY);

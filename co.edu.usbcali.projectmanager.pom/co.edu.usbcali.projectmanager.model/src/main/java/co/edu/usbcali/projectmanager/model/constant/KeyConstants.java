@@ -39,9 +39,11 @@ public class KeyConstants {
 	public static final String UNEXPECTED_ERROR_CODE = "100";
 
 	// Constants
-	public static final Long DEFAULT_STATE = 1L;
-	public static final Long AVALAIBLE_STATE = 5L;
-	public static final String ROL_DIRECTOR = "DIRECTOR";
 	public static final Long ROL_DIRECTORID = 1L;
+	
+	//states
+	public static final Long PROGRESS_STATE = 4L;
+	public static final Long AVALAIBLE_STATE = 5L;
+	public static final Long SOLINI_STATE = 1L;
 
 }
