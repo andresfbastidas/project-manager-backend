@@ -69,7 +69,7 @@ public class ProjectController {
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 
-	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_USER_NAME)
+	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_USER_NAME + "{userName}")
 	@ResponseBody
 	public ResponseEntity<?> findAllProjectsByUserName(@Valid @PathVariable String userName)
 			throws ProjectManagementException {
@@ -79,7 +79,7 @@ public class ProjectController {
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 
-	@GetMapping(path = FcdConstants.FINDALL_USERS_BY_PROJECT)
+	@GetMapping(path = FcdConstants.FINDALL_USERS_BY_PROJECT + "{projectId}")
 	@ResponseBody
 	public ResponseEntity<?> listUsersByProject(@Valid @PathVariable Long projectId) throws ProjectManagementException {
 

@@ -76,7 +76,7 @@ public class UserAppController {
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 	}
 
-	@GetMapping(path = FcdConstants.FIND_USER_NAME)
+	@GetMapping(path = FcdConstants.FIND_USER_NAME+"{userName}")
 	@ResponseBody
 	public ResponseEntity<?> findUserName(@Valid @PathVariable String userName) throws ProjectManagementException {
 

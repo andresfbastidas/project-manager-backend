@@ -9,6 +9,7 @@ import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
+import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
@@ -32,4 +33,6 @@ public interface IProjectService {
 	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName) throws ProjectManagementException;
 	
 	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Long projectId) throws ProjectManagementException;
+	
+	public void apprrovalProject (ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException; 
 }

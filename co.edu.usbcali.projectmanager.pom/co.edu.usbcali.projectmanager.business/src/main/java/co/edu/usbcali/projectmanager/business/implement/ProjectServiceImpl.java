@@ -24,6 +24,7 @@ import co.edu.usbcali.projectmanager.model.entities.State;
 import co.edu.usbcali.projectmanager.model.entities.StateProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
+import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
@@ -239,8 +240,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		List<ProjectUserDirectorNameDTO> projectList = null;
 		try {
 			projectListResponse = new ProjectListResponse<ProjectUserDirectorNameDTO>();
-			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(KeyConstants.ROL_DIRECTORID,
-					userName);
+			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(KeyConstants.ROL_DIRECTORID, userName);
 			if (projectList.isEmpty() || projectList == null) {
 				buildCustomException(KeyConstants.PROJECT_LIST_EMPTY, KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY);
 			}
@@ -295,6 +295,11 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 		return listUsersByProjectResponse;
+	}
+
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void apprrovalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
+
 	}
 
 }

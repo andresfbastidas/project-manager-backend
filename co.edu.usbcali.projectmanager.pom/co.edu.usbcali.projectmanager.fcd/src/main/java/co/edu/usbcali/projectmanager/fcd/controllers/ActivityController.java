@@ -44,7 +44,7 @@ public class ActivityController {
 
 	}
 
-	@GetMapping(path = FcdConstants.FINDALL_ACTIVITIES_BY_PROJECT)
+	@GetMapping(path = FcdConstants.FINDALL_ACTIVITIES_BY_PROJECT+"{projectId}")
 	@ResponseBody
 	public ResponseEntity<?> findAllActivitiesByProject(@Valid @PathVariable Long projectId)
 			throws ProjectManagementException {

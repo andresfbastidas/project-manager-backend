@@ -24,7 +24,7 @@ public class FcdConstants {
 
 	public static final String CREATE_USER = "/createUser";
 	
-	public static final String FIND_USER_NAME = "/findByUserName/{userName}";
+	public static final String FIND_USER_NAME = "/findByUserName/";
 	
 	public static final String FINDALL_USERS_PROFILE = "/findAllUsersProfile";
 	
@@ -40,10 +40,10 @@ public class FcdConstants {
 	
 	public static final String FINDALL_PROJECTS_BY_STATE = "/findAllProjectsState";
 	
-	public static final String FINDALL_PROJECTS_BY_USER_NAME = "/findAllProjectsByUserName/{userName}";
+	public static final String FINDALL_PROJECTS_BY_USER_NAME = "/findAllProjectsByUserName/";
 	
-	public static final String FINDALL_ACTIVITIES_BY_PROJECT = "/findAllActivitiesByProject/{projectId}";
+	public static final String FINDALL_ACTIVITIES_BY_PROJECT = "/findAllActivitiesByProject/";
 	
-	public static final String FINDALL_USERS_BY_PROJECT = "/findAllUsersByProject/{projectId}";
+	public static final String FINDALL_USERS_BY_PROJECT = "/findAllUsersByProject/";
 
 }
