@@ -10,14 +10,14 @@ import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
-import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 
 public interface IProjectService {
 
-	public void createProject (ProjectRequest projectReq) throws ProjectManagementException; 
+	public void createProject (CreateProjectRequest createProjectRequest) throws ProjectManagementException; 
 
 	public ProjectDelivery saveProjectDelivery(List<Delivery> listDeliveries, Project project) throws ProjectManagementException;
 	

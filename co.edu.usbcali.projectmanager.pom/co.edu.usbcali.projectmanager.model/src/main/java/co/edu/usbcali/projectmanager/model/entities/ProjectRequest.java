@@ -1,49 +1,70 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the project_request database table.
  * 
  */
 @Entity
-@Table(name="project_request")
-@NamedQuery(name="ProjectRequest.findAll", query="SELECT p FROM ProjectRequest p")
+@Table(name = "project_request")
+@NamedQuery(name = "ProjectRequest.findAll", query = "SELECT p FROM ProjectRequest p")
 public class ProjectRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECT_REQUEST_PROJECTEQUESTID_GENERATOR", sequenceName="PROJECTREQUESTSEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECT_REQUEST_PROJECTEQUESTID_GENERATOR")
-	@Column(name="project_equest_id")
-	private Long projectEquestId;
+	@SequenceGenerator(name = "PROJECT_REQUEST_PROJECTEQUESTID_GENERATOR", sequenceName = "PROJECTREQUESTSEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROJECT_REQUEST_PROJECTEQUESTID_GENERATOR")
+	@Column(name = "project_request_id")
+	private Long projectRequestId;
 
-	//bi-directional many-to-one association to Project
+	// bi-directional many-to-one association to Project
 	@ManyToOne
-	@JoinColumn(name="project_id")
+	@JoinColumn(name = "project_id")
 	private Project project;
 
-	//bi-directional many-to-one association to StateProjectRequest
+	// bi-directional many-to-one association to StateProjectRequest
 	@ManyToOne
-	@JoinColumn(name="state_project_request_id")
+	@JoinColumn(name = "state_project_request_id")
 	private StateProjectRequest stateProjectRequest;
 
-	//bi-directional many-to-one association to Userapp
-	@ManyToOne
-	@JoinColumn(name="user_id")
+	@Column(name = "details")
+	private String details;
+
+	// bi-directional many-to-one association to Userapp
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
 	private Userapp userapp;
 
 	public ProjectRequest() {
 	}
 
-	public Long getProjectEquestId() {
-		return this.projectEquestId;
+	public String getDetails() {
+		return details;
 	}
 
-	public void setProjectEquestId(Long projectEquestId) {
-		this.projectEquestId = projectEquestId;
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
+	public Long getProjectRequestId() {
+		return this.projectRequestId;
+	}
+
+	public void setProjectRequestId(Long projectRequestId) {
+		this.projectRequestId = projectRequestId;
 	}
 
 	public Project getProject() {

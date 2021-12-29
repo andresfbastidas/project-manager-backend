@@ -22,7 +22,7 @@ import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
-import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
@@ -37,10 +37,10 @@ public class ProjectController {
 	private IProjectService projectService;
 
 	@PostMapping(path = FcdConstants.CREATE_PROJECT, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<Object> createProject(@Valid @RequestBody ProjectRequest projectRequest)
+	public ResponseEntity<Object> createProject(@Valid @RequestBody CreateProjectRequest createProjectRequest)
 			throws ProjectManagementException {
 
-		projectService.createProject(projectRequest);
+		projectService.createProject(createProjectRequest);
 
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.SUCCESS_CREATE_PROJECT);

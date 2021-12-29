@@ -41,9 +41,14 @@ public class KeyConstants {
 	// Constants
 	public static final Long ROL_DIRECTORID = 1L;
 	
-	//states
+	//states project
 	public static final Long PROGRESS_STATE = 4L;
 	public static final Long AVALAIBLE_STATE = 5L;
 	public static final Long SOLINI_STATE = 1L;
+	
+	//states project request
+    public static final Long PENDING_STATE = 1L;
+    public static final Long DECLINED_STATE = 3L;
+    public static final Long APPROVAL_STATE = 2L;
 
 }

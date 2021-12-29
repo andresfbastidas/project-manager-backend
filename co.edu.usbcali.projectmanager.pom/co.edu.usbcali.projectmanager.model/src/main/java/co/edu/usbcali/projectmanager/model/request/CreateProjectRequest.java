@@ -8,7 +8,7 @@ import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.State;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 
-public class ProjectRequest implements Serializable {
+public class CreateProjectRequest implements Serializable {
 
 	private Project project;
 

@@ -13,23 +13,26 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
-import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
+import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
+import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.ProjectUser;
 import co.edu.usbcali.projectmanager.model.entities.State;
+import co.edu.usbcali.projectmanager.model.entities.StateProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
-import co.edu.usbcali.projectmanager.model.request.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
+import co.edu.usbcali.projectmanager.repository.ProjectRequestRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectUserDirectorNameRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectUserRepository;
 import co.edu.usbcali.projectmanager.repository.UsersByProjectsRepository;
@@ -59,29 +62,45 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	@Autowired
 	private UsersByProjectsRepository usersByProjectsRepository;
 
+	@Autowired
+	private ProjectRequestRepository projectRequestRepository;
+
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void createProject(ProjectRequest projectRequest) throws ProjectManagementException {
+	public void createProject(CreateProjectRequest createProjectRequest) throws ProjectManagementException {
 		try {
-			Project project = buildProject(projectRequest.getProject().getDateFrom(),
-					projectRequest.getProject().getDateUntil(), projectRequest.getProject().getProjectTitle(),
-					projectRequest.getProject().getGeneralObjetive(), projectRequest.getProject().getProjectSummary(),
-					projectRequest.getProject().getProjectMethology(),
-					projectRequest.getProject().getSpecificObjetive(), projectRequest.getProject().getJustification(),
-					projectRequest.getProject().getProjectResearchTypologyId(), projectRequest.getState(),
-					projectRequest.getUserapp().getUserName());
+			Project project = buildProject(createProjectRequest.getProject().getDateFrom(),
+					createProjectRequest.getProject().getDateUntil(),
+					createProjectRequest.getProject().getProjectTitle(),
+					createProjectRequest.getProject().getGeneralObjetive(),
+					createProjectRequest.getProject().getProjectSummary(),
+					createProjectRequest.getProject().getProjectMethology(),
+					createProjectRequest.getProject().getSpecificObjetive(),
+					createProjectRequest.getProject().getJustification(),
+					createProjectRequest.getProject().getProjectResearchTypologyId(), createProjectRequest.getState(),
+					createProjectRequest.getUserapp().getUserName(), createProjectRequest.getProject().getCreateBy());
 
 			UserNameResponse userNameResponse = new UserNameResponse();
-			userNameResponse = userDetailsServiceImpl.findByUserName(projectRequest.getUserapp().getUserName());
+			userNameResponse = userDetailsServiceImpl.findByUserName(createProjectRequest.getUserapp().getUserName());
 			if (userNameResponse.getUserapp().getProfile().getProfileId() != KeyConstants.ROL_DIRECTORID) {
 				buildCustomException(KeyConstants.ERROR_PROJECTUSER_ROL, KeyConstants.ERROR_CODE_PROJECT_USER_ROL);
 			}
 			projectRepository.saveAndFlush(project);
-			this.saveProjectDelivery(projectRequest.getDeliveries(), project);
-			AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
-			associatedUserProjectRequest.setProject(project);
-			associatedUserProjectRequest.setUserapp(projectRequest.getUserapp());
-			this.associateUser(associatedUserProjectRequest);
+			this.saveProjectDelivery(createProjectRequest.getDeliveries(), project);
+			if (createProjectRequest.getState().getStateId().equals(KeyConstants.SOLINI_STATE)) {
+				ProjectRequest projectRequest = new ProjectRequest();
+				projectRequest.setProject(project);
+				projectRequest.setUserapp(userNameResponse.getUserapp());
+				StateProjectRequest stateProjectRequest = new StateProjectRequest();
+				stateProjectRequest.setStateProjectRequestId(KeyConstants.PENDING_STATE);
+				projectRequest.setStateProjectRequest(stateProjectRequest);
+				projectRequestRepository.save(projectRequest);
+			} else {
+				AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
+				associatedUserProjectRequest.setProject(project);
+				associatedUserProjectRequest.setUserapp(createProjectRequest.getUserapp());
+				this.associateUser(associatedUserProjectRequest);
+			}
 
 		} catch (ProjectManagementException e) {
 			throw e;
@@ -239,7 +258,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
 			String projectSummary, String projectMethology, String specificObjetive, String justification,
-			Long projectResearchId, State state, String projectDirector) {
+			Long projectResearchId, State state, String projectDirector, String createBy) {
 		Project project = new Project();
 		project.setDateFrom(dateFrom);
 		project.setDateUntil(dateUntil);
@@ -252,6 +271,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		project.setProjectResearchTypologyId(projectResearchId);
 		project.setState(state);
 		project.setProjectDirector(projectDirector);
+		project.setCreateBy(createBy);
 		return project;
 	}
 
