@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 
 @Repository
-public interface UserAppRepository extends JpaRepository<Userapp, Long> {
+public interface UserAppRepository extends JpaRepository<Userapp, String> {
 
 	public Userapp findByUserName(String userName);
 	

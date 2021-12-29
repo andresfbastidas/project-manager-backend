@@ -83,9 +83,6 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 			UserNameResponse userNameResponse = new UserNameResponse();
 			userNameResponse = userDetailsServiceImpl.findByUserName(createProjectRequest.getUserapp().getUserName());
-			if (userNameResponse.getUserapp().getProfile().getProfileId() != KeyConstants.ROL_DIRECTORID) {
-				buildCustomException(KeyConstants.ERROR_PROJECTUSER_ROL, KeyConstants.ERROR_CODE_PROJECT_USER_ROL);
-			}
 			projectRepository.saveAndFlush(project);
 			this.saveProjectDelivery(createProjectRequest.getDeliveries(), project);
 			if (createProjectRequest.getState().getStateId().equals(KeyConstants.SOLINI_STATE)) {
@@ -99,7 +96,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			} else {
 				AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
 				associatedUserProjectRequest.setProject(project);
-				associatedUserProjectRequest.setUserapp(createProjectRequest.getUserapp());
+				associatedUserProjectRequest.setUserapp(userNameResponse.getUserapp());
 				this.associateUser(associatedUserProjectRequest);
 			}
 
@@ -219,8 +216,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			projectListResponse = new ProjectListByStateResponse<Project>();
 			projects = projectRepository.findAllByProjectState(KeyConstants.AVALAIBLE_STATE);
 			if (projects.isEmpty() || projects == null) {
-				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY,
-						KeyConstants.ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR);
+				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND,
+						KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
 			projectListResponse.setProjectList(projects);
 		} catch (ProjectManagementException e) {
@@ -240,7 +237,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		List<ProjectUserDirectorNameDTO> projectList = null;
 		try {
 			projectListResponse = new ProjectListResponse<ProjectUserDirectorNameDTO>();
-			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(KeyConstants.ROL_DIRECTORID, userName);
+			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(KeyConstants.ROL_DIRECTORID,
+					userName);
 			if (projectList.isEmpty() || projectList == null) {
 				buildCustomException(KeyConstants.PROJECT_LIST_EMPTY, KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY);
 			}
@@ -297,9 +295,47 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		return listUsersByProjectResponse;
 	}
 
+	@Override
+	@Transactional(readOnly = true)
+	public List<ProjectRequest> findProjectRequestbByState() throws ProjectManagementException {
+		List<ProjectRequest> listProjectRequests = null;
+		try {
+			listProjectRequests = projectRequestRepository.findProjectRequestByState(KeyConstants.PENDING_STATE);
+			if (listProjectRequests.isEmpty() || listProjectRequests == null) {
+				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
+						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return listProjectRequests;
+	}
+
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void apprrovalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
+		try {
 
+			for (ProjectRequest projectRequest : approvalDeclineRequest.getListProjectRequests()) {
+				if (projectRequest.getStateProjectRequest().getStateProjectRequestId()
+						.equals(KeyConstants.PENDING_STATE)) {
+					projectRequestRepository.updateProjectRequest(KeyConstants.APPROVAL_STATE,
+							projectRequest.getDetails(), projectRequest.getProjectRequestId());
+					AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
+					associatedUserProjectRequest.setProject(projectRequest.getProject());
+					associatedUserProjectRequest.setUserapp(projectRequest.getUserapp());
+					this.associateUser(associatedUserProjectRequest);
+				}
+
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
 	}
 
 }

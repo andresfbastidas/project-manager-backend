@@ -11,9 +11,9 @@ import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 @Repository
 public interface UsersByProjectsRepository extends JpaRepository<UsersByProjectDTO, Long> {
 
-	@Query(value = "SELECT us.user_id, user_name, first_name, second_name, surname, second_surname, profile_id,\n"
+	@Query(value = "SELECT us.user_name, first_name, second_name, surname, second_surname, profile_id,\n"
 			+ "    us.first_name ||' '|| us.surname as FullName\n"
-			+ "	FROM public.userapp us inner join project_user pj on pj.user_id = us.user_id\n"
+			+ "	FROM public.userapp us inner join project_user pj on pj.user_name = us.user_name\n"
 			+ "	inner join project pr on pr.project_id = pj.project_id and pr.project_id=?1", nativeQuery = true)
 	public List<UsersByProjectDTO> listAllUsersByProject(Long projectId);
 }

@@ -2,11 +2,12 @@ package co.edu.usbcali.projectmanager.business.interfaces;
 
 import java.util.List;
 
-import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
+import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
+import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
@@ -18,21 +19,26 @@ import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 
 public interface IProjectService {
 
-	public void createProject (CreateProjectRequest createProjectRequest) throws ProjectManagementException; 
+	public void createProject(CreateProjectRequest createProjectRequest) throws ProjectManagementException;
 
-	public ProjectDelivery saveProjectDelivery(List<Delivery> listDeliveries, Project project) throws ProjectManagementException;
-	
-	public Project findByProjectId (Long projectId) throws ProjectManagementException; 
-	
-	public void associateUser (AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException; 
-	
+	public ProjectDelivery saveProjectDelivery(List<Delivery> listDeliveries, Project project)
+			throws ProjectManagementException;
+
+	public Project findByProjectId(Long projectId) throws ProjectManagementException;
+
+	public void associateUser(AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException;
+
 	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException;
-	
+
 	public ProjectListByStateResponse<Project> findAllProjectByState() throws ProjectManagementException;
-	
-	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName) throws ProjectManagementException;
-	
-	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Long projectId) throws ProjectManagementException;
-	
-	public void apprrovalProject (ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException; 
+
+	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName)
+			throws ProjectManagementException;
+
+	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Long projectId)
+			throws ProjectManagementException;
+
+	public void apprrovalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
+
+	public List<ProjectRequest> findProjectRequestbByState() throws ProjectManagementException;
 }

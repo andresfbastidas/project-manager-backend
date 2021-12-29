@@ -7,65 +7,51 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
-
 /**
  * The persistent class for the userapp database table.
  * 
  */
 @Entity
-@NamedQuery(name="Userapp.findAll", query="SELECT u FROM Userapp u")
+@NamedQuery(name = "Userapp.findAll", query = "SELECT u FROM Userapp u")
 public class Userapp implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="USERAPP_USERID_GENERATOR", sequenceName="USER_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USERAPP_USERID_GENERATOR")
-	@Column(name="user_id")
-	private Long userId;
+	@Column(name = "user_name")
+	private String userName;
 
 	private String email;
 
-	@Column(name="first_name")
+	@Column(name = "first_name")
 	private String firstName;
 
 	private String password;
 
-	@Column(name="second_name")
+	@Column(name = "second_name")
 	private String secondName;
 
-	@Column(name="second_surname")
+	@Column(name = "second_surname")
 	private String secondSurname;
 
-	@Column(name="surname")
+	@Column(name = "surname")
 	private String surname;
 
-	@Column(name="user_name")
-	private String userName;
-
-	//bi-directional many-to-one association to ProjectRequest
-	@OneToMany(mappedBy="userapp")
+	// bi-directional many-to-one association to ProjectRequest
+	@OneToMany(mappedBy = "userapp")
 	@JsonIgnore
 	private List<ProjectRequest> projectRequests;
 
-	//bi-directional many-to-one association to ProjectUser
-	@OneToMany(mappedBy="userapp")
+	// bi-directional many-to-one association to ProjectUser
+	@OneToMany(mappedBy = "userapp")
 	@JsonIgnore
 	private List<ProjectUser> projectUsers;
 
-	//bi-directional many-to-one association to Profile
+	// bi-directional many-to-one association to Profile
 	@ManyToOne
-	@JoinColumn(name="profile_id")
+	@JoinColumn(name = "profile_id")
 	private Profile profile;
 
 	public Userapp() {
-	}
-
-	public Long getUserId() {
-		return this.userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public String getEmail() {

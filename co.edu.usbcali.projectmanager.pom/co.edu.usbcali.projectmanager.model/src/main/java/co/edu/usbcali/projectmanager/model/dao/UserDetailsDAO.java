@@ -17,8 +17,6 @@ public class UserDetailsDAO implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
-
 	private String userName;
 
 	private String email;
@@ -28,9 +26,8 @@ public class UserDetailsDAO implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsDAO(Long id, String userName, String email, String password,
+	public UserDetailsDAO(String userName, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
-		this.id = id;
 		this.userName = userName;
 		this.password = password;
 		this.authorities = authorities;
@@ -42,17 +39,12 @@ public class UserDetailsDAO implements UserDetails {
 				.map(profile -> new SimpleGrantedAuthority(profile.getProfile().getProfileName()))
 				.collect(Collectors.toList());
 
-		return new UserDetailsDAO(user.getUserId(), user.getUserName(), user.getEmail(), user.getPassword(),
-				authorities);
+		return new UserDetailsDAO(user.getUserName(), user.getEmail(), user.getPassword(), authorities);
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getEmail() {
@@ -96,6 +88,6 @@ public class UserDetailsDAO implements UserDetails {
 		if (o == null || getClass() != o.getClass())
 			return false;
 		UserDetailsDAO user = (UserDetailsDAO) o;
-		return Objects.equals(id, user.id);
+		return Objects.equals(userName, user.userName);
 	}
 }

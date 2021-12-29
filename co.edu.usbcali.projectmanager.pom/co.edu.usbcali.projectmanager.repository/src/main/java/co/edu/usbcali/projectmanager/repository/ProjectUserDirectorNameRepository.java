@@ -19,8 +19,8 @@ public interface ProjectUserDirectorNameRepository extends JpaRepository<Project
 			+ "			(SELECT pju.project_id,\n"
 			+ "array_to_string(array_agg(usr.first_name ||' '|| usr.surname),',') AS USERS\n"
 			+ "FROM project_user pju, userapp usr, project pj WHERE pju.project_id=pj.project_id and\n"
-			+ "usr.user_id= pju.user_id\n"
-			+ "GROUP BY pju.project_id) USERS where pu.user_id = up.user_id and pj.project_id = pu.project_id and up.user_name = ?2\n"
+			+ "usr.user_name= pju.user_name\n"
+			+ "GROUP BY pju.project_id) USERS where pu.user_name = up.user_name and pj.project_id = pu.project_id and up.user_name = ?2\n"
 			+ "			and pj.project_director = DIRECTOR.user_name and USERS.project_id=pj.project_id", nativeQuery = true)
 	public List<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Long profileId, String userName);
 }

@@ -21,6 +21,7 @@ import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
+import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
@@ -86,6 +87,15 @@ public class ProjectController {
 		ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProjectResponse = projectService
 				.listUsersByProject(projectId);
 		return new ResponseEntity<>(listUsersByProjectResponse, HttpStatus.OK);
+	}
+	
+	@PostMapping(path = FcdConstants.APPROVAL_PROJECTS, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> approvalProjects(@Valid @RequestBody ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
+
+		projectService.apprrovalProject(approvalDeclineRequest);
+		GenericResponse genericResponse = new GenericResponse();
+		genericResponse.setMessage(KeyConstants.SUCCESS_APPROVAL);
+		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 	}
 
 }

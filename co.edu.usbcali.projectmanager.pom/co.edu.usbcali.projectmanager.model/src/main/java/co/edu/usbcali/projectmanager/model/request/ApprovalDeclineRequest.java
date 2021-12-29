@@ -1,19 +1,20 @@
 package co.edu.usbcali.projectmanager.model.request;
 
 import java.io.Serializable;
+import java.util.List;
 
 import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
 
 public class ApprovalDeclineRequest implements Serializable {
 
-	private ProjectRequest projectRequest;
+	private List<ProjectRequest> listProjectRequests;
 
-	public ProjectRequest getProjectRequest() {
-		return projectRequest;
+	public List<ProjectRequest> getListProjectRequests() {
+		return listProjectRequests;
 	}
 
-	public void setProjectRequest(ProjectRequest projectRequest) {
-		this.projectRequest = projectRequest;
+	public void setListProjectRequests(List<ProjectRequest> listProjectRequests) {
+		this.listProjectRequests = listProjectRequests;
 	}
 
 	/**

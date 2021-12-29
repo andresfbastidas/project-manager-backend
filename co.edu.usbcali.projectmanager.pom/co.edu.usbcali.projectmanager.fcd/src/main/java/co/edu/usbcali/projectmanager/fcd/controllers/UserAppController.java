@@ -63,7 +63,7 @@ public class UserAppController {
 				.collect(Collectors.toList());
 
 		return ResponseEntity.ok(
-				new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+				new JwtResponse(jwt, userDetails.getUsername(), userDetails.getEmail(), roles));
 	}
 
 	@PostMapping(path = FcdConstants.CREATE_USER, consumes = "application/json", produces = "application/json")
