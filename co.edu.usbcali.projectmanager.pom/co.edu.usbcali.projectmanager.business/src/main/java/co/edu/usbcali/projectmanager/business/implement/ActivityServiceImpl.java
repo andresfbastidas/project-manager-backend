@@ -45,7 +45,11 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 					activityRequest.getActivity().getStateActivity(), activityRequest.getActivity().getDateFrom(),
 					activityRequest.getActivity().getDateUntil(), project,
 					activityRequest.getActivity().getAssignedUser());
-
+			if (!project.getState().getStateId().equals(KeyConstants.AVALAIBLE_STATE)
+					|| !project.getState().getStateId().equals(KeyConstants.PROGRESS_STATE)) {
+				buildCustomException(KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT,
+						KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT);
+			}
 			activityRepository.save(activity);
 
 		} catch (ProjectManagementException e) {

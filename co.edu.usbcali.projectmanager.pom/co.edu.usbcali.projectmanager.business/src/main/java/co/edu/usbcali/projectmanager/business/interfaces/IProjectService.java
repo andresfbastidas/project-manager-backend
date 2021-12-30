@@ -38,7 +38,9 @@ public interface IProjectService {
 	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Long projectId)
 			throws ProjectManagementException;
 
-	public void apprrovalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
+	public void approvalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
+	
+	public void declineProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
 
 	public List<ProjectRequest> findProjectRequestbByState() throws ProjectManagementException;
 }

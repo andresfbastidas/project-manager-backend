@@ -164,6 +164,11 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			userNameResponse = userDetailsServiceImpl.findByUserName(associatedUserProject.getUserapp().getUserName());
 
 			Project project = this.findByProjectId(associatedUserProject.getProject().getProjectId());
+			if (!project.getState().getStateId().equals(KeyConstants.AVALAIBLE_STATE)
+					|| !project.getState().getStateId().equals(KeyConstants.PROGRESS_STATE)) {
+				buildCustomException(KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT,
+						KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT);
+			}
 			this.saveProjectUser(project, userNameResponse.getUserapp());
 
 		} catch (ProjectManagementException e) {
@@ -216,8 +221,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			projectListResponse = new ProjectListByStateResponse<Project>();
 			projects = projectRepository.findAllByProjectState(KeyConstants.AVALAIBLE_STATE);
 			if (projects.isEmpty() || projects == null) {
-				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND,
-						KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
+				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
 			projectListResponse.setProjectList(projects);
 		} catch (ProjectManagementException e) {
@@ -315,7 +319,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void apprrovalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
+	public void approvalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
 		try {
 
 			for (ProjectRequest projectRequest : approvalDeclineRequest.getListProjectRequests()) {
@@ -323,6 +327,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 						.equals(KeyConstants.PENDING_STATE)) {
 					projectRequestRepository.updateProjectRequest(KeyConstants.APPROVAL_STATE,
 							projectRequest.getDetails(), projectRequest.getProjectRequestId());
+					projectRepository.updateStateProject(KeyConstants.AVALAIBLE_STATE,
+							projectRequest.getProject().getProjectId());
 					AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
 					associatedUserProjectRequest.setProject(projectRequest.getProject());
 					associatedUserProjectRequest.setUserapp(projectRequest.getUserapp());
@@ -336,6 +342,27 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
+	}
+
+	@Override
+	public void declineProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
+		try {
+			for (ProjectRequest projectRequest : approvalDeclineRequest.getListProjectRequests()) {
+				if (projectRequest.getStateProjectRequest().getStateProjectRequestId()
+						.equals(KeyConstants.PENDING_STATE)) {
+					projectRequestRepository.updateProjectRequest(KeyConstants.DECLINED_STATE,
+							projectRequest.getDetails(), projectRequest.getProjectRequestId());
+					projectRepository.deleteProject(projectRequest.getProject().getProjectId());
+				}
+
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
 	}
 
 }

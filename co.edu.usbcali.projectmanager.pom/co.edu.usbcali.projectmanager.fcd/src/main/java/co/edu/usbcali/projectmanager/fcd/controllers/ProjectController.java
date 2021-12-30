@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -89,10 +90,10 @@ public class ProjectController {
 		return new ResponseEntity<>(listUsersByProjectResponse, HttpStatus.OK);
 	}
 	
-	@PostMapping(path = FcdConstants.APPROVAL_PROJECTS, consumes = "application/json", produces = "application/json")
+	@PutMapping(path = FcdConstants.APPROVAL_PROJECTS, consumes = "application/json", produces = "application/json")
 	public ResponseEntity<?> approvalProjects(@Valid @RequestBody ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
 
-		projectService.apprrovalProject(approvalDeclineRequest);
+		projectService.approvalProject(approvalDeclineRequest);
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.SUCCESS_APPROVAL);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
