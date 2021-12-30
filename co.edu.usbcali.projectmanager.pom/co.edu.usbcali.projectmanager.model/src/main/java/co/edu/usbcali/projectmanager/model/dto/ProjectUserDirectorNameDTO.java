@@ -60,6 +60,9 @@ public class ProjectUserDirectorNameDTO implements Serializable {
 	@Column(name = "directorname")
 	private String directorName;
 
+	@Column(name = "create_by_names")
+	private String createByNames;
+
 	@Column(name = "create_by")
 	private String createBy;
 
@@ -73,7 +76,7 @@ public class ProjectUserDirectorNameDTO implements Serializable {
 	public ProjectUserDirectorNameDTO(Long projectId, Date dateFrom, Date dateUntil, String projectTitle,
 			String generalObjetive, String projectSummary, String projectMethology, String specificObjetive,
 			String justification, Long projectResearchTypologyId, State state, String projectDirector,
-			String directorName, String createBy, String users) {
+			String directorName, String createBy, String users, String createByNames) {
 		super();
 		this.projectId = projectId;
 		this.dateFrom = dateFrom;
@@ -90,11 +93,20 @@ public class ProjectUserDirectorNameDTO implements Serializable {
 		this.state = state;
 		this.createBy = createBy;
 		this.users = users;
+		this.createByNames = createByNames;
 	}
 
 	public ProjectUserDirectorNameDTO() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getCreateByNames() {
+		return createByNames;
+	}
+
+	public void setCreateByNames(String createByNames) {
+		this.createByNames = createByNames;
 	}
 
 	public String getCreateBy() {

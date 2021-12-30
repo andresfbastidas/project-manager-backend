@@ -79,7 +79,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					createProjectRequest.getProject().getSpecificObjetive(),
 					createProjectRequest.getProject().getJustification(),
 					createProjectRequest.getProject().getProjectResearchTypologyId(), createProjectRequest.getState(),
-					createProjectRequest.getUserapp().getUserName(), createProjectRequest.getProject().getCreateBy());
+					createProjectRequest.getProject().getProjectDirector(),
+					createProjectRequest.getUserapp().getUserName());
 
 			UserNameResponse userNameResponse = new UserNameResponse();
 			userNameResponse = userDetailsServiceImpl.findByUserName(createProjectRequest.getUserapp().getUserName());
@@ -164,12 +165,13 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			userNameResponse = userDetailsServiceImpl.findByUserName(associatedUserProject.getUserapp().getUserName());
 
 			Project project = this.findByProjectId(associatedUserProject.getProject().getProjectId());
-			if (!project.getState().getStateId().equals(KeyConstants.AVALAIBLE_STATE)
-					|| !project.getState().getStateId().equals(KeyConstants.PROGRESS_STATE)) {
-				buildCustomException(KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT,
+			if (project.getState().getStateId() == KeyConstants.AVALAIBLE_STATE
+					|| project.getState().getStateId() == KeyConstants.PENDING_STATE) {
+				this.saveProjectUser(project, userNameResponse.getUserapp());
+			} else {
+				buildCustomException(KeyConstants.ERROR_NOT_ASSOCIATED_USER_PROJECT,
 						KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT);
 			}
-			this.saveProjectUser(project, userNameResponse.getUserapp());
 
 		} catch (ProjectManagementException e) {
 			throw e;

@@ -27,7 +27,7 @@ public class ProjectUser implements Serializable {
 
 	//bi-directional many-to-one association to Userapp
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_name")
 	private Userapp userapp;
 
 	public ProjectUser() {
