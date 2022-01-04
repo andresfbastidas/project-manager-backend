@@ -7,4 +7,5 @@
   </parent>
   <artifactId>co.edu.usbcali.projectmanager.model</artifactId>
   <packaging>pom</packaging>
+  <name>co.edu.usbcali.projectmanager.model</name>
 </project>
