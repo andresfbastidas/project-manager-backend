@@ -7,8 +7,13 @@
 		<artifactId>co.edu.usbcali.projectmanager.pom</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>co.edu.usbcali.projectmanager.fcd</artifactId>
-
+	<artifactId>projectmanagerfcd</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    
+     <name>ProjectManager</name>
+    <description>Sprint boot Project Manager</description>
+    
 	<dependencies>
 
 		<dependency>

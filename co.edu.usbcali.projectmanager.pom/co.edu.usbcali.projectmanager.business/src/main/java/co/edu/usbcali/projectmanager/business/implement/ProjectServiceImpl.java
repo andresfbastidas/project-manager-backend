@@ -166,7 +166,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 			Project project = this.findByProjectId(associatedUserProject.getProject().getProjectId());
 			if (project.getState().getStateId() == KeyConstants.AVALAIBLE_STATE
-					|| project.getState().getStateId() == KeyConstants.PENDING_STATE) {
+					|| project.getState().getStateId() == KeyConstants.PROGRESS_STATE) {
 				this.saveProjectUser(project, userNameResponse.getUserapp());
 			} else {
 				buildCustomException(KeyConstants.ERROR_NOT_ASSOCIATED_USER_PROJECT,
