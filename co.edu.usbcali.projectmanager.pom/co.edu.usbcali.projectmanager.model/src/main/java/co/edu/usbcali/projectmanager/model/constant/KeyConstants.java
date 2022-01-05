@@ -29,15 +29,15 @@ public class KeyConstants {
 	public static final String ERROR_NOT_ASSOCIATED_USER_PROJECT = "El proyecto debe estar en estado EN PROGRESO O DISPONIBLE";
 	
 	// Error Codes
-	public static final String ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT= "112";
-	public static final String ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY= "111";
-	public static final String ERROR_CODE_USERS_BY_PROJECT = "110";
-	public static final String ERROR_CODE_ACTIVITIES_NOT_FOUND = "109";
-	public static final String ERROR_CODE_PROJECT_USER_ROL = "108";
-	public static final String ERROR_CODE_PROJECT_LIST_EMPTY = "107";
-	public static final String ERROR_CODE_GENERIC_LIST_EMPTY = "106";
-	public static final String ERROR_CODE_LIST_USERS_EMPTY = "105";
-	public static final String ERROR_CODE_ASSOCIATED_PROJECT_USER = "104";
+	public static final String ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT= "113";
+	public static final String ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY= "112";
+	public static final String ERROR_CODE_USERS_BY_PROJECT = "111";
+	public static final String ERROR_CODE_ACTIVITIES_NOT_FOUND = "110";
+	public static final String ERROR_CODE_PROJECT_USER_ROL = "109";
+	public static final String ERROR_CODE_PROJECT_LIST_EMPTY = "108";
+	public static final String ERROR_CODE_GENERIC_LIST_EMPTY = "107";
+	public static final String ERROR_CODE_LIST_USERS_EMPTY = "106";
+	public static final String ERROR_CODE_ASSOCIATED_PROJECT_USER = "105";
 	public static final String ERROR_CODE_PROJECT_NOT_SAVE = "104";
 	public static final String ERROR_CODE_USER_NOT_EXISTS = "103";
 	public static final String ERROR_CODE_PROJECT_NULL = "102";
