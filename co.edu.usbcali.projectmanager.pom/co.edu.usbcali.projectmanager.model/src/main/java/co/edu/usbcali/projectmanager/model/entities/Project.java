@@ -14,74 +14,95 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
- * The persistent class for the "Project" database table.
+ * The persistent class for the project database table.
  * 
  */
 @Entity
-@Table(name="Project")
-@NamedQuery(name="Project.findAll", query="SELECT p FROM Project p")
+@NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p")
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROJECTID_GENERATOR", sequenceName="project_seq", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROJECTID_GENERATOR")
-	@Column(name="project_id")
+	@SequenceGenerator(name = "PROJECT_PROJECTID_GENERATOR", sequenceName = "PROJECT_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROJECT_PROJECTID_GENERATOR")
+	@Column(name = "project_id")
 	private Long projectId;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="date_from")
+	@Column(name = "date_from")
 	private Date dateFrom;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="date_until")
+	@Column(name = "date_until")
 	private Date dateUntil;
 
-	@Column(name="deliverables")
-	private String deliverables;
-
-	@Column(name="specific_objetive")
-	private String specificObjetive;
-
-	@Column(name="general_objetive")
+	@Column(name = "general_objetive")
 	private String generalObjetive;
 
-	@Column(name="justification")
+	@Column(name = "justification")
 	private String justification;
 
-	@Column(name="project_methology")
+	@Column(name = "project_methology")
 	private String projectMethology;
 
-	@Column(name="project_summary")
+	@Column(name = "project_research_typology_id")
+	private Long projectResearchTypologyId;
+
+	@Column(name = "project_summary")
 	private String projectSummary;
 
-	@Column(name="project_title")
+	@Column(name = "project_title")
 	private String projectTitle;
 
-	//bi-directional many-to-one association to Activity
-	@OneToMany(mappedBy="project")
+	@Column(name = "specific_objetive")
+	private String specificObjetive;
+
+	@Column(name = "project_director")
+	private String projectDirector;
+
+	@Column(name = "create_by")
+	private String createBy;
+
+	// bi-directional many-to-one association to Activity
+	@OneToMany(mappedBy = "project")
+	@JsonIgnore
 	private List<Activity> activities;
 
-	//bi-directional many-to-one association to State
+	// bi-directional many-to-one association to State
 	@ManyToOne
-	@JoinColumn(name="id_state")
+	@JoinColumn(name = "state_id")
 	private State state;
 
-	//bi-directional many-to-one association to Project_Typology
-	@OneToMany(mappedBy="project")
-	private List<ProjectTypology> projectTypologies;
+	// bi-directional many-to-one association to ProjectDelivery
+	@OneToMany(mappedBy = "project")
+	@JsonIgnore
+	private List<ProjectDelivery> projectDeliveries;
 
-	//bi-directional many-to-one association to Project_User
-	@OneToMany(mappedBy="project")
+	// bi-directional many-to-one association to ProjectRequest
+	@OneToMany(mappedBy = "project")
+	@JsonIgnore
+	private List<ProjectRequest> projectRequests;
+
+	// bi-directional many-to-one association to ProjectUser
+	@OneToMany(mappedBy = "project")
+	@JsonIgnore
 	private List<ProjectUser> projectUsers;
 
 	public Project() {
+	}
+
+	public String getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
 	}
 
 	public Long getProjectId() {
@@ -108,22 +129,6 @@ public class Project implements Serializable {
 		this.dateUntil = dateUntil;
 	}
 
-	public String getDeliverables() {
-		return this.deliverables;
-	}
-
-	public void setDeliverables(String deliverables) {
-		this.deliverables = deliverables;
-	}
-
-	public String getSpecificObjetive() {
-		return this.specificObjetive;
-	}
-
-	public void setSpecificObjetive(String specificObjetive) {
-		this.specificObjetive = specificObjetive;
-	}
-
 	public String getGeneralObjetive() {
 		return this.generalObjetive;
 	}
@@ -148,6 +153,14 @@ public class Project implements Serializable {
 		this.projectMethology = projectMethology;
 	}
 
+	public Long getProjectResearchTypologyId() {
+		return this.projectResearchTypologyId;
+	}
+
+	public void setProjectResearchTypologyId(Long projectResearchTypologyId) {
+		this.projectResearchTypologyId = projectResearchTypologyId;
+	}
+
 	public String getProjectSummary() {
 		return this.projectSummary;
 	}
@@ -162,6 +175,14 @@ public class Project implements Serializable {
 
 	public void setProjectTitle(String projectTitle) {
 		this.projectTitle = projectTitle;
+	}
+
+	public String getSpecificObjetive() {
+		return this.specificObjetive;
+	}
+
+	public void setSpecificObjetive(String specificObjetive) {
+		this.specificObjetive = specificObjetive;
 	}
 
 	public List<Activity> getActivities() {
@@ -194,26 +215,56 @@ public class Project implements Serializable {
 		this.state = state;
 	}
 
-	public List<ProjectTypology> getProjectTypologies() {
-		return this.projectTypologies;
+	public String getProjectDirector() {
+		return projectDirector;
 	}
 
-	public void setProjectTypologies(List<ProjectTypology> projectTypologies) {
-		this.projectTypologies = projectTypologies;
+	public void setProjectDirector(String projectDirector) {
+		this.projectDirector = projectDirector;
 	}
 
-	public ProjectTypology addProjectTypology(ProjectTypology projectTypology) {
-		getProjectTypologies().add(projectTypology);
-		projectTypology.setProject(this);
-
-		return projectTypology;
+	public List<ProjectDelivery> getProjectDeliveries() {
+		return this.projectDeliveries;
 	}
 
-	public ProjectTypology removeProjectTypology(ProjectTypology projectTypology) {
-		getProjectTypologies().remove(projectTypology);
-		projectTypology.setProject(null);
+	public void setProjectDeliveries(List<ProjectDelivery> projectDeliveries) {
+		this.projectDeliveries = projectDeliveries;
+	}
 
-		return projectTypology;
+	public ProjectDelivery addProjectDelivery(ProjectDelivery projectDelivery) {
+		getProjectDeliveries().add(projectDelivery);
+		projectDelivery.setProject(this);
+
+		return projectDelivery;
+	}
+
+	public ProjectDelivery removeProjectDelivery(ProjectDelivery projectDelivery) {
+		getProjectDeliveries().remove(projectDelivery);
+		projectDelivery.setProject(null);
+
+		return projectDelivery;
+	}
+
+	public List<ProjectRequest> getProjectRequests() {
+		return this.projectRequests;
+	}
+
+	public void setProjectRequests(List<ProjectRequest> projectRequests) {
+		this.projectRequests = projectRequests;
+	}
+
+	public ProjectRequest addProjectRequest(ProjectRequest projectRequest) {
+		getProjectRequests().add(projectRequest);
+		projectRequest.setProject(this);
+
+		return projectRequest;
+	}
+
+	public ProjectRequest removeProjectRequest(ProjectRequest projectRequest) {
+		getProjectRequests().remove(projectRequest);
+		projectRequest.setProject(null);
+
+		return projectRequest;
 	}
 
 	public List<ProjectUser> getProjectUsers() {

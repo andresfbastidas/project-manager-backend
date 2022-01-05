@@ -1,41 +1,33 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import javax.persistence.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.List;
 
 
 /**
- * The persistent class for the "Profile" database table.
+ * The persistent class for the profile database table.
  * 
  */
 @Entity
-@Table(name="Profile")
 @NamedQuery(name="Profile.findAll", query="SELECT p FROM Profile p")
 public class Profile implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="PROFILEID_GENERATOR", sequenceName="PROFILE_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROFILEID_GENERATOR")
 	@Column(name="profile_id")
 	private Long profileId;
 
 	@Column(name="profile_name")
 	private String profileName;
 
-	//bi-directional many-to-one association to User
+	//bi-directional many-to-one association to Userapp
 	@OneToMany(mappedBy="profile")
-	private List<UserApp> users;
+	@JsonIgnore
+	private List<Userapp> userapps;
 
 	public Profile() {
 	}
@@ -56,26 +48,26 @@ public class Profile implements Serializable {
 		this.profileName = profileName;
 	}
 
-	public List<UserApp> getUsers() {
-		return this.users;
+	public List<Userapp> getUserapps() {
+		return this.userapps;
 	}
 
-	public void setUsers(List<UserApp> users) {
-		this.users = users;
+	public void setUserapps(List<Userapp> userapps) {
+		this.userapps = userapps;
 	}
 
-	public UserApp addUser(UserApp user) {
-		getUsers().add(user);
-		user.setProfile(this);
+	public Userapp addUserapp(Userapp userapp) {
+		getUserapps().add(userapp);
+		userapp.setProfile(this);
 
-		return user;
+		return userapp;
 	}
 
-	public UserApp removeUser(UserApp user) {
-		getUsers().remove(user);
-		user.setProfile(null);
+	public Userapp removeUserapp(Userapp userapp) {
+		getUserapps().remove(userapp);
+		userapp.setProfile(null);
 
-		return user;
+		return userapp;
 	}
 
 }
