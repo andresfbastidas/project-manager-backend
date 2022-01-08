@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan("co.edu")
 @EnableJpaRepositories("co.edu.usbcali.projectmanager")
 @EntityScan("co.edu")
+@PropertySource(value ={"file:${co.edu.usbcali.projectmanager.home}/application.properties"}, ignoreResourceNotFound = true)
 public class Application {
 
 	public static final String ENV_PATH = "co.edu.usbcali.projectmanager.home";
