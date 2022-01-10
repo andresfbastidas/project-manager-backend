@@ -27,6 +27,7 @@ public class KeyConstants {
 	public static final String ERROR_USERS_BY_PROJECT = "No se encontraron usuarios asociados en el proyecto";
 	public static final String ERROR_LIST_PROJECT_REQUEST_EMPTY = "No se encontraron solicitudes de proyectos";
 	public static final String ERROR_NOT_ASSOCIATED_USER_PROJECT = "El proyecto debe estar en estado EN PROGRESO O DISPONIBLE";
+	public static final String ERROR_CREATE_ACTIVITY = "No es posible crear la actividad debido al estado del proyecto";
 	
 	// Error Codes
 	public static final String ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT= "113";

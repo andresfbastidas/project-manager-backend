@@ -27,7 +27,7 @@ import co.edu.usbcali.projectmanager.repository.StateActivityRepository;
 @Service
 public class ActivityServiceImpl extends ServiceUtils implements IActivityService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ActivityServiceImpl.class);
 
 	private static final String CLASS_NAME = "ActivityServiceImpl";
 
@@ -36,7 +36,7 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 
 	@Autowired
 	private IProjectService projectService;
-	
+
 	@Autowired
 	private StateActivityRepository stateActivityRepository;
 
@@ -45,15 +45,16 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 	public void createActivity(ActivityRequest activityRequest) throws ProjectManagementException {
 		Project project = null;
 		try {
-			project = projectService.findByProjectId(activityRequest.getActivity().getProject().getProjectId());
+			project = projectService.findByProjectId(activityRequest.getProjectId());
 			Activity activity = this.buildActivity(activityRequest.getActivity().getActivityName(),
 					activityRequest.getActivity().getStateActivity(), activityRequest.getActivity().getDateFrom(),
 					activityRequest.getActivity().getDateUntil(), project,
 					activityRequest.getActivity().getAssignedUser());
-			if (!project.getState().getStateId().equals(KeyConstants.AVALAIBLE_STATE)
-					|| !project.getState().getStateId().equals(KeyConstants.PROGRESS_STATE)) {
+			if (project.getState().getStateId().equals(KeyConstants.FINISHED_STATE)
+					|| project.getState().getStateId().equals(KeyConstants.DECLINED_STATE)
+					|| project.getState().getStateId().equals(KeyConstants.SOLINI_STATE)) {
 				buildCustomException(KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT,
-						KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT);
+						KeyConstants.ERROR_CREATE_ACTIVITY);
 			}
 			activityRepository.save(activity);
 
@@ -65,7 +66,7 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 		}
 
 	}
-	
+
 	@Override
 	public GenericListResponse<StateActivity> findAllStatesActivities() throws ProjectManagementException {
 		GenericListResponse<StateActivity> genericListResponse = null;
