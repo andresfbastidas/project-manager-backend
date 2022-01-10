@@ -13,10 +13,6 @@ import co.edu.usbcali.projectmanager.model.entities.Profile;
 @Entity
 public class UsersByProjectDTO implements Serializable {
 
-	@Id
-	@Column(name = "user_id")
-	private Long userId;
-
 	@Column(name = "first_name")
 	private String firstName;
 
@@ -29,6 +25,7 @@ public class UsersByProjectDTO implements Serializable {
 	@Column(name = "surname")
 	private String surname;
 
+	@Id
 	@Column(name = "user_name")
 	private String userName;
 
@@ -39,10 +36,9 @@ public class UsersByProjectDTO implements Serializable {
 	@Column(name = "fullname")
 	private String fullName;
 
-	public UsersByProjectDTO(Long userId, String firstName, String secondName, String secondSurname,
+	public UsersByProjectDTO(String firstName, String secondName, String secondSurname,
 			String surname, String userName, Profile profile, String fullName) {
 		super();
-		this.userId = userId;
 		this.firstName = firstName;
 		this.secondName = secondName;
 		this.secondSurname = secondSurname;
@@ -55,14 +51,6 @@ public class UsersByProjectDTO implements Serializable {
 	public UsersByProjectDTO() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
 	}
 
 	public String getFirstName() {

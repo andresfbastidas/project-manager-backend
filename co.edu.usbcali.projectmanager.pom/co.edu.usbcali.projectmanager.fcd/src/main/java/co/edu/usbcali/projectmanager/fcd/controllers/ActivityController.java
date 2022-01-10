@@ -19,13 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 import co.edu.usbcali.projectmanager.business.interfaces.IActivityService;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
+import co.edu.usbcali.projectmanager.model.entities.StateActivity;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ActivityRequest;
+import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.ListActivitiesResponse;
 
 @RestController
-@CrossOrigin(origins = "${cross.origin}")
+@CrossOrigin(origins = "${projectmanager.allowedOriginsApps}")
 @RequestMapping(path = FcdConstants.ACTIVITY)
 public class ActivityController {
 
@@ -44,14 +46,22 @@ public class ActivityController {
 
 	}
 
-	@GetMapping(path = FcdConstants.FINDALL_ACTIVITIES_BY_PROJECT+"{projectId}")
+	@GetMapping(path = FcdConstants.FINDALL_ACTIVITIES_BY_PROJECT + "{projectId}")
 	@ResponseBody
 	public ResponseEntity<?> findAllActivitiesByProject(@Valid @PathVariable Long projectId)
 			throws ProjectManagementException {
 
- 		ListActivitiesResponse listActivitiesResponse = new ListActivitiesResponse();
+		ListActivitiesResponse listActivitiesResponse = new ListActivitiesResponse();
 		listActivitiesResponse = activityService.findActivitiesByProject(projectId);
 		return new ResponseEntity<>(listActivitiesResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FINDALL_STATES_ACTIVITIES)
+	@ResponseBody
+	public ResponseEntity<?> findAllStatesActivities() throws ProjectManagementException {
+
+		GenericListResponse<StateActivity> stateListResponse = activityService.findAllStatesActivities();
+		return new ResponseEntity<>(stateListResponse, HttpStatus.OK);
 	}
 
 }

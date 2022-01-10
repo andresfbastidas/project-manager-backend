@@ -44,6 +44,8 @@ public class FcdConstants {
 	
 	public static final String FINDALL_ACTIVITIES_BY_PROJECT = "/findAllActivitiesByProject/";
 	
+	public static final String FINDALL_STATES_ACTIVITIES = "/findAllStatesActivities";
+	
 	public static final String FINDALL_USERS_BY_PROJECT = "/findAllUsersByProject/";
 	
 	public static final String APPROVAL_PROJECTS = "/approvalProjects";

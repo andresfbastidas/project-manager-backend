@@ -19,7 +19,7 @@ import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 
 @RestController
-@CrossOrigin(origins = "${cross.origin}")
+@CrossOrigin(origins = "${projectmanager.allowedOriginsApps}")
 @RequestMapping(path = FcdConstants.GENERIC_LIST)
 public class GenericListController {
 

@@ -19,8 +19,10 @@ import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.StateActivity;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ActivityRequest;
+import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 import co.edu.usbcali.projectmanager.model.response.ListActivitiesResponse;
 import co.edu.usbcali.projectmanager.repository.ActivityRepository;
+import co.edu.usbcali.projectmanager.repository.StateActivityRepository;
 
 @Service
 public class ActivityServiceImpl extends ServiceUtils implements IActivityService {
@@ -34,6 +36,9 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 
 	@Autowired
 	private IProjectService projectService;
+	
+	@Autowired
+	private StateActivityRepository stateActivityRepository;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -59,6 +64,26 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
+	}
+	
+	@Override
+	public GenericListResponse<StateActivity> findAllStatesActivities() throws ProjectManagementException {
+		GenericListResponse<StateActivity> genericListResponse = null;
+		List<StateActivity> listStateActivities = null;
+		try {
+			genericListResponse = new GenericListResponse<StateActivity>();
+			listStateActivities = stateActivityRepository.findAll();
+			if (listStateActivities.isEmpty() || listStateActivities == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+			}
+			genericListResponse.setGenericList(listStateActivities);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return genericListResponse;
 	}
 
 	public Activity buildActivity(String activityName, StateActivity stateActivity, Date dateFrom, Date dateUntil,

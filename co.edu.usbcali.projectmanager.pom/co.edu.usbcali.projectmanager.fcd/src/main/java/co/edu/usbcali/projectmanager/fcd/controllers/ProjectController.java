@@ -31,7 +31,7 @@ import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 
 @RestController
-@CrossOrigin(origins = "${cross.origin}")
+@CrossOrigin(origins = "${projectmanager.allowedOriginsApps}")
 @RequestMapping(path = FcdConstants.PROJECT)
 public class ProjectController {
 

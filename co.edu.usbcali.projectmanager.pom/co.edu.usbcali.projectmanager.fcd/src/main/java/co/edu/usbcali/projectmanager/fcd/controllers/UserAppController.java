@@ -37,7 +37,7 @@ import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 
 @RestController
 @RequestMapping(path = FcdConstants.USER)
-@CrossOrigin(origins = "${cross.origin}")
+@CrossOrigin(origins = "${projectmanager.allowedOriginsApps}")
 public class UserAppController {
 
 	@Autowired
