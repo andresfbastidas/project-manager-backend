@@ -112,7 +112,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 		    user.setSecondName(signupRequest.getUserapp().getSecondName());
 		    user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
 			Profile profile = new Profile();
-			profile.setProfileId(signupRequest.getProfile().getProfileId());
+			profile.setProfileId(signupRequest.getProfileId());
 			user.setProfile(profile);
 
 			userAppRepository.save(user);
