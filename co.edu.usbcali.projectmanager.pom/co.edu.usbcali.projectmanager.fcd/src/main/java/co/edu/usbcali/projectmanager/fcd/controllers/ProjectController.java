@@ -33,11 +33,12 @@ import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
+import co.edu.usbcali.projectmanager.model.utils.FcdUtil;
 
 @RestController
 @CrossOrigin(origins = "${projectmanager.allowedOriginsApps}")
 @RequestMapping(path = FcdConstants.PROJECT)
-public class ProjectController {
+public class ProjectController extends FcdUtil {
 
 	@Autowired
 	private IProjectService projectService;
