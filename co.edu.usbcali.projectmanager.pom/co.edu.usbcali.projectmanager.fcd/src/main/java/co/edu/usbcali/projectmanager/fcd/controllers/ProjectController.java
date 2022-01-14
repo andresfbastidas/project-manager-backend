@@ -1,5 +1,7 @@
 package co.edu.usbcali.projectmanager.fcd.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,13 @@ import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Project;
+import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
+import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
@@ -63,11 +67,11 @@ public class ProjectController {
 
 	}
 
-	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_STATE)
+	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_STATE + "{stateId}")
 	@ResponseBody
-	public ResponseEntity<?> findAllProjectsByState() throws ProjectManagementException {
+	public ResponseEntity<?> findAllProjectsByState(@PathVariable Long stateId) throws ProjectManagementException {
 
-		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState();
+		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(stateId);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 
@@ -89,14 +93,39 @@ public class ProjectController {
 				.listUsersByProject(projectId);
 		return new ResponseEntity<>(listUsersByProjectResponse, HttpStatus.OK);
 	}
-	
+
 	@PutMapping(path = FcdConstants.APPROVAL_PROJECTS, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> approvalProjects(@Valid @RequestBody ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
+	public ResponseEntity<?> approvalProjects(@Valid @RequestBody ApprovalDeclineRequest approvalDeclineRequest)
+			throws ProjectManagementException {
 
 		projectService.approvalProject(approvalDeclineRequest);
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.SUCCESS_APPROVAL);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+	}
+
+	@PutMapping(path = FcdConstants.DECLINE_PROJECTS, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> declineProjects(@Valid @RequestBody ApprovalDeclineRequest approvalDeclineRequest)
+			throws ProjectManagementException {
+
+		projectService.declineProject(approvalDeclineRequest);
+		GenericResponse genericResponse = new GenericResponse();
+		genericResponse.setMessage(KeyConstants.DECLINE_PROJECTS);
+		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FINDALL_PROJECT_REQUEST_BY_STATE + "{stateFirst}" + "+" + "{stateSecond}" + "+"
+			+ "{stateThird}/" + "{userName}")
+	@ResponseBody
+	public ResponseEntity<?> findProjectRequestByState(@Valid @PathVariable Long stateFirst,
+			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName)
+			throws ProjectManagementException {
+
+		ListProjectRequestsResponse listProjectRequestsResponse = new ListProjectRequestsResponse();
+		List<ProjectRequest> listProjectRequests = projectService.findProjectRequestByState(stateFirst, stateSecond,
+				stateThird, userName);
+		listProjectRequestsResponse.setProjectRequests(listProjectRequests);
+		return new ResponseEntity<>(listProjectRequestsResponse, HttpStatus.OK);
 	}
 
 }

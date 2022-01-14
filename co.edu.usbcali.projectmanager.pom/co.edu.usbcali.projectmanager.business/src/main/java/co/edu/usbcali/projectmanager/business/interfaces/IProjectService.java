@@ -30,7 +30,7 @@ public interface IProjectService {
 
 	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException;
 
-	public ProjectListByStateResponse<Project> findAllProjectByState() throws ProjectManagementException;
+	public ProjectListByStateResponse<Project> findAllProjectByState(Long stateId) throws ProjectManagementException;
 
 	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName)
 			throws ProjectManagementException;
@@ -39,8 +39,10 @@ public interface IProjectService {
 			throws ProjectManagementException;
 
 	public void approvalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
-	
+
 	public void declineProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
 
-	public List<ProjectRequest> findProjectRequestbByState() throws ProjectManagementException;
+	public List<ProjectRequest> findProjectRequestByState(Long stateProjectRequestFirst,
+			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
+			throws ProjectManagementException;
 }

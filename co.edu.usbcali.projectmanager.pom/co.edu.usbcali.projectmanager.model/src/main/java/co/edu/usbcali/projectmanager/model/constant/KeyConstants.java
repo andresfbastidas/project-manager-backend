@@ -3,11 +3,12 @@ package co.edu.usbcali.projectmanager.model.constant;
 public class KeyConstants {
 
 	// Mesagges Success
-	public static final String SUCCESS_CREATE_PROJECT = "Proyecto creado con exito";
+	public static final String SUCCESS_CREATE_PROJECT = "Proyecto creado con exito. Nota: Si su perfil es estudiante o profesor, el proyecto deberá ser aprobado por un director";
 	public static final String SUCCESS_CREATE_USER = "Usuario creado con exito";
 	public static final String SUCCESS_CREATE_ACTIVITY = "Actividad creada con exito";
 	public static final String SUCCESS_ASSOCIATED_PROJECT_USER = "Usuario asociado";
 	public static final String SUCCESS_APPROVAL = "Proyectos aprobados";
+	public static final String DECLINE_PROJECTS = "Proyectos declinados";
 
 	// Messages Errors
 	public static final String USER_NOT_FOUND = "El usuario no existe";
@@ -25,11 +26,13 @@ public class KeyConstants {
 	public static final String ERROR_PROJECTUSER_ROL = "El usuario debe tener rol de director";
 	public static final String ERROR_ACTIVITIES_LIST_NOT_FOUND = "No se encontraron actividades asociadas al proyecto";
 	public static final String ERROR_USERS_BY_PROJECT = "No se encontraron usuarios asociados en el proyecto";
-	public static final String ERROR_LIST_PROJECT_REQUEST_EMPTY = "No se encontraron solicitudes de proyectos";
+	public static final String ERROR_LIST_PROJECT_REQUEST_EMPTY = "No tiene solicitudes de proyectos";
 	public static final String ERROR_NOT_ASSOCIATED_USER_PROJECT = "El proyecto debe estar en estado EN PROGRESO O DISPONIBLE";
 	public static final String ERROR_CREATE_ACTIVITY = "No es posible crear la actividad debido al estado del proyecto";
+	public static final String ERROR_APPROVAL_DECLINE_PROJECTS= "El proyecto debe estar en estado PENDIENTE para aprobarlo o rechazarlo";
 	
 	// Error Codes
+	public static final String ERROR_CODE_APPROVAL_DECLINE_PROJECTS= "114";
 	public static final String ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT= "113";
 	public static final String ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY= "112";
 	public static final String ERROR_CODE_USERS_BY_PROJECT = "111";

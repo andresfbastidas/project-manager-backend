@@ -38,7 +38,7 @@ public class FcdConstants {
 	
 	public static final String FINDALL_PROFILES = "/findAllProfiles";
 	
-	public static final String FINDALL_PROJECTS_BY_STATE = "/findAllProjectsState";
+	public static final String FINDALL_PROJECTS_BY_STATE = "/findAllProjectsState/";
 	
 	public static final String FINDALL_PROJECTS_BY_USER_NAME = "/findAllProjectsByUserName/";
 	
@@ -48,6 +48,10 @@ public class FcdConstants {
 	
 	public static final String FINDALL_USERS_BY_PROJECT = "/findAllUsersByProject/";
 	
+	public static final String FINDALL_PROJECT_REQUEST_BY_STATE = "/findByProjectRequestState/";
+	
 	public static final String APPROVAL_PROJECTS = "/approvalProjects";
+	
+	public static final String DECLINE_PROJECTS = "/declineProjects";
 
 }

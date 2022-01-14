@@ -14,6 +14,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * The persistent class for the project_request database table.
  * 
@@ -28,6 +31,7 @@ public class ProjectRequest implements Serializable {
 	@SequenceGenerator(name = "PROJECT_REQUEST_PROJECTEQUESTID_GENERATOR", sequenceName = "PROJECTREQUESTSEQ", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROJECT_REQUEST_PROJECTEQUESTID_GENERATOR")
 	@Column(name = "project_request_id")
+	@JsonProperty("projectRequestId")
 	private Long projectRequestId;
 
 	// bi-directional many-to-one association to Project
@@ -41,12 +45,34 @@ public class ProjectRequest implements Serializable {
 	private StateProjectRequest stateProjectRequest;
 
 	@Column(name = "details")
+	@JsonProperty("details")
 	private String details;
 
 	// bi-directional many-to-one association to Userapp
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_name")
+	@JsonIgnore
 	private Userapp userapp;
+	
+	@JsonProperty("projectId")
+	private void setProyectId(Long projectId) {
+	    this.project = new Project();
+	    project.setProjectId(projectId);
+	}
+	
+	@JsonProperty("userName")
+	private void setUserName(String userName) {
+	    this.userapp = new Userapp();
+	    userapp.setUserName(userName);
+	}
+	
+	@JsonProperty("stateProjectRequestId")
+	@JoinColumn(name = "state_project_request_id")
+	private void setStateRequestId(Long stateProjectRequestId) {
+	    this.stateProjectRequest = new StateProjectRequest();
+		stateProjectRequest.setStateProjectRequestId(stateProjectRequestId);
+	}
+	
 
 	public ProjectRequest() {
 	}

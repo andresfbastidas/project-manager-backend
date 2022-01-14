@@ -96,8 +96,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 				projectRequestRepository.save(projectRequest);
 			} else {
 				AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
-				associatedUserProjectRequest.setProject(project);
-				associatedUserProjectRequest.setUserapp(userNameResponse.getUserapp());
+				associatedUserProjectRequest.setProjectId(project.getProjectId());
+				associatedUserProjectRequest.setUserName(userNameResponse.getUserapp().getUserName());
 				this.associateUser(associatedUserProjectRequest);
 			}
 
@@ -162,9 +162,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	public void associateUser(AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException {
 		UserNameResponse userNameResponse = null;
 		try {
-			userNameResponse = userDetailsServiceImpl.findByUserName(associatedUserProject.getUserapp().getUserName());
+			userNameResponse = userDetailsServiceImpl.findByUserName(associatedUserProject.getUserName());
 
-			Project project = this.findByProjectId(associatedUserProject.getProject().getProjectId());
+			Project project = this.findByProjectId(associatedUserProject.getProjectId());
 			if (project.getState().getStateId() == KeyConstants.AVALAIBLE_STATE
 					|| project.getState().getStateId() == KeyConstants.PROGRESS_STATE) {
 				this.saveProjectUser(project, userNameResponse.getUserapp());
@@ -216,12 +216,12 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProjectListByStateResponse<Project> findAllProjectByState() throws ProjectManagementException {
+	public ProjectListByStateResponse<Project> findAllProjectByState(Long stateId) throws ProjectManagementException {
 		ProjectListByStateResponse<Project> projectListResponse = null;
 		List<Project> projects = null;
 		try {
 			projectListResponse = new ProjectListByStateResponse<Project>();
-			projects = projectRepository.findAllByProjectState(KeyConstants.AVALAIBLE_STATE);
+			projects = projectRepository.findAllByProjectState(stateId);
 			if (projects.isEmpty() || projects == null) {
 				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
@@ -303,10 +303,12 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ProjectRequest> findProjectRequestbByState() throws ProjectManagementException {
+	public List<ProjectRequest> findProjectRequestByState(Long stateProjectRequestFirst, Long stateProjectRequestSecond,
+			Long stateProjectRequestThird, String userName) throws ProjectManagementException {
 		List<ProjectRequest> listProjectRequests = null;
 		try {
-			listProjectRequests = projectRequestRepository.findProjectRequestByState(KeyConstants.PENDING_STATE);
+			listProjectRequests = projectRequestRepository.findProjectRequestByState(stateProjectRequestFirst,
+					stateProjectRequestSecond, stateProjectRequestThird, userName);
 			if (listProjectRequests.isEmpty() || listProjectRequests == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
 						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
@@ -332,9 +334,12 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					projectRepository.updateStateProject(KeyConstants.AVALAIBLE_STATE,
 							projectRequest.getProject().getProjectId());
 					AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
-					associatedUserProjectRequest.setProject(projectRequest.getProject());
-					associatedUserProjectRequest.setUserapp(projectRequest.getUserapp());
+					associatedUserProjectRequest.setProjectId(projectRequest.getProject().getProjectId());
+					associatedUserProjectRequest.setUserName(projectRequest.getUserapp().getUserName());
 					this.associateUser(associatedUserProjectRequest);
+				}else {
+					buildCustomException(KeyConstants.ERROR_APPROVAL_DECLINE_PROJECTS,
+							KeyConstants.ERROR_CODE_APPROVAL_DECLINE_PROJECTS);
 				}
 
 			}
@@ -346,15 +351,18 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		}
 	}
 
-	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void declineProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
 		try {
 			for (ProjectRequest projectRequest : approvalDeclineRequest.getListProjectRequests()) {
 				if (projectRequest.getStateProjectRequest().getStateProjectRequestId()
 						.equals(KeyConstants.PENDING_STATE)) {
-					projectRequestRepository.updateProjectRequest(KeyConstants.DECLINED_STATE,
+					projectRequestRepository.updateProjectRequest(KeyConstants.DECLINED_STATE_PROJECT_REQUEST,
 							projectRequest.getDetails(), projectRequest.getProjectRequestId());
 					projectRepository.deleteProject(projectRequest.getProject().getProjectId());
+				} else {
+					buildCustomException(KeyConstants.ERROR_APPROVAL_DECLINE_PROJECTS,
+							KeyConstants.ERROR_CODE_APPROVAL_DECLINE_PROJECTS);
 				}
 
 			}

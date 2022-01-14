@@ -17,6 +17,13 @@ public interface ProjectRequestRepository extends JpaRepository<ProjectRequest, 
 	public void updateProjectRequest(Long stateProjectRequestId, String details, Long projectRequestId)
 			throws ProjectManagementException;
 
-	@Query(value = "select * from project_request pr where pr.state_project_request_id = ?1", nativeQuery = true)
-	public List<ProjectRequest> findProjectRequestByState(Long stateProjectRequestId) throws ProjectManagementException;
+	@Query(value = "select pr.project_request_id,pj.project_id, pj.project_title, pj.project_summary, pj.specific_objetive, \n"
+			+ "pj.general_objetive, pj.justification, pr.user_name, pr.details, sr.state_project_request_id,sr.state_project_request_id,sr.state_name_project_request\n"
+			+ "from project_request pr, project pj, state_project_request sr, userapp usr \n"
+			+ "where (pr.state_project_request_id =?1 OR pr.state_project_request_id=?2 OR \n"
+			+ "	   pr.state_project_request_id =?3) and \n"
+			+ "pr.project_id=pj.project_id and pj.project_director=?4 and \n"
+			+ "sr.state_project_request_id= pr.state_project_request_id and usr.user_name=pr.user_name", nativeQuery = true)
+	public List<ProjectRequest> findProjectRequestByState(Long stateApproval, Long stateDecline, Long statePending,
+			String userName) throws ProjectManagementException;
 }

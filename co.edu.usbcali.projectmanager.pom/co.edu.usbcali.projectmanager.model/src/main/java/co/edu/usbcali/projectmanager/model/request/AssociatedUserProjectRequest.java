@@ -2,29 +2,26 @@ package co.edu.usbcali.projectmanager.model.request;
 
 import java.io.Serializable;
 
-import co.edu.usbcali.projectmanager.model.entities.Project;
-import co.edu.usbcali.projectmanager.model.entities.Userapp;
-
 public class AssociatedUserProjectRequest implements Serializable {
 
-	private Userapp userapp;
+	private String userName;
 
-	private Project project;
+	private Long projectId;
 
-	public Userapp getUserapp() {
-		return userapp;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUserapp(Userapp userapp) {
-		this.userapp = userapp;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public Project getProject() {
-		return project;
+	public Long getProjectId() {
+		return projectId;
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
 	}
 
 	/**
