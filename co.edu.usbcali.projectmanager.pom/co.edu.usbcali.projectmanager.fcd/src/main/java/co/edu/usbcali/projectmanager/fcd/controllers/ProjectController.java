@@ -128,4 +128,18 @@ public class ProjectController {
 		return new ResponseEntity<>(listProjectRequestsResponse, HttpStatus.OK);
 	}
 
+	@GetMapping(path = FcdConstants.FINDALL_PROJECT_REQUEST_BY_STATE_USER + "{stateFirst}" + "+" + "{stateSecond}" + "+"
+			+ "{stateThird}/" + "{userName}")
+	@ResponseBody
+	public ResponseEntity<?> findProjectRequestByStateUser(@Valid @PathVariable Long stateFirst,
+			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName)
+			throws ProjectManagementException {
+
+		ListProjectRequestsResponse listProjectRequestsResponse = new ListProjectRequestsResponse();
+		List<ProjectRequest> listProjectRequests = projectService.findProjectRequestByStateUser(stateFirst, stateSecond,
+				stateThird, userName);
+		listProjectRequestsResponse.setProjectRequests(listProjectRequests);
+		return new ResponseEntity<>(listProjectRequestsResponse, HttpStatus.OK);
+	}
+
 }

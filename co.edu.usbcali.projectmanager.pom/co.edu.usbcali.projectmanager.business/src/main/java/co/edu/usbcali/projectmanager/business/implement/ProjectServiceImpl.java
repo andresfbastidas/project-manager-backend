@@ -307,7 +307,29 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			Long stateProjectRequestThird, String userName) throws ProjectManagementException {
 		List<ProjectRequest> listProjectRequests = null;
 		try {
-			listProjectRequests = projectRequestRepository.findProjectRequestByState(stateProjectRequestFirst,
+			listProjectRequests = projectRequestRepository.findProjectRequestByStateForDirector(
+					stateProjectRequestFirst, stateProjectRequestSecond, stateProjectRequestThird, userName);
+			if (listProjectRequests.isEmpty() || listProjectRequests == null) {
+				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
+						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return listProjectRequests;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<ProjectRequest> findProjectRequestByStateUser(Long stateProjectRequestFirst,
+			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
+			throws ProjectManagementException {
+		List<ProjectRequest> listProjectRequests = null;
+		try {
+			listProjectRequests = projectRequestRepository.findProjectRequestByStateForUser(stateProjectRequestFirst,
 					stateProjectRequestSecond, stateProjectRequestThird, userName);
 			if (listProjectRequests.isEmpty() || listProjectRequests == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
@@ -337,7 +359,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					associatedUserProjectRequest.setProjectId(projectRequest.getProject().getProjectId());
 					associatedUserProjectRequest.setUserName(projectRequest.getUserapp().getUserName());
 					this.associateUser(associatedUserProjectRequest);
-				}else {
+				} else {
 					buildCustomException(KeyConstants.ERROR_APPROVAL_DECLINE_PROJECTS,
 							KeyConstants.ERROR_CODE_APPROVAL_DECLINE_PROJECTS);
 				}
@@ -359,7 +381,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 						.equals(KeyConstants.PENDING_STATE)) {
 					projectRequestRepository.updateProjectRequest(KeyConstants.DECLINED_STATE_PROJECT_REQUEST,
 							projectRequest.getDetails(), projectRequest.getProjectRequestId());
-					projectRepository.deleteProject(projectRequest.getProject().getProjectId());
+					projectRepository.updateStateProject(KeyConstants.DECLINED_STATE,
+							projectRequest.getProject().getProjectId());
 				} else {
 					buildCustomException(KeyConstants.ERROR_APPROVAL_DECLINE_PROJECTS,
 							KeyConstants.ERROR_CODE_APPROVAL_DECLINE_PROJECTS);

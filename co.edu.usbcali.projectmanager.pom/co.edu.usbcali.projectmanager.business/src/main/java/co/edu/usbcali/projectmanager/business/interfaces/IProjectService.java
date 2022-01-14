@@ -42,7 +42,10 @@ public interface IProjectService {
 
 	public void declineProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
 
-	public List<ProjectRequest> findProjectRequestByState(Long stateProjectRequestFirst,
+	public List<ProjectRequest> findProjectRequestByState(Long stateProjectRequestFirst, Long stateProjectRequestSecond,
+			Long stateProjectRequestThird, String userName) throws ProjectManagementException;
+
+	public List<ProjectRequest> findProjectRequestByStateUser(Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException;
 }

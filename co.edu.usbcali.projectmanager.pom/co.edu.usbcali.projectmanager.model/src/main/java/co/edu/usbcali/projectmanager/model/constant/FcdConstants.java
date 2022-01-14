@@ -50,6 +50,8 @@ public class FcdConstants {
 	
 	public static final String FINDALL_PROJECT_REQUEST_BY_STATE = "/findByProjectRequestState/";
 	
+	public static final String FINDALL_PROJECT_REQUEST_BY_STATE_USER = "/findByProjectRequestStateUser/";
+	
 	public static final String APPROVAL_PROJECTS = "/approvalProjects";
 	
 	public static final String DECLINE_PROJECTS = "/declineProjects";
