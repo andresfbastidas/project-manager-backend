@@ -2,6 +2,7 @@ package co.edu.usbcali.projectmanager.business.interfaces;
 
 import java.util.List;
 
+import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
@@ -30,7 +31,8 @@ public interface IProjectService {
 
 	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException;
 
-	public ProjectListByStateResponse<Project> findAllProjectByState(Long stateId) throws ProjectManagementException;
+	public ProjectListByStateResponse<Project> findAllProjectByState(PageSetting page, Long stateId)
+			throws ProjectManagementException;
 
 	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName)
 			throws ProjectManagementException;

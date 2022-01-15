@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
+import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
@@ -70,9 +72,12 @@ public class ProjectController extends FcdUtil {
 
 	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_STATE + "{stateId}")
 	@ResponseBody
-	public ResponseEntity<?> findAllProjectsByState(@PathVariable Long stateId) throws ProjectManagementException {
+	public ResponseEntity<?> findAllProjectsByState(@PathVariable Long stateId, @RequestParam int numPage, @RequestParam int size) throws ProjectManagementException {
 
-		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(stateId);
+		PageSetting pageSetting = new PageSetting();
+		pageSetting.setNumPage(numPage);
+		pageSetting.setNumReg(size);
+		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(pageSetting,stateId);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 

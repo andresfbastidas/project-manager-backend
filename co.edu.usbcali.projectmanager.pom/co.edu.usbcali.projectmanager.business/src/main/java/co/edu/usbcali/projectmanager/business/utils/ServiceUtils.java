@@ -1,7 +1,9 @@
 package co.edu.usbcali.projectmanager.business.utils;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
+import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.utils.ComponentUtils;
 
@@ -30,6 +32,10 @@ public class ServiceUtils extends ComponentUtils {
 			throws ProjectManagementException {
 		throw new ProjectManagementException(businessCode, getErrMessage(msgKey) + " " + msjConcatenado, BUSINESS_TYPE,
 				LOGGER_ERROR, e);
+	}
+
+	public PageRequest getPageRequest(PageSetting page) {
+		return PageRequest.of(page.getNumPage(), page.getNumReg());
 	}
 
 }

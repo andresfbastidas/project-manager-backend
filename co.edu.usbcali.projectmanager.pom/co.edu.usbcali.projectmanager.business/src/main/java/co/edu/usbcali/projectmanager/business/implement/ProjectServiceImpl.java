@@ -6,12 +6,14 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
+import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
@@ -216,16 +218,19 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProjectListByStateResponse<Project> findAllProjectByState(Long stateId) throws ProjectManagementException {
+	public ProjectListByStateResponse<Project> findAllProjectByState(PageSetting page, Long stateId) throws ProjectManagementException {
 		ProjectListByStateResponse<Project> projectListResponse = null;
-		List<Project> projects = null;
+		Page<Project> projects = null;
 		try {
 			projectListResponse = new ProjectListByStateResponse<Project>();
-			projects = projectRepository.findAllByProjectState(stateId);
-			if (projects.isEmpty() || projects == null) {
+			projects = projectRepository.findAllByProjectState(this.getPageRequest(page),stateId);
+			
+			if (projects.getContent().isEmpty() || projects.getContent() == null) {
 				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
-			projectListResponse.setProjectList(projects);
+			
+			projectListResponse.setProjectList(projects.getContent());
+			projectListResponse.setPagable(projects.getPageable());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
