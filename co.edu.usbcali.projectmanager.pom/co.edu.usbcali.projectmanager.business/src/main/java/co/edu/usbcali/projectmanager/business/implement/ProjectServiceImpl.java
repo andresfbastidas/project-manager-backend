@@ -218,17 +218,18 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProjectListByStateResponse<Project> findAllProjectByState(PageSetting page, Long stateId) throws ProjectManagementException {
+	public ProjectListByStateResponse<Project> findAllProjectByState(PageSetting page, Long stateId)
+			throws ProjectManagementException {
 		ProjectListByStateResponse<Project> projectListResponse = null;
 		Page<Project> projects = null;
 		try {
 			projectListResponse = new ProjectListByStateResponse<Project>();
-			projects = projectRepository.findAllByProjectState(this.getPageRequest(page),stateId);
-			
+			projects = projectRepository.findAllByProjectState(this.getPageRequest(page), stateId);
+
 			if (projects.getContent().isEmpty() || projects.getContent() == null) {
 				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
-			
+
 			projectListResponse.setProjectList(projects.getContent());
 			projectListResponse.setPagable(projects.getPageable());
 		} catch (ProjectManagementException e) {
@@ -242,19 +243,20 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName)
+	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(PageSetting page, String userName)
 			throws ProjectManagementException {
 		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = null;
-		List<ProjectUserDirectorNameDTO> projectList = null;
+		Page<ProjectUserDirectorNameDTO> projectList = null;
 		try {
 			projectListResponse = new ProjectListResponse<ProjectUserDirectorNameDTO>();
-			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(KeyConstants.ROL_DIRECTORID,
-					userName);
-			if (projectList.isEmpty() || projectList == null) {
+			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(this.getPageRequest(page),
+					KeyConstants.ROL_DIRECTORID, userName);
+			if (projectList.getContent().isEmpty() || projectList.getContent() == null) {
 				buildCustomException(KeyConstants.PROJECT_LIST_EMPTY, KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY);
 			}
 
-			projectListResponse.setProjectList(projectList);
+			projectListResponse.setProjectList(projectList.getContent());
+			projectListResponse.setPagable(projectList.getPageable());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -286,17 +288,19 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Long projectId)
+	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(PageSetting page, Long projectId)
 			throws ProjectManagementException {
-		List<UsersByProjectDTO> listUsersByProjectDTOs = null;
+		Page<UsersByProjectDTO> listUsersByProjectDTOs = null;
 		ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProjectResponse = null;
 		try {
-			listUsersByProjectDTOs = usersByProjectsRepository.listAllUsersByProject(projectId);
-			if (listUsersByProjectDTOs.isEmpty() || listUsersByProjectDTOs == null) {
+			listUsersByProjectDTOs = usersByProjectsRepository.listAllUsersByProject(this.getPageRequest(page),
+					projectId);
+			if (listUsersByProjectDTOs.getContent().isEmpty() || listUsersByProjectDTOs.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_USERS_BY_PROJECT, KeyConstants.ERROR_CODE_USERS_BY_PROJECT);
 			}
 			listUsersByProjectResponse = new ListUsersByProjectResponse<UsersByProjectDTO>();
-			listUsersByProjectResponse.setListUsers(listUsersByProjectDTOs);
+			listUsersByProjectResponse.setListUsers(listUsersByProjectDTOs.getContent());
+			listUsersByProjectResponse.setPagable(listUsersByProjectDTOs.getPageable());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {

@@ -72,31 +72,43 @@ public class ProjectController extends FcdUtil {
 
 	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_STATE + "{stateId}")
 	@ResponseBody
-	public ResponseEntity<?> findAllProjectsByState(@PathVariable Long stateId, @RequestParam int numPage, @RequestParam int size) throws ProjectManagementException {
+	public ResponseEntity<?> findAllProjectsByState(@PathVariable Long stateId,
+			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
+			throws ProjectManagementException {
 
 		PageSetting pageSetting = new PageSetting();
 		pageSetting.setNumPage(numPage);
 		pageSetting.setNumReg(size);
-		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(pageSetting,stateId);
+		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(pageSetting,
+				stateId);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 
 	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_USER_NAME + "{userName}")
 	@ResponseBody
-	public ResponseEntity<?> findAllProjectsByUserName(@Valid @PathVariable String userName)
+	public ResponseEntity<?> findAllProjectsByUserName(@Valid @PathVariable String userName,
+			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
 			throws ProjectManagementException {
 
+		PageSetting pageSetting = new PageSetting();
+		pageSetting.setNumPage(numPage);
+		pageSetting.setNumReg(size);
 		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = projectService
-				.findAllProjectsByUserName(userName);
+				.findAllProjectsByUserName(pageSetting, userName);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 
 	@GetMapping(path = FcdConstants.FINDALL_USERS_BY_PROJECT + "{projectId}")
 	@ResponseBody
-	public ResponseEntity<?> listUsersByProject(@Valid @PathVariable Long projectId) throws ProjectManagementException {
+	public ResponseEntity<?> listUsersByProject(@Valid @PathVariable Long projectId,
+			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
+			throws ProjectManagementException {
 
+		PageSetting pageSetting = new PageSetting();
+		pageSetting.setNumPage(numPage);
+		pageSetting.setNumReg(size);
 		ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProjectResponse = projectService
-				.listUsersByProject(projectId);
+				.listUsersByProject(pageSetting, projectId);
 		return new ResponseEntity<>(listUsersByProjectResponse, HttpStatus.OK);
 	}
 

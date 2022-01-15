@@ -34,10 +34,10 @@ public interface IProjectService {
 	public ProjectListByStateResponse<Project> findAllProjectByState(PageSetting page, Long stateId)
 			throws ProjectManagementException;
 
-	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(String userName)
+	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(PageSetting page, String userName)
 			throws ProjectManagementException;
 
-	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Long projectId)
+	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(PageSetting page, Long projectId)
 			throws ProjectManagementException;
 
 	public void approvalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
