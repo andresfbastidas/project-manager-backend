@@ -6,11 +6,11 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 import co.edu.usbcali.projectmanager.model.commons.PagedCustom;
-import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
+import co.edu.usbcali.projectmanager.model.dto.ProjectRequestDTO;
 
 public class ListProjectRequestsResponse implements Serializable {
 
-	private List<ProjectRequest> listProjectRequests;
+	private List<ProjectRequestDTO> listProjectRequests;
 	private Pageable pagable;
 	private PagedCustom pagedCustom;
 
@@ -30,11 +30,11 @@ public class ListProjectRequestsResponse implements Serializable {
 		this.pagedCustom = pagedCustom;
 	}
 
-	public List<ProjectRequest> getListProjectRequests() {
+	public List<ProjectRequestDTO> getListProjectRequests() {
 		return listProjectRequests;
 	}
 
-	public void setListProjectRequests(List<ProjectRequest> listProjectRequests) {
+	public void setListProjectRequests(List<ProjectRequestDTO> listProjectRequests) {
 		this.listProjectRequests = listProjectRequests;
 	}
 

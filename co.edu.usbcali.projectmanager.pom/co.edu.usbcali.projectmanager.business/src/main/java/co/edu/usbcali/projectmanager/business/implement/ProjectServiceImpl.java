@@ -15,6 +15,7 @@ import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
+import co.edu.usbcali.projectmanager.model.dto.ProjectRequestDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
@@ -36,6 +37,7 @@ import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
+import co.edu.usbcali.projectmanager.repository.ProjectRequestDTORepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRequestRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectUserDirectorNameRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectUserRepository;
@@ -68,6 +70,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Autowired
 	private ProjectRequestRepository projectRequestRepository;
+
+	@Autowired
+	private ProjectRequestDTORepository projectRequestDTORepository;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -316,10 +321,10 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	public ListProjectRequestsResponse findProjectRequestByState(PageSetting page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException {
-		Page<ProjectRequest> listProjectRequests = null;
+		Page<ProjectRequestDTO> listProjectRequests = null;
 		ListProjectRequestsResponse listProjectRequestsResponse = null;
 		try {
-			listProjectRequests = projectRequestRepository.findProjectRequestByStateForDirector(
+			listProjectRequests = projectRequestDTORepository.findProjectRequestByStateForDirector(
 					this.getPageRequest(page), stateProjectRequestFirst, stateProjectRequestSecond,
 					stateProjectRequestThird, userName);
 			if (listProjectRequests.getContent().isEmpty() || listProjectRequests.getContent() == null) {
@@ -344,11 +349,12 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	public ListProjectRequestsResponse findProjectRequestByStateUser(PageSetting page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException {
-		Page<ProjectRequest> listProjectRequests = null;
+		Page<ProjectRequestDTO> listProjectRequests = null;
 		ListProjectRequestsResponse listProjectRequestsResponse = null;
 		try {
-			listProjectRequests = projectRequestRepository.findProjectRequestByStateForUser(this.getPageRequest(page),
-					stateProjectRequestFirst, stateProjectRequestSecond, stateProjectRequestThird, userName);
+			listProjectRequests = projectRequestDTORepository.findProjectRequestByStateForUser(
+					this.getPageRequest(page), stateProjectRequestFirst, stateProjectRequestSecond,
+					stateProjectRequestThird, userName);
 			if (listProjectRequests.getContent().isEmpty() || listProjectRequests.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
 						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
