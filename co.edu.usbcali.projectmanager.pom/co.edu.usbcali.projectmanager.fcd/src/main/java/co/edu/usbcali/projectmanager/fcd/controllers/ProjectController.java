@@ -1,7 +1,5 @@
 package co.edu.usbcali.projectmanager.fcd.controllers;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Project;
-import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
@@ -136,13 +133,15 @@ public class ProjectController extends FcdUtil {
 			+ "{stateThird}/" + "{userName}")
 	@ResponseBody
 	public ResponseEntity<?> findProjectRequestByState(@Valid @PathVariable Long stateFirst,
-			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName)
+			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName,
+			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
 			throws ProjectManagementException {
-
+		PageSetting pageSetting = new PageSetting();
+		pageSetting.setNumPage(numPage);
+		pageSetting.setNumReg(size);
 		ListProjectRequestsResponse listProjectRequestsResponse = new ListProjectRequestsResponse();
-		List<ProjectRequest> listProjectRequests = projectService.findProjectRequestByState(stateFirst, stateSecond,
+		listProjectRequestsResponse = projectService.findProjectRequestByState(pageSetting, stateFirst, stateSecond,
 				stateThird, userName);
-		listProjectRequestsResponse.setProjectRequests(listProjectRequests);
 		return new ResponseEntity<>(listProjectRequestsResponse, HttpStatus.OK);
 	}
 
@@ -150,13 +149,16 @@ public class ProjectController extends FcdUtil {
 			+ "{stateThird}/" + "{userName}")
 	@ResponseBody
 	public ResponseEntity<?> findProjectRequestByStateUser(@Valid @PathVariable Long stateFirst,
-			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName)
+			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName,
+			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
 			throws ProjectManagementException {
 
+		PageSetting pageSetting = new PageSetting();
+		pageSetting.setNumPage(numPage);
+		pageSetting.setNumReg(size);
 		ListProjectRequestsResponse listProjectRequestsResponse = new ListProjectRequestsResponse();
-		List<ProjectRequest> listProjectRequests = projectService.findProjectRequestByStateUser(stateFirst, stateSecond,
+		listProjectRequestsResponse = projectService.findProjectRequestByStateUser(pageSetting, stateFirst, stateSecond,
 				stateThird, userName);
-		listProjectRequestsResponse.setProjectRequests(listProjectRequests);
 		return new ResponseEntity<>(listProjectRequestsResponse, HttpStatus.OK);
 	}
 

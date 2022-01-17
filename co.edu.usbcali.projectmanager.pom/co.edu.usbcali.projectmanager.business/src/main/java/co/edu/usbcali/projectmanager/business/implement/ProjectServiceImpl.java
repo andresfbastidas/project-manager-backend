@@ -29,6 +29,7 @@ import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
+import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
@@ -312,45 +313,56 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ProjectRequest> findProjectRequestByState(Long stateProjectRequestFirst, Long stateProjectRequestSecond,
-			Long stateProjectRequestThird, String userName) throws ProjectManagementException {
-		List<ProjectRequest> listProjectRequests = null;
+	public ListProjectRequestsResponse findProjectRequestByState(PageSetting page, Long stateProjectRequestFirst,
+			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
+			throws ProjectManagementException {
+		Page<ProjectRequest> listProjectRequests = null;
+		ListProjectRequestsResponse listProjectRequestsResponse = null;
 		try {
 			listProjectRequests = projectRequestRepository.findProjectRequestByStateForDirector(
-					stateProjectRequestFirst, stateProjectRequestSecond, stateProjectRequestThird, userName);
-			if (listProjectRequests.isEmpty() || listProjectRequests == null) {
+					this.getPageRequest(page), stateProjectRequestFirst, stateProjectRequestSecond,
+					stateProjectRequestThird, userName);
+			if (listProjectRequests.getContent().isEmpty() || listProjectRequests.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
 						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
 			}
+
+			listProjectRequestsResponse = new ListProjectRequestsResponse();
+			listProjectRequestsResponse.setListProjectRequests(listProjectRequests.getContent());
+			listProjectRequestsResponse.setPagable(listProjectRequests.getPageable());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
 			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
-		return listProjectRequests;
+		return listProjectRequestsResponse;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ProjectRequest> findProjectRequestByStateUser(Long stateProjectRequestFirst,
+	public ListProjectRequestsResponse findProjectRequestByStateUser(PageSetting page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException {
-		List<ProjectRequest> listProjectRequests = null;
+		Page<ProjectRequest> listProjectRequests = null;
+		ListProjectRequestsResponse listProjectRequestsResponse = null;
 		try {
-			listProjectRequests = projectRequestRepository.findProjectRequestByStateForUser(stateProjectRequestFirst,
-					stateProjectRequestSecond, stateProjectRequestThird, userName);
-			if (listProjectRequests.isEmpty() || listProjectRequests == null) {
+			listProjectRequests = projectRequestRepository.findProjectRequestByStateForUser(this.getPageRequest(page),
+					stateProjectRequestFirst, stateProjectRequestSecond, stateProjectRequestThird, userName);
+			if (listProjectRequests.getContent().isEmpty() || listProjectRequests.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
 						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
 			}
+			listProjectRequestsResponse = new ListProjectRequestsResponse();
+			listProjectRequestsResponse.setListProjectRequests(listProjectRequests.getContent());
+			listProjectRequestsResponse.setPagable(listProjectRequests.getPageable());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
 			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
-		return listProjectRequests;
+		return listProjectRequestsResponse;
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
