@@ -14,11 +14,13 @@ import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.ResearchTypology;
 import co.edu.usbcali.projectmanager.model.entities.State;
+import co.edu.usbcali.projectmanager.model.entities.StateProjectRequest;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 import co.edu.usbcali.projectmanager.repository.DeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProfileRepository;
 import co.edu.usbcali.projectmanager.repository.ResearchTyplogyRepository;
+import co.edu.usbcali.projectmanager.repository.StateProjectRequestRepository;
 import co.edu.usbcali.projectmanager.repository.StateRepository;
 
 @Service
@@ -39,6 +41,9 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 
 	@Autowired
 	private ProfileRepository profileRepository;
+
+	@Autowired
+	private StateProjectRequestRepository stateProjectRequestRepository;
 
 	@Override
 	public GenericListResponse<Delivery> findAllDeliverysList() throws ProjectManagementException {
@@ -132,6 +137,26 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
 			}
 			genericListResponse.setGenericList(states);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return genericListResponse;
+	}
+
+	@Override
+	public GenericListResponse<StateProjectRequest> findAllStateProjectRequest() throws ProjectManagementException {
+		GenericListResponse<StateProjectRequest> genericListResponse = null;
+		List<StateProjectRequest> listStateProjectRequests = null;
+		try {
+			genericListResponse = new GenericListResponse<StateProjectRequest>();
+			listStateProjectRequests = stateProjectRequestRepository.findAll();
+			if (listStateProjectRequests.isEmpty() || listStateProjectRequests == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+			}
+			genericListResponse.setGenericList(listStateProjectRequests);
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {

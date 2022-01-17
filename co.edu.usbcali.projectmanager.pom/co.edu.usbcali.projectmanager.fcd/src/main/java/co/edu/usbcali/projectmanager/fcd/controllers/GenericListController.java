@@ -15,6 +15,7 @@ import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.ResearchTypology;
 import co.edu.usbcali.projectmanager.model.entities.State;
+import co.edu.usbcali.projectmanager.model.entities.StateProjectRequest;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 
@@ -50,7 +51,7 @@ public class GenericListController {
 		GenericListResponse<State> usersProfileListResponse = genericListService.findStatesProgressAndAvalaible();
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = FcdConstants.FIND_STATE_SOLINI)
 	@ResponseBody
 	public ResponseEntity<?> findStateSolini() throws ProjectManagementException {
@@ -64,6 +65,15 @@ public class GenericListController {
 	public ResponseEntity<?> findAllProfiles() throws ProjectManagementException {
 
 		GenericListResponse<Profile> usersProfileListResponse = genericListService.findAllProfiles();
+		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FINDALL_STATE_PROJECT_REQUEST)
+	@ResponseBody
+	public ResponseEntity<?> findAllStateProjectRequest() throws ProjectManagementException {
+
+		GenericListResponse<StateProjectRequest> usersProfileListResponse = genericListService
+				.findAllStateProjectRequest();
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 }

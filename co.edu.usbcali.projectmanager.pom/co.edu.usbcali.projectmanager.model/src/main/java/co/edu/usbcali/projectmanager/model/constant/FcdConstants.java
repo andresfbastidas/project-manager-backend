@@ -38,6 +38,8 @@ public class FcdConstants {
 	
 	public static final String FINDALL_PROFILES = "/findAllProfiles";
 	
+	public static final String FINDALL_STATE_PROJECT_REQUEST = "/findAllStateProjectRequest";
+	
 	public static final String FINDALL_PROJECTS_BY_STATE = "/findAllProjectsState/";
 	
 	public static final String FINDALL_PROJECTS_BY_USER_NAME = "/findAllProjectsByUserName/";
