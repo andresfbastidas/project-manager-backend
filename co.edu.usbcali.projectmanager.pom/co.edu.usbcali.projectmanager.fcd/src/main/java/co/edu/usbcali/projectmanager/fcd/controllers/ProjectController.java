@@ -139,11 +139,9 @@ public class ProjectController extends FcdUtil {
 			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName,
 			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
 			throws ProjectManagementException {
-		PageSetting pageSetting = new PageSetting();
-		pageSetting.setNumPage(numPage);
-		pageSetting.setNumReg(size);
+		Pageable paging = PageRequest.of(numPage, size);
 		ListProjectRequestsResponse listProjectRequestsResponse = new ListProjectRequestsResponse();
-		listProjectRequestsResponse = projectService.findProjectRequestByState(pageSetting, stateFirst, stateSecond,
+		listProjectRequestsResponse = projectService.findProjectRequestByState(paging, stateFirst, stateSecond,
 				stateThird, userName);
 		return new ResponseEntity<>(listProjectRequestsResponse, HttpStatus.OK);
 	}
@@ -153,8 +151,7 @@ public class ProjectController extends FcdUtil {
 	@ResponseBody
 	public ResponseEntity<?> findProjectRequestByStateUser(@Valid @PathVariable Long stateFirst,
 			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName,
-			@RequestParam int numPage, @RequestParam int size)
-			throws ProjectManagementException {
+			@RequestParam int numPage, @RequestParam int size) throws ProjectManagementException {
 		Pageable paging = PageRequest.of(numPage, size);
 		ListProjectRequestsResponse listProjectRequestsResponse = new ListProjectRequestsResponse();
 		listProjectRequestsResponse = projectService.findProjectRequestByStateUser(paging, stateFirst, stateSecond,

@@ -320,15 +320,14 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ListProjectRequestsResponse findProjectRequestByState(PageSetting page, Long stateProjectRequestFirst,
+	public ListProjectRequestsResponse findProjectRequestByState(Pageable page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException {
 		Page<ProjectRequestDTO> listProjectRequests = null;
 		ListProjectRequestsResponse listProjectRequestsResponse = null;
 		try {
-			listProjectRequests = projectRequestDTORepository.findProjectRequestByStateForDirector(
-					this.getPageRequest(page), stateProjectRequestFirst, stateProjectRequestSecond,
-					stateProjectRequestThird, userName);
+			listProjectRequests = projectRequestDTORepository.findProjectRequestByStateForDirector(page,
+					stateProjectRequestFirst, stateProjectRequestSecond, stateProjectRequestThird, userName);
 			if (listProjectRequests.getContent().isEmpty() || listProjectRequests.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
 						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
@@ -336,7 +335,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 			listProjectRequestsResponse = new ListProjectRequestsResponse();
 			listProjectRequestsResponse.setListProjectRequests(listProjectRequests.getContent());
-			//listProjectRequestsResponse.setPagable(listProjectRequests.getPageable());
+			listProjectRequestsResponse.setCurrentPage(listProjectRequests.getNumber());
+			listProjectRequestsResponse.setTotalElements(listProjectRequests.getTotalElements());
+			listProjectRequestsResponse.setTotalPages(listProjectRequests.getTotalPages());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {

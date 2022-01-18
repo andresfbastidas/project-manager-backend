@@ -47,7 +47,7 @@ public interface IProjectService {
 
 	public void declineProject(DeclineRequest declineRequest) throws ProjectManagementException;
 
-	public ListProjectRequestsResponse findProjectRequestByState(PageSetting page, Long stateProjectRequestFirst,
+	public ListProjectRequestsResponse findProjectRequestByState(Pageable page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException;
 
