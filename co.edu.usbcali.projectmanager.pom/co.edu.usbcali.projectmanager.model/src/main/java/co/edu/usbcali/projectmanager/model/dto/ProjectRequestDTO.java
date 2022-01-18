@@ -28,8 +28,11 @@ public class ProjectRequestDTO implements Serializable {
 	@Column(name = "details")
 	private String details;
 
+	@Column(name = "project_director")
+	private String projectDirector;
+
 	public ProjectRequestDTO(Long projectRequestId, Long projectId, Long stateProjectRequestId,
-			String stateNameProjectRequest, String userName, String details) {
+			String stateNameProjectRequest, String userName, String details, String projectDirector) {
 		super();
 		this.projectRequestId = projectRequestId;
 		this.projectId = projectId;
@@ -37,11 +40,20 @@ public class ProjectRequestDTO implements Serializable {
 		this.stateNameProjectRequest = stateNameProjectRequest;
 		this.userName = userName;
 		this.details = details;
+		this.projectDirector = projectDirector;
 	}
 
 	public ProjectRequestDTO() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getProjectDirector() {
+		return projectDirector;
+	}
+
+	public void setProjectDirector(String projectDirector) {
+		this.projectDirector = projectDirector;
 	}
 
 	public Long getProjectRequestId() {

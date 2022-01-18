@@ -24,9 +24,10 @@ import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
-import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
+import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
@@ -110,7 +111,7 @@ public class ProjectController extends FcdUtil {
 	}
 
 	@PutMapping(path = FcdConstants.APPROVAL_PROJECTS, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> approvalProjects(@Valid @RequestBody ApprovalDeclineRequest approvalDeclineRequest)
+	public ResponseEntity<?> approvalProjects(@Valid @RequestBody ApprovalRequest approvalDeclineRequest)
 			throws ProjectManagementException {
 
 		projectService.approvalProject(approvalDeclineRequest);
@@ -120,10 +121,10 @@ public class ProjectController extends FcdUtil {
 	}
 
 	@PutMapping(path = FcdConstants.DECLINE_PROJECTS, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> declineProjects(@Valid @RequestBody ApprovalDeclineRequest approvalDeclineRequest)
+	public ResponseEntity<?> declineProjects(@Valid @RequestBody DeclineRequest declineRequest)
 			throws ProjectManagementException {
 
-		projectService.declineProject(approvalDeclineRequest);
+		projectService.declineProject(declineRequest);
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.DECLINE_PROJECTS);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);

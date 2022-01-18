@@ -10,9 +10,10 @@ import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
-import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
+import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
@@ -40,9 +41,9 @@ public interface IProjectService {
 	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(PageSetting page, Long projectId)
 			throws ProjectManagementException;
 
-	public void approvalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
+	public void approvalProject(ApprovalRequest approvalRequest) throws ProjectManagementException;
 
-	public void declineProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException;
+	public void declineProject(DeclineRequest declineRequest) throws ProjectManagementException;
 
 	public ListProjectRequestsResponse findProjectRequestByState(PageSetting page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)

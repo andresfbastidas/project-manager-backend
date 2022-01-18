@@ -27,9 +27,10 @@ import co.edu.usbcali.projectmanager.model.entities.State;
 import co.edu.usbcali.projectmanager.model.entities.StateProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
-import co.edu.usbcali.projectmanager.model.request.ApprovalDeclineRequest;
+import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
@@ -372,10 +373,10 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void approvalProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
+	public void approvalProject(ApprovalRequest approvalRequest) throws ProjectManagementException {
 		try {
 
-			for (ProjectRequest projectRequest : approvalDeclineRequest.getListProjectRequests()) {
+			for (ProjectRequest projectRequest : approvalRequest.getListProjectRequests()) {
 				if (projectRequest.getStateProjectRequest().getStateProjectRequestId()
 						.equals(KeyConstants.PENDING_STATE)) {
 					projectRequestRepository.updateProjectRequest(KeyConstants.APPROVAL_STATE,
@@ -385,6 +386,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
 					associatedUserProjectRequest.setProjectId(projectRequest.getProject().getProjectId());
 					associatedUserProjectRequest.setUserName(projectRequest.getUserapp().getUserName());
+					this.associateUser(associatedUserProjectRequest);
+					associatedUserProjectRequest.setUserName(approvalRequest.getProjectDirector());
 					this.associateUser(associatedUserProjectRequest);
 				} else {
 					buildCustomException(KeyConstants.ERROR_APPROVAL_DECLINE_PROJECTS,
@@ -401,9 +404,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public void declineProject(ApprovalDeclineRequest approvalDeclineRequest) throws ProjectManagementException {
+	public void declineProject(DeclineRequest declineRequest) throws ProjectManagementException {
 		try {
-			for (ProjectRequest projectRequest : approvalDeclineRequest.getListProjectRequests()) {
+			for (ProjectRequest projectRequest : declineRequest.getListProjectRequests()) {
 				if (projectRequest.getStateProjectRequest().getStateProjectRequestId()
 						.equals(KeyConstants.PENDING_STATE)) {
 					projectRequestRepository.updateProjectRequest(KeyConstants.DECLINED_STATE_PROJECT_REQUEST,
