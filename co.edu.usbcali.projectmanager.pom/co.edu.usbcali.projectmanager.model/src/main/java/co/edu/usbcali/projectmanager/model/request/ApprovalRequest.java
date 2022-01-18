@@ -11,6 +11,16 @@ public class ApprovalRequest implements Serializable {
 
 	private String projectDirector;
 
+	private String details;
+
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
+	}
+
 	public String getProjectDirector() {
 		return projectDirector;
 	}

@@ -9,7 +9,15 @@ public class DeclineRequest implements Serializable {
 
 	private List<ProjectRequest> listProjectRequests;
 
-	private String projectDirector;
+	private String details;
+
+	public String getDetails() {
+		return details;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
+	}
 
 	public List<ProjectRequest> getListProjectRequests() {
 		return listProjectRequests;
@@ -17,14 +25,6 @@ public class DeclineRequest implements Serializable {
 
 	public void setListProjectRequests(List<ProjectRequest> listProjectRequests) {
 		this.listProjectRequests = listProjectRequests;
-	}
-
-	public String getProjectDirector() {
-		return projectDirector;
-	}
-
-	public void setProjectDirector(String projectDirector) {
-		this.projectDirector = projectDirector;
 	}
 
 	/**

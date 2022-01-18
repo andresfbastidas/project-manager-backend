@@ -2,6 +2,8 @@ package co.edu.usbcali.projectmanager.business.interfaces;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+
 import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
@@ -49,7 +51,7 @@ public interface IProjectService {
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException;
 
-	public ListProjectRequestsResponse findProjectRequestByStateUser(PageSetting page, Long stateProjectRequestFirst,
+	public ListProjectRequestsResponse findProjectRequestByStateUser(Pageable page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException;
 }

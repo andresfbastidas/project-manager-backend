@@ -3,6 +3,8 @@ package co.edu.usbcali.projectmanager.fcd.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -151,14 +153,11 @@ public class ProjectController extends FcdUtil {
 	@ResponseBody
 	public ResponseEntity<?> findProjectRequestByStateUser(@Valid @PathVariable Long stateFirst,
 			@PathVariable Long stateSecond, @PathVariable Long stateThird, @PathVariable String userName,
-			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
+			@RequestParam int numPage, @RequestParam int size)
 			throws ProjectManagementException {
-
-		PageSetting pageSetting = new PageSetting();
-		pageSetting.setNumPage(numPage);
-		pageSetting.setNumReg(size);
+		Pageable paging = PageRequest.of(numPage, size);
 		ListProjectRequestsResponse listProjectRequestsResponse = new ListProjectRequestsResponse();
-		listProjectRequestsResponse = projectService.findProjectRequestByStateUser(pageSetting, stateFirst, stateSecond,
+		listProjectRequestsResponse = projectService.findProjectRequestByStateUser(paging, stateFirst, stateSecond,
 				stateThird, userName);
 		return new ResponseEntity<>(listProjectRequestsResponse, HttpStatus.OK);
 	}

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -335,7 +336,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 			listProjectRequestsResponse = new ListProjectRequestsResponse();
 			listProjectRequestsResponse.setListProjectRequests(listProjectRequests.getContent());
-			listProjectRequestsResponse.setPagable(listProjectRequests.getPageable());
+			//listProjectRequestsResponse.setPagable(listProjectRequests.getPageable());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -347,22 +348,23 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ListProjectRequestsResponse findProjectRequestByStateUser(PageSetting page, Long stateProjectRequestFirst,
+	public ListProjectRequestsResponse findProjectRequestByStateUser(Pageable page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException {
 		Page<ProjectRequestDTO> listProjectRequests = null;
 		ListProjectRequestsResponse listProjectRequestsResponse = null;
 		try {
-			listProjectRequests = projectRequestDTORepository.findProjectRequestByStateForUser(
-					this.getPageRequest(page), stateProjectRequestFirst, stateProjectRequestSecond,
-					stateProjectRequestThird, userName);
+			listProjectRequests = projectRequestDTORepository.findProjectRequestByStateForUser(page,
+					stateProjectRequestFirst, stateProjectRequestSecond, stateProjectRequestThird, userName);
 			if (listProjectRequests.getContent().isEmpty() || listProjectRequests.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
 						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
 			}
 			listProjectRequestsResponse = new ListProjectRequestsResponse();
 			listProjectRequestsResponse.setListProjectRequests(listProjectRequests.getContent());
-			listProjectRequestsResponse.setPagable(listProjectRequests.getPageable());
+			listProjectRequestsResponse.setCurrentPage(listProjectRequests.getNumber());
+			listProjectRequestsResponse.setTotalElements(listProjectRequests.getTotalElements());
+			listProjectRequestsResponse.setTotalPages(listProjectRequests.getTotalPages());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -380,7 +382,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 				if (projectRequest.getStateProjectRequest().getStateProjectRequestId()
 						.equals(KeyConstants.PENDING_STATE)) {
 					projectRequestRepository.updateProjectRequest(KeyConstants.APPROVAL_STATE,
-							projectRequest.getDetails(), projectRequest.getProjectRequestId());
+							approvalRequest.getDetails(), projectRequest.getProjectRequestId());
 					projectRepository.updateStateProject(KeyConstants.AVALAIBLE_STATE,
 							projectRequest.getProject().getProjectId());
 					AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
@@ -410,7 +412,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 				if (projectRequest.getStateProjectRequest().getStateProjectRequestId()
 						.equals(KeyConstants.PENDING_STATE)) {
 					projectRequestRepository.updateProjectRequest(KeyConstants.DECLINED_STATE_PROJECT_REQUEST,
-							projectRequest.getDetails(), projectRequest.getProjectRequestId());
+							declineRequest.getDetails(), projectRequest.getProjectRequestId());
 					projectRepository.updateStateProject(KeyConstants.DECLINED_STATE,
 							projectRequest.getProject().getProjectId());
 				} else {
