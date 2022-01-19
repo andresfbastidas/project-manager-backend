@@ -3,6 +3,7 @@ package co.edu.usbcali.projectmanager.fcd.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.json.JsonMergePatch;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,10 +32,10 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.LoginRequest;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
+import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.JwtResponse;
 import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
-import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 
 @RestController
 @RequestMapping(path = FcdConstants.USER)
@@ -90,6 +92,17 @@ public class UserAppController {
 
 		GenericListResponse<Userapp> usersProfileListResponse = userServiceImpl.findAllUsersProfile();
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
+	}
+	
+	@PatchMapping(path = FcdConstants.UPDATE_USER+"{userName}", consumes = "application/merge-patch+json")
+
+	public ResponseEntity<?> updateUser(@PathVariable String userName,
+            @RequestBody JsonMergePatch patchDocument) throws ProjectManagementException {
+
+		userServiceImpl.updateUser(patchDocument, userName);
+		GenericResponse genericResponse = new GenericResponse();
+		genericResponse.setMessage(KeyConstants.UPDATE_USER);
+		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 	}
 
 }

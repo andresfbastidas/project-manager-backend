@@ -2,6 +2,7 @@ package co.edu.usbcali.projectmanager.business.implement;
 
 import java.util.List;
 
+import javax.json.JsonMergePatch;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -13,6 +14,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import co.edu.usbcali.projectmanager.business.interfaces.IUserService;
+import co.edu.usbcali.projectmanager.business.jsonpatch.JsonMergePatchMapper;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dao.UserDetailsDAO;
@@ -25,7 +28,7 @@ import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
-public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsService {
+public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsService, IUserService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
@@ -36,6 +39,9 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 
 	@Autowired
 	private PasswordEncoder encoder;
+
+	@Autowired
+	private JsonMergePatchMapper<Userapp> mergeMapper;
 
 	@Override
 	@Transactional
@@ -109,14 +115,32 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			user.setPassword(encoder.encode(signupRequest.getUserapp().getPassword()));
 			user.setFirstName(signupRequest.getUserapp().getFirstName());
 			user.setSurname(signupRequest.getUserapp().getSurname());
-		    user.setSecondName(signupRequest.getUserapp().getSecondName());
-		    user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
+			user.setSecondName(signupRequest.getUserapp().getSecondName());
+			user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
 			Profile profile = new Profile();
 			profile.setProfileId(signupRequest.getProfileId());
 			user.setProfile(profile);
 
 			userAppRepository.save(user);
 
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+	}
+
+	@Override
+	public void updateUser(JsonMergePatch patchDocument, String userName) throws ProjectManagementException {
+		Userapp userAppPatched = null;
+		UserNameResponse userNameResponse = null;
+		try {
+			userNameResponse = this.findByUserName(userName);
+
+			userAppPatched = mergeMapper.apply(userNameResponse.getUserapp(), patchDocument);
+			userAppRepository.save(userAppPatched);
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
