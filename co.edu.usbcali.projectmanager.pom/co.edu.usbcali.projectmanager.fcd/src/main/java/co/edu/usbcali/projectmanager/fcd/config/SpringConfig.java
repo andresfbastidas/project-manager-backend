@@ -23,7 +23,7 @@ public class SpringConfig<T> {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.registerModule(new JSR353Module());
 		ObjectMapper objectMapper = new ObjectMapper();
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm a z");
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 		mapper.setDateFormat(df);
 		objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
