@@ -14,10 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * The persistent class for the project database table.
@@ -25,6 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -34,11 +34,9 @@ public class Project implements Serializable {
 	@Column(name = "project_id")
 	private Long projectId;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "date_from")
 	private Date dateFrom;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "date_until")
 	private Date dateUntil;
 
