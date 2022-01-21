@@ -35,7 +35,6 @@ import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
-import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRequestDTORepository;
@@ -91,14 +90,14 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					createProjectRequest.getProject().getProjectDirector(),
 					createProjectRequest.getUserapp().getUserName());
 
-			UserNameResponse userNameResponse = new UserNameResponse();
-			userNameResponse = userDetailsServiceImpl.findByUserName(createProjectRequest.getUserapp().getUserName());
+			Userapp userapp = new Userapp();
+			userapp = userDetailsServiceImpl.findByUserName(createProjectRequest.getUserapp().getUserName());
 			projectRepository.saveAndFlush(project);
 			this.saveProjectDelivery(createProjectRequest.getDeliveries(), project);
 			if (createProjectRequest.getState().getStateId().equals(KeyConstants.SOLINI_STATE)) {
 				ProjectRequest projectRequest = new ProjectRequest();
 				projectRequest.setProject(project);
-				projectRequest.setUserapp(userNameResponse.getUserapp());
+				projectRequest.setUserapp(userapp);
 				StateProjectRequest stateProjectRequest = new StateProjectRequest();
 				stateProjectRequest.setStateProjectRequestId(KeyConstants.PENDING_STATE);
 				projectRequest.setStateProjectRequest(stateProjectRequest);
@@ -106,7 +105,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			} else {
 				AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
 				associatedUserProjectRequest.setProjectId(project.getProjectId());
-				associatedUserProjectRequest.setUserName(userNameResponse.getUserapp().getUserName());
+				associatedUserProjectRequest.setUserName(userapp.getUserName());
 				this.associateUser(associatedUserProjectRequest);
 			}
 
@@ -169,14 +168,14 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void associateUser(AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException {
-		UserNameResponse userNameResponse = null;
+		Userapp userapp = null;
 		try {
-			userNameResponse = userDetailsServiceImpl.findByUserName(associatedUserProject.getUserName());
+			userapp = userDetailsServiceImpl.findByUserName(associatedUserProject.getUserName());
 
 			Project project = this.findByProjectId(associatedUserProject.getProjectId());
 			if (project.getState().getStateId() == KeyConstants.AVALAIBLE_STATE
 					|| project.getState().getStateId() == KeyConstants.PROGRESS_STATE) {
-				this.saveProjectUser(project, userNameResponse.getUserapp());
+				this.saveProjectUser(project, userapp);
 			} else {
 				buildCustomException(KeyConstants.ERROR_NOT_ASSOCIATED_USER_PROJECT,
 						KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT);

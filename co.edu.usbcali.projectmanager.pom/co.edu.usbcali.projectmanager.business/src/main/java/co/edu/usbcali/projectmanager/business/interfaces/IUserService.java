@@ -7,13 +7,12 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
-import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 
 public interface IUserService {
 
 	public UserDetails loadUserByUsername(String userName) throws BadCredentialsException;
 
-	public UserNameResponse findByUserName(String userName) throws ProjectManagementException;
+	public Userapp findByUserName(String userName) throws ProjectManagementException;
 
 	public GenericListResponse<Userapp> findAllUsersProfile() throws ProjectManagementException;
 

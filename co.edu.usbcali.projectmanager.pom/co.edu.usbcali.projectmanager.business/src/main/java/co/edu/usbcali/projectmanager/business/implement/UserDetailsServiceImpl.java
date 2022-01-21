@@ -22,7 +22,6 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
-import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
@@ -55,16 +54,14 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 	}
 
 	@Transactional
-	public UserNameResponse findByUserName(String userName) throws ProjectManagementException {
+	public Userapp findByUserName(String userName) throws ProjectManagementException {
 		Userapp userApp = null;
-		UserNameResponse userNameResponse = null;
 		try {
 			userApp = userAppRepository.findByUserName(userName);
 			if (userApp == null) {
 				buildCustomException(KeyConstants.USER_NOT_FOUND, KeyConstants.ERROR_CODE_USER_NOT_EXISTS);
 			}
-			userNameResponse = new UserNameResponse();
-			userNameResponse.setUserapp(userApp);
+
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -72,7 +69,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
-		return userNameResponse;
+		return userApp;
 	}
 
 	public GenericListResponse<Userapp> findAllUsersProfile() throws ProjectManagementException {
@@ -129,21 +126,22 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 
 	@Override
 	public void updateUser(SignupRequest signupRequest) throws ProjectManagementException {
-		UserNameResponse userNameResponse = null;
+		Userapp userapp = null;
 		try {
-			userNameResponse = this.findByUserName(signupRequest.getUserapp().getUserName());
-			Userapp user = new Userapp();
-			user.setUserName(userNameResponse.getUserapp().getUserName());
-			user.setEmail(signupRequest.getUserapp().getEmail());
-			user.setPassword(encoder.encode(signupRequest.getUserapp().getPassword()));
-			user.setFirstName(signupRequest.getUserapp().getFirstName());
-			user.setSurname(signupRequest.getUserapp().getSurname());
-			user.setSecondName(signupRequest.getUserapp().getSecondName());
-			user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
+			userapp = this.findByUserName(signupRequest.getUserapp().getUserName());
+			userapp.setUserName(signupRequest.getUserapp().getUserName());
+			userapp.setEmail(signupRequest.getUserapp().getEmail());
+			if (signupRequest.getUserapp().getPassword() != null) {
+				userapp.setPassword(encoder.encode(signupRequest.getUserapp().getPassword()));
+			}
+			userapp.setFirstName(signupRequest.getUserapp().getFirstName());
+			userapp.setSurname(signupRequest.getUserapp().getSurname());
+			userapp.setSecondName(signupRequest.getUserapp().getSecondName());
+			userapp.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
 			Profile profile = new Profile();
 			profile.setProfileId(signupRequest.getUserapp().getProfile().getProfileId());
-			user.setProfile(profile);
-			userAppRepository.save(user);
+			userapp.setProfile(profile);
+			userAppRepository.save(userapp);
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -155,11 +153,11 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 
 	@Override
 	public void deleteUser(String userName) throws ProjectManagementException {
-		UserNameResponse userNameResponse = null;
+		Userapp userapp = null;
 		try {
-			userNameResponse = this.findByUserName(userName);
+			userapp = this.findByUserName(userName);
 
-			userAppRepository.delete(userNameResponse.getUserapp());
+			userAppRepository.delete(userapp);
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {

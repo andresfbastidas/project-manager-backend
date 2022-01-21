@@ -11,9 +11,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr353.JSR353Module;
 
-import co.edu.usbcali.projectmanager.business.jsonpatch.JsonMergePatchMapper;
-import co.edu.usbcali.projectmanager.business.jsonpatch.JsonPatchMapper;
-
 @Configuration
 public class SpringConfig<T> {
 
@@ -29,7 +26,7 @@ public class SpringConfig<T> {
 
 		return mapper;
 	}
-
+   /*
 	@Bean
 	public JsonPatchMapper<T> personJsonPatchMapper(ObjectMapper mapper) {
 		return new JsonPatchMapper<>(mapper);
@@ -39,5 +36,6 @@ public class SpringConfig<T> {
 	public JsonMergePatchMapper<T> personJsonMergePatchMapper(ObjectMapper mapper) {
 		return new JsonMergePatchMapper<>(mapper);
 	}
+	*/
 
 }
