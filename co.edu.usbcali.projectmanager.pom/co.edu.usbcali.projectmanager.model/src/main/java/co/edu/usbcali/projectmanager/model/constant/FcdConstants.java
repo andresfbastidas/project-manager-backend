@@ -26,7 +26,7 @@ public class FcdConstants {
 	
 	public static final String FIND_USER_NAME = "/findByUserName/";
 	
-	public static final String UPDATE_USER = "/updateUser/";
+	public static final String UPDATE_USER = "/updateUser";
 	
 	public static final String FINDALL_USERS_PROFILE = "/findAllUsersProfile";
 	

@@ -16,7 +16,7 @@ import java.io.IOException;
 public class JsonMergePatchHttpMessageConverter extends AbstractHttpMessageConverter<JsonMergePatch> {
 
     public JsonMergePatchHttpMessageConverter() {
-        super(MediaType.valueOf("application/merge-patch+json"));
+        super(MediaType.valueOf("application/json"));
     }
 
     @Override

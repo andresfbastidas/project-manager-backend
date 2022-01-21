@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -94,11 +95,9 @@ public class UserAppController {
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 	
-	@PatchMapping(path = FcdConstants.UPDATE_USER+"{userName}", consumes = "application/merge-patch+json")
-
-	public ResponseEntity<?> updateUser(@PathVariable String userName,
+	@PatchMapping(path = FcdConstants.UPDATE_USER, consumes = "application/json")
+	public ResponseEntity<?> updateUser(@RequestParam String userName,
             @RequestBody JsonMergePatch patchDocument) throws ProjectManagementException {
-
 		userServiceImpl.updateUser(patchDocument, userName);
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.UPDATE_USER);
