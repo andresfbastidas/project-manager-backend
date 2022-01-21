@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,8 +66,7 @@ public class UserAppController {
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 
-		return ResponseEntity.ok(
-				new JwtResponse(jwt, userDetails.getUsername(), userDetails.getEmail(), roles));
+		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getEmail(), roles));
 	}
 
 	@PostMapping(path = FcdConstants.CREATE_USER, consumes = "application/json", produces = "application/json")
@@ -79,14 +79,14 @@ public class UserAppController {
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 	}
 
-	@GetMapping(path = FcdConstants.FIND_USER_NAME+"{userName}")
+	@GetMapping(path = FcdConstants.FIND_USER_NAME + "{userName}")
 	@ResponseBody
 	public ResponseEntity<?> findUserName(@Valid @PathVariable String userName) throws ProjectManagementException {
 
 		UserNameResponse userNameResponse = userServiceImpl.findByUserName(userName);
 		return new ResponseEntity<>(userNameResponse, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(path = FcdConstants.FINDALL_USERS_PROFILE)
 	@ResponseBody
 	public ResponseEntity<?> findAllUsersProfile() throws ProjectManagementException {
@@ -94,13 +94,21 @@ public class UserAppController {
 		GenericListResponse<Userapp> usersProfileListResponse = userServiceImpl.findAllUsersProfile();
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
-	
+
 	@PatchMapping(path = FcdConstants.UPDATE_USER, consumes = "application/json")
-	public ResponseEntity<?> updateUser(@RequestParam String userName,
-            @RequestBody JsonMergePatch patchDocument) throws ProjectManagementException {
+	public ResponseEntity<?> updateUser(@RequestParam String userName, @RequestBody JsonMergePatch patchDocument)
+			throws ProjectManagementException {
 		userServiceImpl.updateUser(patchDocument, userName);
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.UPDATE_USER);
+		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+	}
+
+	@DeleteMapping(path = FcdConstants.DELETE_USER)
+	public ResponseEntity<?> deleteUser(@RequestParam String userName) throws ProjectManagementException {
+		userServiceImpl.deleteUser(userName);
+		GenericResponse genericResponse = new GenericResponse();
+		genericResponse.setMessage(KeyConstants.DELETE_USER);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 	}
 

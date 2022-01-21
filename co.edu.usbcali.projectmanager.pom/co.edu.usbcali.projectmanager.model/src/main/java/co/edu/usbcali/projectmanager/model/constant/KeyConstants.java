@@ -10,6 +10,7 @@ public class KeyConstants {
 	public static final String SUCCESS_APPROVAL = "Proyectos aprobados";
 	public static final String DECLINE_PROJECTS = "Proyectos declinados";
 	public static final String UPDATE_USER = "Usuario actualizado";
+	public static final String DELETE_USER = "Usuario borrado";
 
 	// Messages Errors
 	public static final String USER_NOT_FOUND = "El usuario no existe";

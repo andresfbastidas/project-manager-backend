@@ -150,4 +150,20 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 
 	}
 
+	@Override
+	public void deleteUser(String userName) throws ProjectManagementException {
+		UserNameResponse userNameResponse = null;
+		try {
+			userNameResponse = this.findByUserName(userName);
+
+			userAppRepository.delete(userNameResponse.getUserapp());
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+	}
+
 }

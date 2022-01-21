@@ -28,6 +28,8 @@ public class FcdConstants {
 	
 	public static final String UPDATE_USER = "/updateUser";
 	
+	public static final String DELETE_USER = "/deleteUser";
+	
 	public static final String FINDALL_USERS_PROFILE = "/findAllUsersProfile";
 	
 	public static final String FINDALL_DELIVERYS = "/findAllDeliverys";

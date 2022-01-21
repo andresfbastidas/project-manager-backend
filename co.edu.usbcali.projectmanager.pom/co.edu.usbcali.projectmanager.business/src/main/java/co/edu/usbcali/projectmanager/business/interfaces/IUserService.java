@@ -20,7 +20,9 @@ public interface IUserService {
 	public GenericListResponse<Userapp> findAllUsersProfile() throws ProjectManagementException;
 
 	public void registerUser(SignupRequest signupRequest) throws ProjectManagementException;
-	
-	public void updateUser(JsonMergePatch patchDocument,  String userName) throws ProjectManagementException;
+
+	public void updateUser(JsonMergePatch patchDocument, String userName) throws ProjectManagementException;
+
+	public void deleteUser(String userName) throws ProjectManagementException;
 
 }
