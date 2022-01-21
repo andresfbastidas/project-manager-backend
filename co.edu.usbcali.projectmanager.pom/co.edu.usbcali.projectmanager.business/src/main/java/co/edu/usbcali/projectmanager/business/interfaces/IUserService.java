@@ -1,7 +1,5 @@
 package co.edu.usbcali.projectmanager.business.interfaces;
 
-import javax.json.JsonMergePatch;
-
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,7 +19,7 @@ public interface IUserService {
 
 	public void registerUser(SignupRequest signupRequest) throws ProjectManagementException;
 
-	public void updateUser(JsonMergePatch patchDocument, String userName) throws ProjectManagementException;
+	public void updateUser(SignupRequest signupRequest) throws ProjectManagementException;
 
 	public void deleteUser(String userName) throws ProjectManagementException;
 

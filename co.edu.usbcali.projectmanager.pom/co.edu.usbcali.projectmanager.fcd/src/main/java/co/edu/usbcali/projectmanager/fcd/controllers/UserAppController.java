@@ -3,7 +3,6 @@ package co.edu.usbcali.projectmanager.fcd.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.json.JsonMergePatch;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -95,10 +94,9 @@ public class UserAppController {
 		return new ResponseEntity<>(usersProfileListResponse, HttpStatus.OK);
 	}
 
-	@PatchMapping(path = FcdConstants.UPDATE_USER, consumes = "application/json")
-	public ResponseEntity<?> updateUser(@RequestParam String userName, @RequestBody JsonMergePatch patchDocument)
-			throws ProjectManagementException {
-		userServiceImpl.updateUser(patchDocument, userName);
+	@PutMapping(path = FcdConstants.UPDATE_USER, consumes = "application/json")
+	public ResponseEntity<?> updateUser(@RequestBody SignupRequest signupRequest) throws ProjectManagementException {
+		userServiceImpl.updateUser(signupRequest);
 		GenericResponse genericResponse = new GenericResponse();
 		genericResponse.setMessage(KeyConstants.UPDATE_USER);
 		return new ResponseEntity<>(genericResponse, HttpStatus.OK);

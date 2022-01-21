@@ -2,7 +2,6 @@ package co.edu.usbcali.projectmanager.business.implement;
 
 import java.util.List;
 
-import javax.json.JsonMergePatch;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import co.edu.usbcali.projectmanager.business.interfaces.IUserService;
-import co.edu.usbcali.projectmanager.business.jsonpatch.JsonMergePatchMapper;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dao.UserDetailsDAO;
@@ -39,9 +37,6 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 
 	@Autowired
 	private PasswordEncoder encoder;
-
-	@Autowired
-	private JsonMergePatchMapper<Userapp> mergeMapper;
 
 	@Override
 	@Transactional
@@ -133,14 +128,22 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 	}
 
 	@Override
-	public void updateUser(JsonMergePatch patchDocument, String userName) throws ProjectManagementException {
-		Userapp userAppPatched = null;
+	public void updateUser(SignupRequest signupRequest) throws ProjectManagementException {
 		UserNameResponse userNameResponse = null;
 		try {
-			userNameResponse = this.findByUserName(userName);
-
-			userAppPatched = mergeMapper.apply(userNameResponse.getUserapp(), patchDocument);
-			userAppRepository.save(userAppPatched);
+			userNameResponse = this.findByUserName(signupRequest.getUserapp().getUserName());
+			Userapp user = new Userapp();
+			user.setUserName(userNameResponse.getUserapp().getUserName());
+			user.setEmail(signupRequest.getUserapp().getEmail());
+			user.setPassword(encoder.encode(signupRequest.getUserapp().getPassword()));
+			user.setFirstName(signupRequest.getUserapp().getFirstName());
+			user.setSurname(signupRequest.getUserapp().getSurname());
+			user.setSecondName(signupRequest.getUserapp().getSecondName());
+			user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
+			Profile profile = new Profile();
+			profile.setProfileId(signupRequest.getUserapp().getProfile().getProfileId());
+			user.setProfile(profile);
+			userAppRepository.save(user);
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
