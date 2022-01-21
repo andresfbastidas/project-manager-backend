@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
-import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
@@ -76,25 +75,19 @@ public class ProjectController extends FcdUtil {
 			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
 			throws ProjectManagementException {
 
-		PageSetting pageSetting = new PageSetting();
-		pageSetting.setNumPage(numPage);
-		pageSetting.setNumReg(size);
-		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(pageSetting,
-				stateId);
+		Pageable paging = PageRequest.of(numPage, size);
+		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(paging, stateId);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 
 	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_USER_NAME + "{userName}")
 	@ResponseBody
-	public ResponseEntity<?> findAllProjectsByUserName(@Valid @PathVariable String userName,
-			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
-			throws ProjectManagementException {
+	public ResponseEntity<?> findAllProjectsByUserName(@Valid @PathVariable String userName, @RequestParam int numPage,
+			@RequestParam int size) throws ProjectManagementException {
 
-		PageSetting pageSetting = new PageSetting();
-		pageSetting.setNumPage(numPage);
-		pageSetting.setNumReg(size);
+		Pageable paging = PageRequest.of(numPage, size);
 		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = projectService
-				.findAllProjectsByUserName(pageSetting, userName);
+				.findAllProjectsByUserName(paging, userName);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
 	}
 
@@ -104,11 +97,9 @@ public class ProjectController extends FcdUtil {
 			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
 			throws ProjectManagementException {
 
-		PageSetting pageSetting = new PageSetting();
-		pageSetting.setNumPage(numPage);
-		pageSetting.setNumReg(size);
+		Pageable paging = PageRequest.of(numPage, size);
 		ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProjectResponse = projectService
-				.listUsersByProject(pageSetting, projectId);
+				.listUsersByProject(paging, projectId);
 		return new ResponseEntity<>(listUsersByProjectResponse, HttpStatus.OK);
 	}
 

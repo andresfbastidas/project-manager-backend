@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
-import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectRequestDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
@@ -226,20 +225,22 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProjectListByStateResponse<Project> findAllProjectByState(PageSetting page, Long stateId)
+	public ProjectListByStateResponse<Project> findAllProjectByState(Pageable page, Long stateId)
 			throws ProjectManagementException {
 		ProjectListByStateResponse<Project> projectListResponse = null;
 		Page<Project> projects = null;
 		try {
 			projectListResponse = new ProjectListByStateResponse<Project>();
-			projects = projectRepository.findAllByProjectState(this.getPageRequest(page), stateId);
+			projects = projectRepository.findAllByProjectState(page, stateId);
 
 			if (projects.getContent().isEmpty() || projects.getContent() == null) {
 				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
 
 			projectListResponse.setProjectList(projects.getContent());
-			projectListResponse.setPagable(projects.getPageable());
+			projectListResponse.setCurrentPage(projects.getNumber());
+			projectListResponse.setTotalElements(projects.getTotalElements());
+			projectListResponse.setTotalPages(projects.getTotalPages());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -251,20 +252,22 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(PageSetting page, String userName)
+	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Pageable page, String userName)
 			throws ProjectManagementException {
 		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = null;
 		Page<ProjectUserDirectorNameDTO> projectList = null;
 		try {
 			projectListResponse = new ProjectListResponse<ProjectUserDirectorNameDTO>();
-			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(this.getPageRequest(page),
-					KeyConstants.ROL_DIRECTORID, userName);
+			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(page, KeyConstants.ROL_DIRECTORID,
+					userName);
 			if (projectList.getContent().isEmpty() || projectList.getContent() == null) {
 				buildCustomException(KeyConstants.PROJECT_LIST_EMPTY, KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY);
 			}
 
 			projectListResponse.setProjectList(projectList.getContent());
-			projectListResponse.setPagable(projectList.getPageable());
+			projectListResponse.setCurrentPage(projectList.getNumber());
+			projectListResponse.setTotalElements(projectList.getTotalElements());
+			projectListResponse.setTotalPages(projectList.getTotalPages());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -296,19 +299,20 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(PageSetting page, Long projectId)
+	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Pageable page, Long projectId)
 			throws ProjectManagementException {
 		Page<UsersByProjectDTO> listUsersByProjectDTOs = null;
 		ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProjectResponse = null;
 		try {
-			listUsersByProjectDTOs = usersByProjectsRepository.listAllUsersByProject(this.getPageRequest(page),
-					projectId);
+			listUsersByProjectDTOs = usersByProjectsRepository.listAllUsersByProject(page, projectId);
 			if (listUsersByProjectDTOs.getContent().isEmpty() || listUsersByProjectDTOs.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_USERS_BY_PROJECT, KeyConstants.ERROR_CODE_USERS_BY_PROJECT);
 			}
 			listUsersByProjectResponse = new ListUsersByProjectResponse<UsersByProjectDTO>();
 			listUsersByProjectResponse.setListUsers(listUsersByProjectDTOs.getContent());
-			listUsersByProjectResponse.setPagable(listUsersByProjectDTOs.getPageable());
+			listUsersByProjectResponse.setCurrentPage(listUsersByProjectDTOs.getNumber());
+			listUsersByProjectResponse.setTotalElements(listUsersByProjectDTOs.getTotalElements());
+			listUsersByProjectResponse.setTotalPages(listUsersByProjectDTOs.getTotalPages());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {

@@ -3,31 +3,37 @@ package co.edu.usbcali.projectmanager.model.response;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.data.domain.Pageable;
-
-import co.edu.usbcali.projectmanager.model.commons.PagedCustom;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 
 public class ProjectListByStateResponse<T> implements Serializable {
 
 	List<Project> projectList;
-	private Pageable pagable;
-	private PagedCustom pagedCustom;
+	private int currentPage;
+	private Long totalElements;
+	private int totalPages;
 
-	public Pageable getPagable() {
-		return pagable;
+	public int getCurrentPage() {
+		return currentPage;
 	}
 
-	public void setPagable(Pageable pagable) {
-		this.pagable = pagable;
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
 	}
 
-	public PagedCustom getPagedCustom() {
-		return pagedCustom;
+	public Long getTotalElements() {
+		return totalElements;
 	}
 
-	public void setPagedCustom(PagedCustom pagedCustom) {
-		this.pagedCustom = pagedCustom;
+	public void setTotalElements(Long totalElements) {
+		this.totalElements = totalElements;
+	}
+
+	public int getTotalPages() {
+		return totalPages;
+	}
+
+	public void setTotalPages(int totalPages) {
+		this.totalPages = totalPages;
 	}
 
 	public List<Project> getProjectList() {

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.domain.Pageable;
 
-import co.edu.usbcali.projectmanager.model.commons.PageSetting;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
@@ -34,13 +33,13 @@ public interface IProjectService {
 
 	public void saveProjectUser(Project project, Userapp userapp) throws ProjectManagementException;
 
-	public ProjectListByStateResponse<Project> findAllProjectByState(PageSetting page, Long stateId)
+	public ProjectListByStateResponse<Project> findAllProjectByState(Pageable page, Long stateId)
 			throws ProjectManagementException;
 
-	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(PageSetting page, String userName)
+	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Pageable page, String userName)
 			throws ProjectManagementException;
 
-	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(PageSetting page, Long projectId)
+	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Pageable page, Long projectId)
 			throws ProjectManagementException;
 
 	public void approvalProject(ApprovalRequest approvalRequest) throws ProjectManagementException;
