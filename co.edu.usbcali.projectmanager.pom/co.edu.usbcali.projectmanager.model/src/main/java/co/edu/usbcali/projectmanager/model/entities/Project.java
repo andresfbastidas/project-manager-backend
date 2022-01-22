@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -34,9 +35,11 @@ public class Project implements Serializable {
 	@Column(name = "project_id")
 	private Long projectId;
 
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "date_from")
 	private Date dateFrom;
 
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "date_until")
 	private Date dateUntil;
 
