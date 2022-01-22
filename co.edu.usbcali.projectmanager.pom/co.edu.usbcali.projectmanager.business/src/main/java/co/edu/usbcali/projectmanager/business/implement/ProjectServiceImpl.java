@@ -386,7 +386,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 				if (projectRequest.getStateProjectRequest().getStateProjectRequestId()
 						.equals(KeyConstants.PENDING_STATE)) {
 					projectRequestRepository.updateProjectRequest(KeyConstants.APPROVAL_STATE,
-							approvalRequest.getDetails(), projectRequest.getProjectRequestId());
+							projectRequest.getDetails(), projectRequest.getProjectRequestId());
 					projectRepository.updateStateProject(KeyConstants.AVALAIBLE_STATE,
 							projectRequest.getProject().getProjectId());
 					AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
