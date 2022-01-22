@@ -14,9 +14,8 @@ public interface IGenericListService {
 
 	public GenericListResponse<ResearchTypology> findAllResearchTypologyList() throws ProjectManagementException;
 
-	public GenericListResponse<State> findStatesProgressAndAvalaible() throws ProjectManagementException;
-
-	public GenericListResponse<State> findStatesSolini() throws ProjectManagementException;
+	public GenericListResponse<State> findAllStatesProjects(Long solini, Long decline, Long finished, Long progress,
+			Long avalaible) throws ProjectManagementException;
 
 	public GenericListResponse<Profile> findAllProfiles() throws ProjectManagementException;
 

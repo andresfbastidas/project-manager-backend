@@ -40,9 +40,7 @@ public class FcdConstants {
 	
 	public static final String FINDALL_RESEARCH_TYPOLOGYS = "/findAllResearchTypologys";
 	
-	public static final String FIND_STATES_PROGRESS_AVALAIBLE = "/findStatesProgressAvalaible";
-	
-	public static final String FIND_STATE_SOLINI = "/findStateSolini";
+	public static final String FIND_ALL_STATES_PROJECTS = "/findAllStatesProjects/";
 	
 	public static final String FINDALL_PROFILES = "/findAllProfiles";
 	
