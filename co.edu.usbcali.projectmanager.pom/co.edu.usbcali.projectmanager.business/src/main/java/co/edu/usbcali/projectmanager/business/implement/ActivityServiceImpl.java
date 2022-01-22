@@ -120,4 +120,21 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 		return listActivitiesResponse;
 	}
 
+	@Override
+	public Activity findActivityById(Long activityId) throws ProjectManagementException {
+		Activity activity = null;
+		try {
+			activity = activityRepository.findByActivityId(activityId);
+			if(activity == null) {
+				buildCustomException(KeyConstants.ERROR_FIND_ACTIVITY, KeyConstants.ERROR_CODE_FIND_ACTIVITY);
+			}
+		}catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return activity;
+	}
+
 }

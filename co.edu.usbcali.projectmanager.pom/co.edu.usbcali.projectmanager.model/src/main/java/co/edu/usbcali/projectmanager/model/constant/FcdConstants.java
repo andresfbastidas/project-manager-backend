@@ -9,6 +9,8 @@ public class FcdConstants {
 	public static final String PROJECT = CONTEXT_API + "/project";
 	
 	public static final String ACTIVITY = CONTEXT_API + "/activity";
+	
+	public static final String COMMENT = CONTEXT_API + "/comment";
 
 	public static final String USER = CONTEXT_API + "/user";
 	
@@ -19,6 +21,8 @@ public class FcdConstants {
 	public static final String ASSOCIATED_PROJECT_USER = "/associatedProjectUser";
 	
 	public static final String CREATE_ACTIVITY = "/createActivity";
+	
+	public static final String NEW_COMMENT = "/newComment";
 
 	public static final String LOGIN = "/authenticate";
 

@@ -11,8 +11,8 @@ import co.edu.usbcali.projectmanager.model.entities.Activity;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
-	@Query(value = "SELECT *\n"
-			+ "	FROM public.activity ac\n"
-			+ "	where ac.project_id=?1", nativeQuery = true)
+	@Query(value = "SELECT *\n" + "	FROM public.activity ac\n" + "	where ac.project_id=?1", nativeQuery = true)
 	public List<Activity> findActivitiesByProjectId(Long projectId);
+
+	public Activity findByActivityId(Long activityId);
 }
