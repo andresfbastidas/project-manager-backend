@@ -15,6 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "project_request")
 @NamedQuery(name = "ProjectRequest.findAll", query = "SELECT p FROM ProjectRequest p")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
