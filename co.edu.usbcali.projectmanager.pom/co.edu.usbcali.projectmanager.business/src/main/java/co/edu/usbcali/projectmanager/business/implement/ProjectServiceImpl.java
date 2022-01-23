@@ -95,7 +95,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					createProjectRequest.getProject().getJustification(),
 					createProjectRequest.getProject().getProjectResearchTypologyId(), createProjectRequest.getState(),
 					createProjectRequest.getProject().getProjectDirector(),
-					createProjectRequest.getUserapp().getUserName());
+					createProjectRequest.getUserapp().getUserName(),
+					createProjectRequest.getProject().getInvestigationProblem());
 
 			Userapp userapp = new Userapp();
 			userapp = userDetailsServiceImpl.findByUserName(createProjectRequest.getUserapp().getUserName());
@@ -109,11 +110,14 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 				stateProjectRequest.setStateProjectRequestId(KeyConstants.PENDING_STATE);
 				projectRequest.setStateProjectRequest(stateProjectRequest);
 				projectRequestRepository.save(projectRequest);
-			} else {
+			} else if (createProjectRequest.getState().getStateId().equals(KeyConstants.PROGRESS_STATE)
+					|| createProjectRequest.getState().getStateId().equals(KeyConstants.AVALAIBLE_STATE)) {
 				AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
 				associatedUserProjectRequest.setProjectId(project.getProjectId());
 				associatedUserProjectRequest.setUserName(userapp.getUserName());
 				this.associateUser(associatedUserProjectRequest);
+			} else {
+				buildCustomException(KeyConstants.ERROR_PROJECT_STATE, KeyConstants.ERROR_CODE_PROJECT_STATE);
 			}
 
 		} catch (ProjectManagementException e) {
@@ -290,7 +294,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
 			String projectSummary, String projectMethology, String specificObjetive, String justification,
-			Long projectResearchId, State state, String projectDirector, String createBy) {
+			Long projectResearchId, State state, String projectDirector, String createBy, String investigationProblem) {
 		Project project = new Project();
 		project.setDateFrom(dateFrom);
 		project.setDateUntil(dateUntil);
@@ -304,6 +308,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		project.setState(state);
 		project.setProjectDirector(projectDirector);
 		project.setCreateBy(createBy);
+		project.setInvestigationProblem(investigationProblem);
 		return project;
 	}
 
@@ -466,7 +471,8 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 						updateProjectRequest.getProject().getJustification(),
 						updateProjectRequest.getProject().getProjectResearchTypologyId(), state,
 						updateProjectRequest.getProject().getProjectDirector(),
-						updateProjectRequest.getUserapp().getUserName());
+						updateProjectRequest.getUserapp().getUserName(),
+						updateProjectRequest.getProject().getInvestigationProblem());
 
 				Userapp userapp = new Userapp();
 				userapp = userDetailsServiceImpl.findByUserName(updateProjectRequest.getUserapp().getUserName());

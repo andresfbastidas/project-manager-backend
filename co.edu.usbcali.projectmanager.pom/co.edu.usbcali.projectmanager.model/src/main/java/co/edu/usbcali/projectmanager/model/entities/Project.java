@@ -70,6 +70,9 @@ public class Project implements Serializable {
 	@Column(name = "create_by")
 	private String createBy;
 
+	@Column(name = "investigation_problem")
+	private String investigationProblem;
+
 	// bi-directional many-to-one association to Activity
 	@OneToMany(mappedBy = "project")
 	@JsonIgnore
@@ -96,6 +99,14 @@ public class Project implements Serializable {
 	private List<ProjectUser> projectUsers;
 
 	public Project() {
+	}
+
+	public String getInvestigationProblem() {
+		return investigationProblem;
+	}
+
+	public void setInvestigationProblem(String investigationProblem) {
+		this.investigationProblem = investigationProblem;
 	}
 
 	public String getCreateBy() {

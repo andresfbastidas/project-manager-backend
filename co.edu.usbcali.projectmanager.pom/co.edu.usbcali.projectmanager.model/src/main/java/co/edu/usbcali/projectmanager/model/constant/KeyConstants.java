@@ -36,8 +36,10 @@ public class KeyConstants {
 	public static final String ERROR_FIND_ACTIVITY = "No se encontró la actividad";
 	public static final String ERROR_APPROVAL_DECLINE_PROJECTS= "El proyecto debe estar en estado PENDIENTE para aprobarlo o rechazarlo";
 	public static final String ERROR_UPDATE_PROJECT_REQUEST= "No fue posible actualizar la solcitud del proyecto, por favor revise el estado de la solicitud";
+	public static final String ERROR_PROJECT_STATE="Ocurrió un error al crear el proyecto, verifique el estado y vuelva intentar";
 	
 	// Error Codes
+	public static final String ERROR_CODE_PROJECT_STATE= "117";
 	public static final String ERROR_CODE_UPDATE_PROJECT_REQUEST= "116";
 	public static final String ERROR_CODE_FIND_ACTIVITY= "115";
 	public static final String ERROR_CODE_APPROVAL_DECLINE_PROJECTS= "114";
