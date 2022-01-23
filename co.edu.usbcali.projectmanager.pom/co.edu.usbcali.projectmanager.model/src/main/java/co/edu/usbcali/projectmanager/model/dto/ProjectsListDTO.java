@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 public class ProjectsListDTO implements Serializable {
 
@@ -17,9 +19,11 @@ public class ProjectsListDTO implements Serializable {
 	@Column(name = "date_from")
 	private Date dateFrom;
 
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "date_until")
 	private Date dateUntil;
 
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "general_objetive")
 	private String generalObjetive;
 
