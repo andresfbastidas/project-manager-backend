@@ -72,7 +72,7 @@ public class ProjectController extends FcdUtil {
 	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_STATE + "{stateId}")
 	@ResponseBody
 	public ResponseEntity<?> findAllProjectsByState(@PathVariable Long stateId,
-			@RequestParam(defaultValue = "0") int numPage, @RequestParam(defaultValue = "10") int size)
+			@RequestParam int numPage, @RequestParam int size)
 			throws ProjectManagementException {
 
 		Pageable paging = PageRequest.of(numPage, size);
