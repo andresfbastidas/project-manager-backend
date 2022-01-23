@@ -17,6 +17,7 @@ import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectRequestDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
+import co.edu.usbcali.projectmanager.model.dto.ProjectsListDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
@@ -36,6 +37,7 @@ import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
+import co.edu.usbcali.projectmanager.repository.ProjectListRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRequestDTORepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRequestRepository;
@@ -73,6 +75,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Autowired
 	private ProjectRequestDTORepository projectRequestDTORepository;
+
+	@Autowired
+	private ProjectListRepository projectListRepository;
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -227,10 +232,10 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 	public ProjectListByStateResponse<Project> findAllProjectByState(Pageable page, Long stateId)
 			throws ProjectManagementException {
 		ProjectListByStateResponse<Project> projectListResponse = null;
-		Page<Project> projects = null;
+		Page<ProjectsListDTO> projects = null;
 		try {
 			projectListResponse = new ProjectListByStateResponse<Project>();
-			projects = projectRepository.findAllByProjectState(page, stateId);
+			projects = projectListRepository.findAllByProjectState(page, stateId);
 
 			if (projects.getContent().isEmpty() || projects.getContent() == null) {
 				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);

@@ -3,11 +3,11 @@ package co.edu.usbcali.projectmanager.model.response;
 import java.io.Serializable;
 import java.util.List;
 
-import co.edu.usbcali.projectmanager.model.entities.Project;
+import co.edu.usbcali.projectmanager.model.dto.ProjectsListDTO;
 
 public class ProjectListByStateResponse<T> implements Serializable {
 
-	List<Project> projectList;
+	List<ProjectsListDTO> projectList;
 	private int currentPage;
 	private Long totalElements;
 	private int totalPages;
@@ -36,11 +36,11 @@ public class ProjectListByStateResponse<T> implements Serializable {
 		this.totalPages = totalPages;
 	}
 
-	public List<Project> getProjectList() {
+	public List<ProjectsListDTO> getProjectList() {
 		return projectList;
 	}
 
-	public void setProjectList(List<Project> projectList) {
+	public void setProjectList(List<ProjectsListDTO> projectList) {
 		this.projectList = projectList;
 	}
 

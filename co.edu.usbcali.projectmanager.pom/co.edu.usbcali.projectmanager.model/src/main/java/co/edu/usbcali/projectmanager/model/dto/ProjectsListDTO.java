@@ -6,25 +6,17 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import co.edu.usbcali.projectmanager.model.entities.State;
 
 @Entity
-public class ProjectUserDirectorNameDTO implements Serializable {
+public class ProjectsListDTO implements Serializable {
 
 	@Id
 	@Column(name = "project_id")
 	private Long projectId;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "date_from")
 	private Date dateFrom;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "date_until")
 	private Date dateUntil;
 
@@ -36,9 +28,6 @@ public class ProjectUserDirectorNameDTO implements Serializable {
 
 	@Column(name = "project_methology")
 	private String projectMethology;
-
-	@Column(name = "project_research_typology_id")
-	private Long projectResearchTypologyId;
 
 	@Column(name = "project_summary")
 	private String projectSummary;
@@ -52,26 +41,21 @@ public class ProjectUserDirectorNameDTO implements Serializable {
 	@Column(name = "project_director")
 	private String projectDirector;
 
-	@Column(name = "directorname")
-	private String directorName;
-
-	@Column(name = "create_by_names")
-	private String createByNames;
+	@Column(name = "typology_description")
+	private String typologyDescription;
 
 	@Column(name = "create_by")
 	private String createBy;
 
-	@Column(name = "users")
-	private String users;
+	@Column(name = "state_name")
+	private String stateName;
 
-	@ManyToOne
-	@JoinColumn(name = "state_id")
-	private State state;
+	@Column(name = "deliverys")
+	private String deliverys;
 
-	public ProjectUserDirectorNameDTO(Long projectId, Date dateFrom, Date dateUntil, String projectTitle,
-			String generalObjetive, String projectSummary, String projectMethology, String specificObjetive,
-			String justification, Long projectResearchTypologyId, State state, String projectDirector,
-			String directorName, String createBy, String users, String createByNames) {
+	public ProjectsListDTO(Long projectId, Date dateFrom, Date dateUntil, String generalObjetive, String justification,
+			String projectMethology, String projectSummary, String projectTitle, String specificObjetive,
+			String projectDirector, String typologyDescription, String createBy, String stateName, String deliverys) {
 		super();
 		this.projectId = projectId;
 		this.dateFrom = dateFrom;
@@ -79,53 +63,19 @@ public class ProjectUserDirectorNameDTO implements Serializable {
 		this.generalObjetive = generalObjetive;
 		this.justification = justification;
 		this.projectMethology = projectMethology;
-		this.projectResearchTypologyId = projectResearchTypologyId;
 		this.projectSummary = projectSummary;
 		this.projectTitle = projectTitle;
 		this.specificObjetive = specificObjetive;
 		this.projectDirector = projectDirector;
-		this.directorName = directorName;
-		this.state = state;
+		this.typologyDescription = typologyDescription;
 		this.createBy = createBy;
-		this.users = users;
-		this.createByNames = createByNames;
+		this.stateName = stateName;
+		this.deliverys = deliverys;
 	}
 
-	public ProjectUserDirectorNameDTO() {
+	public ProjectsListDTO() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	public String getCreateByNames() {
-		return createByNames;
-	}
-
-	public void setCreateByNames(String createByNames) {
-		this.createByNames = createByNames;
-	}
-
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	public String getUsers() {
-		return users;
-	}
-
-	public void setUsers(String users) {
-		this.users = users;
-	}
-
-	public State getState() {
-		return state;
-	}
-
-	public void setState(State state) {
-		this.state = state;
 	}
 
 	public Long getProjectId() {
@@ -176,14 +126,6 @@ public class ProjectUserDirectorNameDTO implements Serializable {
 		this.projectMethology = projectMethology;
 	}
 
-	public Long getProjectResearchTypologyId() {
-		return projectResearchTypologyId;
-	}
-
-	public void setProjectResearchTypologyId(Long projectResearchTypologyId) {
-		this.projectResearchTypologyId = projectResearchTypologyId;
-	}
-
 	public String getProjectSummary() {
 		return projectSummary;
 	}
@@ -216,14 +158,38 @@ public class ProjectUserDirectorNameDTO implements Serializable {
 		this.projectDirector = projectDirector;
 	}
 
-	public String getDirectorName() {
-		return directorName;
+	public String getTypologyDescription() {
+		return typologyDescription;
 	}
 
-	public void setDirectorName(String directorName) {
-		this.directorName = directorName;
+	public void setTypologyDescription(String typologyDescription) {
+		this.typologyDescription = typologyDescription;
 	}
 
-	private static final long serialVersionUID = 5576104201635957362L;
+	public String getCreateBy() {
+		return createBy;
+	}
+
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
+
+	public String getStateName() {
+		return stateName;
+	}
+
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+
+	public String getDeliverys() {
+		return deliverys;
+	}
+
+	public void setDeliverys(String deliverys) {
+		this.deliverys = deliverys;
+	}
+
+	private static final long serialVersionUID = 1L;
 
 }
