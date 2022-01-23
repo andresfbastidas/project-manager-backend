@@ -15,6 +15,6 @@ public interface ProjectRequestRepository extends JpaRepository<ProjectRequest, 
 	public void updateProjectRequest(Long stateProjectRequestId, String details, Long projectRequestId)
 			throws ProjectManagementException;
 
-	
+	public ProjectRequest findByProjectRequestId(Long projectId);
 
 }

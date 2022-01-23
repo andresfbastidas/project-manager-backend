@@ -29,11 +29,13 @@ import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
+import co.edu.usbcali.projectmanager.model.request.UpdateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectResponse;
 import co.edu.usbcali.projectmanager.model.utils.FcdUtil;
 
 @RestController
@@ -71,9 +73,8 @@ public class ProjectController extends FcdUtil {
 
 	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_STATE + "{stateId}")
 	@ResponseBody
-	public ResponseEntity<?> findAllProjectsByState(@PathVariable Long stateId,
-			@RequestParam int numPage, @RequestParam int size)
-			throws ProjectManagementException {
+	public ResponseEntity<?> findAllProjectsByState(@PathVariable Long stateId, @RequestParam int numPage,
+			@RequestParam int size) throws ProjectManagementException {
 
 		Pageable paging = PageRequest.of(numPage, size);
 		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(paging, stateId);
@@ -148,6 +149,24 @@ public class ProjectController extends FcdUtil {
 		listProjectRequestsResponse = projectService.findProjectRequestByStateUser(paging, stateFirst, stateSecond,
 				stateThird, userName);
 		return new ResponseEntity<>(listProjectRequestsResponse, HttpStatus.OK);
+	}
+
+	@PutMapping(path = FcdConstants.UPDATE_PROJECT_PROJECT_REQUEST, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> updateProjectAndProjectRequest(
+			@Valid @RequestBody UpdateProjectRequest updateProjectRequest) throws ProjectManagementException {
+
+		projectService.updateProjectAndProjectRequest(updateProjectRequest);
+		GenericResponse genericResponse = new GenericResponse();
+		genericResponse.setMessage(KeyConstants.UPDATE_PROJECT_AND_PROJECT_REQUEST);
+		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FIND_PROJECT_BY_ID + "{projectId}")
+	@ResponseBody
+	public ResponseEntity<?> findProjectById(@Valid @PathVariable Long projectId) throws ProjectManagementException {
+		ProjectResponse projectResponse = new ProjectResponse();
+		projectResponse = projectService.findByProjectId(projectId);
+		return new ResponseEntity<>(projectResponse, HttpStatus.OK);
 	}
 
 }

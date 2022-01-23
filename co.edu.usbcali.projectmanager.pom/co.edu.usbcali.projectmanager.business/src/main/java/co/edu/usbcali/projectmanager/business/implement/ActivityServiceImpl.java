@@ -21,6 +21,7 @@ import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ActivityRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 import co.edu.usbcali.projectmanager.model.response.ListActivitiesResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectResponse;
 import co.edu.usbcali.projectmanager.repository.ActivityRepository;
 import co.edu.usbcali.projectmanager.repository.StateActivityRepository;
 
@@ -43,16 +44,16 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void createActivity(ActivityRequest activityRequest) throws ProjectManagementException {
-		Project project = null;
 		try {
-			project = projectService.findByProjectId(activityRequest.getProjectId());
+			ProjectResponse projectResponse = new ProjectResponse();
+			projectResponse = projectService.findByProjectId(activityRequest.getProjectId());
 			Activity activity = this.buildActivity(activityRequest.getActivity().getActivityName(),
 					activityRequest.getActivity().getStateActivity(), activityRequest.getActivity().getDateFrom(),
-					activityRequest.getActivity().getDateUntil(), project,
+					activityRequest.getActivity().getDateUntil(), projectResponse.getProject(),
 					activityRequest.getActivity().getAssignedUser());
-			if (project.getState().getStateId().equals(KeyConstants.FINISHED_STATE)
-					|| project.getState().getStateId().equals(KeyConstants.DECLINED_STATE)
-					|| project.getState().getStateId().equals(KeyConstants.SOLINI_STATE)) {
+			if (projectResponse.getProject().getState().getStateId().equals(KeyConstants.FINISHED_STATE)
+					|| projectResponse.getProject().getState().getStateId().equals(KeyConstants.DECLINED_STATE)
+					|| projectResponse.getProject().getState().getStateId().equals(KeyConstants.SOLINI_STATE)) {
 				buildCustomException(KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT,
 						KeyConstants.ERROR_CREATE_ACTIVITY);
 			}
@@ -125,10 +126,10 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 		Activity activity = null;
 		try {
 			activity = activityRepository.findByActivityId(activityId);
-			if(activity == null) {
+			if (activity == null) {
 				buildCustomException(KeyConstants.ERROR_FIND_ACTIVITY, KeyConstants.ERROR_CODE_FIND_ACTIVITY);
 			}
-		}catch (ProjectManagementException e) {
+		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
 			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);

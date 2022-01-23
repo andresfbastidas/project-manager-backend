@@ -15,10 +15,12 @@ import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
+import co.edu.usbcali.projectmanager.model.request.UpdateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectResponse;
 
 public interface IProjectService {
 
@@ -27,7 +29,7 @@ public interface IProjectService {
 	public ProjectDelivery saveProjectDelivery(List<Delivery> listDeliveries, Project project)
 			throws ProjectManagementException;
 
-	public Project findByProjectId(Long projectId) throws ProjectManagementException;
+	public ProjectResponse findByProjectId(Long projectId) throws ProjectManagementException;
 
 	public void associateUser(AssociatedUserProjectRequest associatedUserProject) throws ProjectManagementException;
 
@@ -53,4 +55,6 @@ public interface IProjectService {
 	public ListProjectRequestsResponse findProjectRequestByStateUser(Pageable page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException;
+	
+	public void updateProjectAndProjectRequest(UpdateProjectRequest updateProjectRequest) throws ProjectManagementException;
 }

@@ -12,6 +12,7 @@ public class KeyConstants {
 	public static final String UPDATE_USER = "Usuario actualizado";
 	public static final String DELETE_USER = "Usuario borrado";
 	public static final String NEW_COMMENT = "Comentario añadido a la actividad";
+	public static final String UPDATE_PROJECT_AND_PROJECT_REQUEST = "La soliitud del proyecto ha sido modifcada";
 
 	// Messages Errors
 	public static final String USER_NOT_FOUND = "El usuario no existe";
@@ -34,8 +35,10 @@ public class KeyConstants {
 	public static final String ERROR_CREATE_ACTIVITY = "No es posible crear la actividad debido al estado del proyecto";
 	public static final String ERROR_FIND_ACTIVITY = "No se encontró la actividad";
 	public static final String ERROR_APPROVAL_DECLINE_PROJECTS= "El proyecto debe estar en estado PENDIENTE para aprobarlo o rechazarlo";
+	public static final String ERROR_UPDATE_PROJECT_REQUEST= "No fue posible actualizar la solcitud del proyecto, por favor revise el estado de la solicitud";
 	
 	// Error Codes
+	public static final String ERROR_CODE_UPDATE_PROJECT_REQUEST= "116";
 	public static final String ERROR_CODE_FIND_ACTIVITY= "115";
 	public static final String ERROR_CODE_APPROVAL_DECLINE_PROJECTS= "114";
 	public static final String ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT= "113";

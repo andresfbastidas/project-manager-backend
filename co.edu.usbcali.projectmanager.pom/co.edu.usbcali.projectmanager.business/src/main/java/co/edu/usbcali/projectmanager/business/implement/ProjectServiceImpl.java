@@ -32,10 +32,12 @@ import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
+import co.edu.usbcali.projectmanager.model.request.UpdateProjectRequest;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectResponse;
 import co.edu.usbcali.projectmanager.repository.ProjectDeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectListRepository;
 import co.edu.usbcali.projectmanager.repository.ProjectRepository;
@@ -151,14 +153,18 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	@Override
 	@Transactional(readOnly = true)
-	public Project findByProjectId(Long projectId) throws ProjectManagementException {
+	public ProjectResponse findByProjectId(Long projectId) throws ProjectManagementException {
 		Project project = null;
+		ProjectResponse projectResponse = null;
 		try {
+			projectResponse = new ProjectResponse();
 			project = projectRepository.findByProjectId(projectId);
 
 			if (project == null) {
 				buildCustomException(KeyConstants.PROJECT_NOT_EXISTS, KeyConstants.ERROR_CODE_LIST_USERS_EMPTY);
 			}
+			projectResponse.setProject(project);
+			projectResponse.setProjectDeliveries(project.getProjectDeliveries());
 
 		} catch (ProjectManagementException e) {
 			throw e;
@@ -166,7 +172,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
-		return project;
+		return projectResponse;
 
 	}
 
@@ -176,11 +182,11 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		Userapp userapp = null;
 		try {
 			userapp = userDetailsServiceImpl.findByUserName(associatedUserProject.getUserName());
-
-			Project project = this.findByProjectId(associatedUserProject.getProjectId());
-			if (project.getState().getStateId() == KeyConstants.AVALAIBLE_STATE
-					|| project.getState().getStateId() == KeyConstants.PROGRESS_STATE) {
-				this.saveProjectUser(project, userapp);
+			ProjectResponse projectResponse = new ProjectResponse();
+			projectResponse = this.findByProjectId(associatedUserProject.getProjectId());
+			if (projectResponse.getProject().getState().getStateId() == KeyConstants.AVALAIBLE_STATE
+					|| projectResponse.getProject().getState().getStateId() == KeyConstants.PROGRESS_STATE) {
+				this.saveProjectUser(projectResponse.getProject(), userapp);
 			} else {
 				buildCustomException(KeyConstants.ERROR_NOT_ASSOCIATED_USER_PROJECT,
 						KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT);
@@ -432,6 +438,61 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			}
 		} catch (ProjectManagementException e) {
 			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateProjectAndProjectRequest(UpdateProjectRequest updateProjectRequest)
+			throws ProjectManagementException {
+		Project project = null;
+		ProjectRequest projectRequest = null;
+		try {
+			State state = new State();
+			if (updateProjectRequest.getState().getStateId().equals(KeyConstants.DECLINED_STATE)) {
+				state.setStateId(KeyConstants.SOLINI_STATE);
+				project = projectRepository.findByProjectId(updateProjectRequest.getProjectId());
+				project = buildProject(updateProjectRequest.getProject().getDateFrom(),
+						updateProjectRequest.getProject().getDateUntil(),
+						updateProjectRequest.getProject().getProjectTitle(),
+						updateProjectRequest.getProject().getGeneralObjetive(),
+						updateProjectRequest.getProject().getProjectSummary(),
+						updateProjectRequest.getProject().getProjectMethology(),
+						updateProjectRequest.getProject().getSpecificObjetive(),
+						updateProjectRequest.getProject().getJustification(),
+						updateProjectRequest.getProject().getProjectResearchTypologyId(), state,
+						updateProjectRequest.getProject().getProjectDirector(),
+						updateProjectRequest.getUserapp().getUserName());
+
+				Userapp userapp = new Userapp();
+				userapp = userDetailsServiceImpl.findByUserName(updateProjectRequest.getUserapp().getUserName());
+				projectRepository.saveAndFlush(project);
+				this.saveProjectDelivery(updateProjectRequest.getDeliveries(), project);
+
+				projectRequest = projectRequestRepository
+						.findByProjectRequestId(updateProjectRequest.getProjectRequestId());
+				if (projectRequest.getStateProjectRequest()
+						.getStateProjectRequestId() != KeyConstants.DECLINED_STATE_PROJECT_REQUEST) {
+					buildCustomException(KeyConstants.ERROR_UPDATE_PROJECT_REQUEST,
+							KeyConstants.ERROR_CODE_UPDATE_PROJECT_REQUEST);
+				} else {
+					projectRequest.setProject(project);
+					projectRequest.setUserapp(userapp);
+					StateProjectRequest stateProjectRequest = new StateProjectRequest();
+					stateProjectRequest.setStateProjectRequestId(KeyConstants.PENDING_STATE);
+					projectRequest.setStateProjectRequest(stateProjectRequest);
+					projectRequestRepository.save(projectRequest);
+				}
+
+			} else {
+				buildCustomException(KeyConstants.ERROR_UPDATE_PROJECT_REQUEST,
+						KeyConstants.ERROR_CODE_UPDATE_PROJECT_REQUEST);
+			}
+		} catch (ProjectManagementException e) {
 		} catch (Exception e) {
 			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
