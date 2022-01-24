@@ -96,7 +96,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					createProjectRequest.getProject().getProjectResearchTypologyId(), createProjectRequest.getState(),
 					createProjectRequest.getProject().getProjectDirector(),
 					createProjectRequest.getUserapp().getUserName(),
-					createProjectRequest.getProject().getInvestigationProblem());
+					createProjectRequest.getProject().getResearchProblem());
 
 			Userapp userapp = new Userapp();
 			userapp = userDetailsServiceImpl.findByUserName(createProjectRequest.getUserapp().getUserName());
@@ -294,7 +294,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
 			String projectSummary, String projectMethology, String specificObjetive, String justification,
-			Long projectResearchId, State state, String projectDirector, String createBy, String investigationProblem) {
+			Long projectResearchId, State state, String projectDirector, String createBy, String researchProblem) {
 		Project project = new Project();
 		project.setDateFrom(dateFrom);
 		project.setDateUntil(dateUntil);
@@ -308,7 +308,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		project.setState(state);
 		project.setProjectDirector(projectDirector);
 		project.setCreateBy(createBy);
-		project.setInvestigationProblem(investigationProblem);
+		project.setResearchProblem(researchProblem);
 		return project;
 	}
 
@@ -472,7 +472,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 						updateProjectRequest.getProject().getProjectResearchTypologyId(), state,
 						updateProjectRequest.getProject().getProjectDirector(),
 						updateProjectRequest.getUserapp().getUserName(),
-						updateProjectRequest.getProject().getInvestigationProblem());
+						updateProjectRequest.getProject().getResearchProblem());
 
 				Userapp userapp = new Userapp();
 				userapp = userDetailsServiceImpl.findByUserName(updateProjectRequest.getUserapp().getUserName());
