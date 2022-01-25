@@ -292,26 +292,6 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		return projectListResponse;
 	}
 
-	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
-			String projectSummary, String projectMethology, String specificObjetive, String justification,
-			Long projectResearchId, State state, String projectDirector, String createBy, String researchProblem) {
-		Project project = new Project();
-		project.setDateFrom(dateFrom);
-		project.setDateUntil(dateUntil);
-		project.setProjectTitle(projectTitle);
-		project.setGeneralObjetive(generalObjetive);
-		project.setProjectSummary(projectSummary);
-		project.setProjectMethology(projectMethology);
-		project.setSpecificObjetive(specificObjetive);
-		project.setJustification(justification);
-		project.setProjectResearchTypologyId(projectResearchId);
-		project.setState(state);
-		project.setProjectDirector(projectDirector);
-		project.setCreateBy(createBy);
-		project.setResearchProblem(researchProblem);
-		return project;
-	}
-
 	@Override
 	@Transactional(readOnly = true)
 	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Pageable page, Long projectId)
@@ -457,26 +437,15 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		Project project = null;
 		ProjectRequest projectRequest = null;
 		try {
-			State state = new State();
-			if (updateProjectRequest.getState().getStateId().equals(KeyConstants.DECLINED_STATE)) {
-				state.setStateId(KeyConstants.SOLINI_STATE);
-				project = projectRepository.findByProjectId(updateProjectRequest.getProjectId());
-				project = buildProject(updateProjectRequest.getProject().getDateFrom(),
-						updateProjectRequest.getProject().getDateUntil(),
-						updateProjectRequest.getProject().getProjectTitle(),
-						updateProjectRequest.getProject().getGeneralObjetive(),
-						updateProjectRequest.getProject().getProjectSummary(),
-						updateProjectRequest.getProject().getProjectMethology(),
-						updateProjectRequest.getProject().getSpecificObjetive(),
-						updateProjectRequest.getProject().getJustification(),
-						updateProjectRequest.getProject().getProjectResearchTypologyId(), state,
-						updateProjectRequest.getProject().getProjectDirector(),
-						updateProjectRequest.getUserapp().getUserName(),
-						updateProjectRequest.getProject().getResearchProblem());
+
+			project = projectRepository.findByProjectId(updateProjectRequest.getProjectId());
+			if (project.getState().getStateId().equals(KeyConstants.DECLINED_STATE)) {
+
+				project = buildProjectUpdate(updateProjectRequest);
 
 				Userapp userapp = new Userapp();
 				userapp = userDetailsServiceImpl.findByUserName(updateProjectRequest.getUserapp().getUserName());
-				projectRepository.saveAndFlush(project);
+				projectRepository.save(project);
 				this.saveProjectDelivery(updateProjectRequest.getDeliveries(), project);
 
 				projectRequest = projectRequestRepository
@@ -499,11 +468,50 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 						KeyConstants.ERROR_CODE_UPDATE_PROJECT_REQUEST);
 			}
 		} catch (ProjectManagementException e) {
+			throw e;
 		} catch (Exception e) {
 			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
+	}
+
+	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,
+			String projectSummary, String projectMethology, String specificObjetive, String justification,
+			Long projectResearchId, State state, String projectDirector, String createBy, String researchProblem) {
+		Project project = new Project();
+		project.setDateFrom(dateFrom);
+		project.setDateUntil(dateUntil);
+		project.setProjectTitle(projectTitle);
+		project.setGeneralObjetive(generalObjetive);
+		project.setProjectSummary(projectSummary);
+		project.setProjectMethology(projectMethology);
+		project.setSpecificObjetive(specificObjetive);
+		project.setJustification(justification);
+		project.setProjectResearchTypologyId(projectResearchId);
+		project.setState(state);
+		project.setProjectDirector(projectDirector);
+		project.setCreateBy(createBy);
+		project.setResearchProblem(researchProblem);
+		return project;
+	}
+
+	private Project buildProjectUpdate(UpdateProjectRequest updateProjectRequest) {
+		Project project = new Project();
+		project.setDateFrom(updateProjectRequest.getProject().getDateFrom());
+		project.setDateUntil(updateProjectRequest.getProject().getDateUntil());
+		project.setProjectTitle(updateProjectRequest.getProject().getProjectTitle());
+		project.setGeneralObjetive(updateProjectRequest.getProject().getGeneralObjetive());
+		project.setProjectSummary(updateProjectRequest.getProject().getProjectSummary());
+		project.setProjectMethology(updateProjectRequest.getProject().getProjectMethology());
+		project.setSpecificObjetive(updateProjectRequest.getProject().getSpecificObjetive());
+		project.setJustification(updateProjectRequest.getProject().getJustification());
+		project.setProjectResearchTypologyId(updateProjectRequest.getProject().getProjectResearchTypologyId());
+		project.setState(updateProjectRequest.getState());
+		project.setProjectDirector(updateProjectRequest.getProject().getProjectDirector());
+		project.setCreateBy(updateProjectRequest.getProject().getCreateBy());
+		project.setResearchProblem(updateProjectRequest.getProject().getResearchProblem());
+		return project;
 	}
 
 }

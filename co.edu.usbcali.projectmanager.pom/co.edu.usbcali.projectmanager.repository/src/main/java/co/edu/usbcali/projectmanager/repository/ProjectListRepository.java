@@ -12,7 +12,7 @@ public interface ProjectListRepository extends JpaRepository<ProjectsListDTO, Lo
 	@Query(value = "select distinct pj.project_id,pj.date_from,pj.date_until, \n"
 			+ "pj.project_title,pj.general_objetive, pj.project_summary, pj.project_methology, \n"
 			+ "pj.specific_objetive, pj.justification, rt.typology_description, pj.project_director,\n"
-			+ "pj.investigation_problem, pj.create_by, s.state_name, DELIVERYS from project pj,research_typology rt, state s,\n"
+			+ "pj.research_problem, pj.create_by, s.state_name, DELIVERYS from project pj,research_typology rt, state s,\n"
 			+ "(SELECT pd.project_id,array_to_string(array_agg(d.delivery_name),',') AS DELIVERYS\n"
 			+ "FROM project_delivery pd, delivery d, project pj WHERE pd.project_id=pj.project_id \n"
 			+ " and d.delivery_id= pd.delivery_id GROUP BY pd.project_id) DELIVERYS\n"
