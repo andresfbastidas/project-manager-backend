@@ -16,6 +16,7 @@ import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.UpdateProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.UpdateProjectState;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
@@ -57,4 +58,6 @@ public interface IProjectService {
 			throws ProjectManagementException;
 	
 	public void updateProjectAndProjectRequest(UpdateProjectRequest updateProjectRequest) throws ProjectManagementException;
+	
+	public void updateProjectState(UpdateProjectState updateProjectState) throws ProjectManagementException;
 }

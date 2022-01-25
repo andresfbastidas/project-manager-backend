@@ -1,5 +1,6 @@
 package co.edu.usbcali.projectmanager.business.implement;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +34,7 @@ import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.UpdateProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.UpdateProjectState;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
@@ -474,6 +476,32 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateProjectState(UpdateProjectState updateProjectState) throws ProjectManagementException {
+		ProjectResponse projectResponse = null;
+		try {
+			projectResponse = this.findByProjectId(updateProjectState.getProjectId());
+			Date dateCurrent = Calendar.getInstance().getTime();
+			if (projectResponse.getProject().getState().getStateId() == KeyConstants.AVALAIBLE_STATE) {
+
+				projectRepository.updateStateProjectandDateFrom(KeyConstants.PROGRESS_STATE, dateCurrent,
+						updateProjectState.getProjectId());
+			} else if (projectResponse.getProject().getState().getStateId() == KeyConstants.PROGRESS_STATE) {
+				projectRepository.updateStateProjectandDateFrom(KeyConstants.FINISHED_STATE, dateCurrent,
+						updateProjectState.getProjectId());
+			} else {
+				buildCustomException(KeyConstants.ERROR_UPDATE_PROJECT_REQUEST,
+						KeyConstants.ERROR_CODE_UPDATE_PROJECT_REQUEST);
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
 	}
 
 	private Project buildProject(Date dateFrom, Date dateUntil, String projectTitle, String generalObjetive,

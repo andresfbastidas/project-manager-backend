@@ -30,6 +30,7 @@ import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.UpdateProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.UpdateProjectState;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
@@ -167,6 +168,16 @@ public class ProjectController extends FcdUtil {
 		ProjectResponse projectResponse = new ProjectResponse();
 		projectResponse = projectService.findByProjectId(projectId);
 		return new ResponseEntity<>(projectResponse, HttpStatus.OK);
+	}
+
+	@PutMapping(path = FcdConstants.UPDATE_PROJECT, consumes = "application/json", produces = "application/json")
+	public ResponseEntity<?> updateProjectState(@Valid @RequestBody UpdateProjectState updateProjectState)
+			throws ProjectManagementException {
+
+		projectService.updateProjectState(updateProjectState);
+		GenericResponse genericResponse = new GenericResponse();
+		genericResponse.setMessage(KeyConstants.UPDATE_PROJECT_STATE);
+		return new ResponseEntity<>(genericResponse, HttpStatus.OK);
 	}
 
 }

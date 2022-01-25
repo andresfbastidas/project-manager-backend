@@ -66,6 +66,8 @@ public class FcdConstants {
 	
 	public static final String UPDATE_PROJECT_PROJECT_REQUEST = "/updateProjectAndprojectRequest";
 	
+	public static final String UPDATE_PROJECT= "/updateProject";
+	
 	public static final String DECLINE_PROJECTS = "/declineProjects";
 
 }
