@@ -22,6 +22,7 @@ import co.edu.usbcali.projectmanager.business.interfaces.IProjectService;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
+import co.edu.usbcali.projectmanager.model.dto.ProjectsListDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
@@ -34,6 +35,7 @@ import co.edu.usbcali.projectmanager.model.request.UpdateProjectState;
 import co.edu.usbcali.projectmanager.model.response.GenericResponse;
 import co.edu.usbcali.projectmanager.model.response.ListProjectRequestsResponse;
 import co.edu.usbcali.projectmanager.model.response.ListUsersByProjectResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectDTOResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectResponse;
@@ -80,6 +82,16 @@ public class ProjectController extends FcdUtil {
 		Pageable paging = PageRequest.of(numPage, size);
 		ProjectListByStateResponse<Project> projectListResponse = projectService.findAllProjectByState(paging, stateId);
 		return new ResponseEntity<>(projectListResponse, HttpStatus.OK);
+	}
+
+	@GetMapping(path = FcdConstants.FIND_PROJECT_DTO + "{projectId}")
+	@ResponseBody
+	public ResponseEntity<?> findProjectListDTO(@PathVariable Long projectId) throws ProjectManagementException {
+
+		ProjectsListDTO projectsListDTO = projectService.findProjectDTO(projectId);
+		ProjectDTOResponse projectDTOResponse = new ProjectDTOResponse();
+		projectDTOResponse.setProjectsListDTO(projectsListDTO);
+		return new ResponseEntity<>(projectDTOResponse, HttpStatus.OK);
 	}
 
 	@GetMapping(path = FcdConstants.FINDALL_PROJECTS_BY_USER_NAME + "{userName}")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Pageable;
 
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
+import co.edu.usbcali.projectmanager.model.dto.ProjectsListDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Project;
@@ -39,6 +40,8 @@ public interface IProjectService {
 	public ProjectListByStateResponse<Project> findAllProjectByState(Pageable page, Long stateId)
 			throws ProjectManagementException;
 
+	public ProjectsListDTO findProjectDTO(Long projectId) throws ProjectManagementException;
+
 	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Pageable page, String userName)
 			throws ProjectManagementException;
 
@@ -56,8 +59,9 @@ public interface IProjectService {
 	public ListProjectRequestsResponse findProjectRequestByStateUser(Pageable page, Long stateProjectRequestFirst,
 			Long stateProjectRequestSecond, Long stateProjectRequestThird, String userName)
 			throws ProjectManagementException;
-	
-	public void updateProjectAndProjectRequest(UpdateProjectRequest updateProjectRequest) throws ProjectManagementException;
-	
+
+	public void updateProjectAndProjectRequest(UpdateProjectRequest updateProjectRequest)
+			throws ProjectManagementException;
+
 	public void updateProjectState(UpdateProjectState updateProjectState) throws ProjectManagementException;
 }

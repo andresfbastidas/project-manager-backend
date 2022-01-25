@@ -266,6 +266,22 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		return projectListResponse;
 	}
 
+	public ProjectsListDTO findProjectDTO(Long projectId) throws ProjectManagementException {
+		ProjectsListDTO projectsListDTO = null;
+		try {
+			projectsListDTO = projectListRepository.findProjectDTO(projectId);
+			if (projectsListDTO == null) {
+				buildCustomException(KeyConstants.PROJECT_NOT_EXISTS, KeyConstants.ERROR_CODE_PROJECT_NULL);
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return projectsListDTO;
+	}
+
 	@Override
 	@Transactional(readOnly = true)
 	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Pageable page, String userName)
