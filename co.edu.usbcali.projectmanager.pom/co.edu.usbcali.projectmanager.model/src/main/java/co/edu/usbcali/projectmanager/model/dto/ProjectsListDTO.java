@@ -57,9 +57,13 @@ public class ProjectsListDTO implements Serializable {
 	@Column(name = "deliverys")
 	private String deliverys;
 
+	@Column(name = "research_problem")
+	private String researchProblem;
+
 	public ProjectsListDTO(Long projectId, Date dateFrom, Date dateUntil, String generalObjetive, String justification,
 			String projectMethology, String projectSummary, String projectTitle, String specificObjetive,
-			String projectDirector, String typologyDescription, String createBy, String stateName, String deliverys) {
+			String projectDirector, String typologyDescription, String createBy, String stateName, String deliverys,
+			String researchProblem) {
 		super();
 		this.projectId = projectId;
 		this.dateFrom = dateFrom;
@@ -75,11 +79,20 @@ public class ProjectsListDTO implements Serializable {
 		this.createBy = createBy;
 		this.stateName = stateName;
 		this.deliverys = deliverys;
+		this.researchProblem = researchProblem;
 	}
 
 	public ProjectsListDTO() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public String getResearchProblem() {
+		return researchProblem;
+	}
+
+	public void setResearchProblem(String researchProblem) {
+		this.researchProblem = researchProblem;
 	}
 
 	public Long getProjectId() {
