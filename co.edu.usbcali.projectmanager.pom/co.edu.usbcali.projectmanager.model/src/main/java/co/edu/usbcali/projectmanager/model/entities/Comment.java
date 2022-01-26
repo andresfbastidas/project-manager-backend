@@ -2,35 +2,43 @@ package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.Date;
 
 /**
  * The persistent class for the comment database table.
  * 
  */
 @Entity
-@NamedQuery(name="Comment.findAll", query="SELECT c FROM Comment c")
+@NamedQuery(name = "Comment.findAll", query = "SELECT c FROM Comment c")
 public class Comment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="COMMENT_COMMENTID_GENERATOR", sequenceName="COMMENT_SEQ", allocationSize = 1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="COMMENT_COMMENTID_GENERATOR")
-	@Column(name="comment_id")
+	@SequenceGenerator(name = "COMMENT_COMMENTID_GENERATOR", sequenceName = "COMMENT_SEQ", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMENT_COMMENTID_GENERATOR")
+	@Column(name = "comment_id")
 	private Long commentId;
 
-	@Column(name="comment_description")
+	@Column(name = "comment_description")
 	private String commentDescription;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="creation_date")
+	@Column(name = "creation_date")
 	private Date creationDate;
 
-	//bi-directional many-to-one association to Activity
+	// bi-directional many-to-one association to Activity
 	@ManyToOne
-	@JoinColumn(name="activity_id")
+	@JoinColumn(name = "activity_id")
 	private Activity activity;
+
+	@JsonProperty("activity_id")
+	private void setActivityId(Long activityId) {
+		this.activity = new Activity();
+		activity.setActivityId(activityId);
+	}
 
 	public Comment() {
 	}

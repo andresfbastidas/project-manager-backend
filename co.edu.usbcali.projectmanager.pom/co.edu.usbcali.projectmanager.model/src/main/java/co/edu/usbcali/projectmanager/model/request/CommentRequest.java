@@ -8,6 +8,16 @@ public class CommentRequest implements Serializable {
 
 	private Comment comment;
 
+	private Long activityId;
+
+	public Long getActivityId() {
+		return activityId;
+	}
+
+	public void setActivityId(Long activityId) {
+		this.activityId = activityId;
+	}
+
 	public Comment getComment() {
 		return comment;
 	}

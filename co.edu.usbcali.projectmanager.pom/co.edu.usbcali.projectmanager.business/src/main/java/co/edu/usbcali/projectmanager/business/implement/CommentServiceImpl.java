@@ -39,8 +39,8 @@ public class CommentServiceImpl extends ServiceUtils implements ICommentService 
 		Activity activity = null;
 		Date currentDate = Calendar.getInstance().getTime();
 		try {
-			activity = activityService.findActivityById(commentRequest.getComment().getActivity().getActivityId());
-			Comment comment = this.buildActivity(activity, commentRequest.getComment().getCommentDescription(),
+			activity = activityService.findActivityById(commentRequest.getActivityId());
+			Comment comment = this.buildComment(activity, commentRequest.getComment().getCommentDescription(),
 					currentDate);
 			commentRepository.save(comment);
 		} catch (ProjectManagementException e) {
@@ -52,7 +52,7 @@ public class CommentServiceImpl extends ServiceUtils implements ICommentService 
 
 	}
 
-	private Comment buildActivity(Activity activity, String commentDescription, Date currentDate) {
+	private Comment buildComment(Activity activity, String commentDescription, Date currentDate) {
 		Comment comment = new Comment();
 		comment.setActivity(activity);
 		comment.setCommentDescription(commentDescription);
