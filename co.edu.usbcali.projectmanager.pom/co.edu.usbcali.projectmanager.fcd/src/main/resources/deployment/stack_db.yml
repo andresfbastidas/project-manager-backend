@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    container_name: postgres_container
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: projectmanagerdb
+    ports:
+      - "5434:5432"
+    volumes:
+        #allow *.sql, *.sql.gz, or *.sh and is execute only if data directory is empty
+      - ./data/pgsql:/var/lib/postgresql/data
+      - ./dbfiles/projectmanager.sql:/docker-entrypoint-initdb.d/projectmanager.sql
+    networks:
+    - project-manager-network
+networks:  
+    project-manager-network:
+        driver: bridge     
