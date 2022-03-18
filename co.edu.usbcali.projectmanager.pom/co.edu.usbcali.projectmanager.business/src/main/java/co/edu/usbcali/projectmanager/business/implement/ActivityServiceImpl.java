@@ -1,11 +1,14 @@
 package co.edu.usbcali.projectmanager.business.implement;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -101,17 +104,21 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 	}
 
 	@Override
-	public ListActivitiesResponse findActivitiesByProject(Long projectId) throws ProjectManagementException {
-		List<Activity> lisActivities = null;
+	public ListActivitiesResponse findActivitiesByProject(Pageable page, Long projectId)
+			throws ProjectManagementException {
+		Page<Activity> listActivities = null;
 		ListActivitiesResponse listActivitiesResponse = null;
 		try {
 			listActivitiesResponse = new ListActivitiesResponse();
-			lisActivities = activityRepository.findActivitiesByProjectId(projectId);
-			if (lisActivities.isEmpty() || lisActivities == null) {
+			listActivities = activityRepository.findActivitiesByProjectId(page, projectId);
+			if (listActivities.getContent().isEmpty() || listActivities.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_ACTIVITIES_LIST_NOT_FOUND,
 						KeyConstants.ERROR_CODE_ACTIVITIES_NOT_FOUND);
 			}
-			listActivitiesResponse.setListActivities(lisActivities);
+			listActivitiesResponse.setListActivities(listActivities.getContent());
+			listActivitiesResponse.setCurrentPage(listActivities.getNumber());
+			listActivitiesResponse.setTotalElements(listActivities.getTotalElements());
+			listActivitiesResponse.setTotalPages(listActivities.getTotalPages());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -136,6 +143,46 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 		return activity;
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateActivity(Long activityId) throws ProjectManagementException {
+		Activity activity = null;
+		try {
+			activity = this.findActivityById(activityId);
+			Date dateCurrent = Calendar.getInstance().getTime();
+			if (activity.getStateActivity().getStateActivityId() == KeyConstants.CREATE_STATE_ACTIVITY) {
+				activityRepository.updateStateActivityandDateUntil(dateCurrent, KeyConstants.PROGRESS_STATE_ACTIVITY,
+						activity.getActivityId());
+			} else if (activity.getStateActivity().getStateActivityId() == KeyConstants.PROGRESS_STATE_ACTIVITY) {
+				activityRepository.updateStateActivityandDateFrom(dateCurrent, KeyConstants.FINISHED_STATE_ACTIVITY,
+						activity.getActivityId());
+			} else {
+				buildCustomException(KeyConstants.ERROR_UPDATE_ACTIVITY, KeyConstants.ERROR_CODE_UPDATE_ACTIVITY);
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+	}
+
+	@Override
+	public void deleteActivity(Long activityId) throws ProjectManagementException {
+		Activity activity = null;
+		try {
+			activity = this.findActivityById(activityId);
+			activityRepository.delete(activity);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
 	}
 
 }

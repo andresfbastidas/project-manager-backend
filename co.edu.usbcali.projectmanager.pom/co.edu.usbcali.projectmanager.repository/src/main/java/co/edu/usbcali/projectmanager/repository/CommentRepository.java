@@ -6,4 +6,5 @@ import co.edu.usbcali.projectmanager.model.entities.Comment;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
+	
 }

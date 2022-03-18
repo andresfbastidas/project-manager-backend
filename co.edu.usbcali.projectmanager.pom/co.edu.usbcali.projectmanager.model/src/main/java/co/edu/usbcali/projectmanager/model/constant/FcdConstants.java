@@ -70,6 +70,10 @@ public class FcdConstants {
 	
 	public static final String UPDATE_PROJECT= "/updateProject";
 	
+	public static final String UPDATE_ACTIVITY= "/updateActivity";
+	
+	public static final String DELETE_ACTIVITY= "/deleteActivity";
+	
 	public static final String DECLINE_PROJECTS = "/declineProjects";
 
 }
