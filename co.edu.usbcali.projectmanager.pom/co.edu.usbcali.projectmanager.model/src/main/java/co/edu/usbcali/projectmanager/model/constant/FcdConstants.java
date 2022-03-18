@@ -23,6 +23,8 @@ public class FcdConstants {
 	public static final String CREATE_ACTIVITY = "/createActivity";
 	
 	public static final String NEW_COMMENT = "/newComment";
+	
+	public static final String FIND_ALL_COMMENTS_BY_ACTIVITY = "/findCommentsByActivity/";
 
 	public static final String LOGIN = "/authenticate";
 
@@ -72,7 +74,11 @@ public class FcdConstants {
 	
 	public static final String UPDATE_ACTIVITY= "/updateActivity";
 	
+	public static final String UPDATE_COMMENT= "/updateComment";
+	
 	public static final String DELETE_ACTIVITY= "/deleteActivity";
+	
+	public static final String DELETE_COMMENT= "/deleteComment";
 	
 	public static final String DECLINE_PROJECTS = "/declineProjects";
 

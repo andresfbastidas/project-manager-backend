@@ -15,7 +15,9 @@ public class KeyConstants {
 	public static final String UPDATE_PROJECT_AND_PROJECT_REQUEST = "El proyecto ha sido actualizado.La solicitud debe ser aprobado por el director";
 	public static final String UPDATE_PROJECT_STATE = "Estado y fecha del proyecto actualizado";
 	public static final String UPDATE_ACTIVITY_STATE = "Fecha y estado de la actividad actualizado";
+	public static final String UPDATE_COMMENT = "Comentario actualizado";
 	public static final String DELETE_ACTIVITY = "Actividad borrada";
+	public static final String DELETE_COMMENT = "Comentario borrada";
 
 	// Messages Errors
 	public static final String USER_NOT_FOUND = "El usuario no existe";
@@ -32,18 +34,24 @@ public class KeyConstants {
 	public static final String PROJECT_LIST_EMPTY = "El usuario no tiene proyectos asociados";
 	public static final String ERROR_PROJECTUSER_ROL = "El usuario debe tener rol de director";
 	public static final String ERROR_ACTIVITIES_LIST_NOT_FOUND = "No se encontraron actividades asociadas al proyecto";
+	public static final String ERROR_COMMENT_LIST_NOT_FOUND = "No se encontraron comentarios para esta actividad";
 	public static final String ERROR_USERS_BY_PROJECT = "No se encontraron usuarios asociados en el proyecto";
 	public static final String ERROR_LIST_PROJECT_REQUEST_EMPTY = "No tiene solicitudes de proyectos";
 	public static final String ERROR_NOT_ASSOCIATED_USER_PROJECT = "El proyecto debe estar en estado EN PROGRESO o DISPONIBLE";
 	public static final String ERROR_CREATE_ACTIVITY = "No es posible crear la actividad debido al estado del proyecto";
 	public static final String ERROR_FIND_ACTIVITY = "No se encontró la actividad";
+	public static final String ERROR_FIND_COMMENT = "No se encontró el comentario";
 	public static final String ERROR_APPROVAL_DECLINE_PROJECTS= "El proyecto debe estar en estado PENDIENTE para aprobarlo o rechazarlo";
 	public static final String ERROR_UPDATE_PROJECT_REQUEST= "No fue posible actualizar la solcitud del proyecto, por favor revise el estado";
 	public static final String ERROR_PROJECT_STATE="Ocurrió un error al crear el proyecto, verifique el estado y vuelva intentar";
 	public static final String ERROR_UPDATE_ACTIVITY= "No fue posible actualizar la actividad, por favor revise el estado";
+	public static final String ERROR_DELETE_ACTIVITY= "No fue posible borrar la actividad, ya cuenta con comentarios asociados";
 	
 	// Error Codes
-	public static final String ERROR_CODE_UPDATE_ACTIVITY= "118";
+	public static final String ERROR_CODE_DELETE_ACTIVITY= "121";
+	public static final String ERROR_CODE_COMMENT_NOT_FOUND= "120";
+	public static final String ERROR_CODE_LIST_COMMENT= "119";
+	public static final String ERROR_CODE_UPDATE_ACTIVITY= "119";
 	public static final String ERROR_CODE_PROJECT_STATE= "117";
 	public static final String ERROR_CODE_UPDATE_PROJECT_REQUEST= "116";
 	public static final String ERROR_CODE_FIND_ACTIVITY= "115";
