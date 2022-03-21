@@ -19,6 +19,12 @@
 			<artifactId>co.edu.usbcali.projectmanager.repository</artifactId>
 			<version>1.0.0</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>co.edu.usbcali.projectmanager</groupId>
+			<artifactId>co.edu.usbcali.projectmanager.test</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
     <name>co.edu.usbcali.projectmanager.business</name>
 </project>

@@ -15,6 +15,7 @@
 		<module>co.edu.usbcali.projectmanager.business</module>
 		<module>co.edu.usbcali.projectmanager.fcd</module>
 		<module>co.edu.usbcali.projectmanager.model</module>
+		<module>co.edu.usbcali.projectmanager.test</module>
 	</modules>
 
 	<parent>
@@ -131,6 +132,15 @@
 			<artifactId>junit-platform-commons</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>4.4.0</version>
+			<scope>test</scope>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.h2database</groupId>
