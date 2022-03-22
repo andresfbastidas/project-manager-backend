@@ -26,6 +26,7 @@ import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
+import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.request.UpdateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.UpdateProjectState;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
@@ -65,7 +66,7 @@ public interface IDataModelUtilTest {
 		return project;
 
 	}
-	
+
 	default Project buildProjectState() {
 		Date dateCurrent = Calendar.getInstance().getTime();
 		Project project = new Project();
@@ -151,7 +152,7 @@ public interface IDataModelUtilTest {
 		state.setStateName("DISPONIBLE");
 		return state;
 	}
-	
+
 	default State buildState2() {
 		State state = new State();
 		state.setStateId(2L);
@@ -179,10 +180,16 @@ public interface IDataModelUtilTest {
 		return userapp;
 	}
 
+	default List<Userapp> buildUserAppList() {
+		List<Userapp> userapps = new ArrayList<Userapp>();
+		return userapps;
+	}
+
 	default Profile buildProfile() {
 		Profile profile = new Profile();
 		profile.setProfileId(1L);
 		profile.setProfileName("DIRECTOR");
+		profile.setUserapps(buildUserAppList());
 		return profile;
 	}
 
@@ -217,7 +224,7 @@ public interface IDataModelUtilTest {
 		projectRequest.setProjectRequestId(1L);
 		return projectRequest;
 	}
-	
+
 	default ProjectRequest buildProjectRequestSuccess() {
 		ProjectRequest projectRequest = new ProjectRequest();
 		projectRequest.setProject(buildProject());
@@ -234,7 +241,7 @@ public interface IDataModelUtilTest {
 		stateProjectRequest.setStateNameProjectRequest("PENDIENTE");
 		return stateProjectRequest;
 	}
-	
+
 	default StateProjectRequest buildStateProjectRequestSuccess() {
 		StateProjectRequest stateProjectRequest = new StateProjectRequest();
 		stateProjectRequest.setStateProjectRequestId(3L);
@@ -459,11 +466,17 @@ public interface IDataModelUtilTest {
 		updateProjectRequest.setUserapp(buildUserApp());
 		return updateProjectRequest;
 	}
-	
+
 	default UpdateProjectState buildUpdateProjectState() {
 		UpdateProjectState updateProjectState = new UpdateProjectState();
 		updateProjectState.setProjectId(12345L);
 		return updateProjectState;
+	}
+	
+	default SignupRequest buildSignupRequest() {
+		SignupRequest signupRequest = new SignupRequest();
+		signupRequest.setUserapp(buildUserApp());
+		return signupRequest;
 	}
 
 }
