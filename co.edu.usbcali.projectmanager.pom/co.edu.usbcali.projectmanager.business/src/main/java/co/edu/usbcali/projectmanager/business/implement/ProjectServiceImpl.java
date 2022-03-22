@@ -406,7 +406,6 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 					AssociatedUserProjectRequest associatedUserProjectRequest = new AssociatedUserProjectRequest();
 					associatedUserProjectRequest.setProjectId(projectRequest.getProject().getProjectId());
 					associatedUserProjectRequest.setUserName(projectRequest.getUserapp().getUserName());
-					this.associateUser(associatedUserProjectRequest);
 					associatedUserProjectRequest.setUserName(approvalRequest.getProjectDirector());
 					this.associateUser(associatedUserProjectRequest);
 				} else {

@@ -11,7 +11,7 @@ public class ProjectManagementException extends Exception implements Serializabl
 
 	public ProjectManagementException(String code, String message, String type, String loggerReference,
 			Throwable cause) {
-		super(message,cause);
+		super(message, cause);
 		this.code = code;
 		this.message = message;
 		this.type = type;
