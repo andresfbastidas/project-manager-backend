@@ -50,16 +50,17 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 		try {
 			ProjectResponse projectResponse = new ProjectResponse();
 			projectResponse = projectService.findByProjectId(activityRequest.getProjectId());
-			Activity activity = this.buildActivity(activityRequest.getActivity().getActivityName(),
-					activityRequest.getActivity().getStateActivity(), activityRequest.getActivity().getDateFrom(),
-					activityRequest.getActivity().getDateUntil(), projectResponse.getProject(),
-					activityRequest.getActivity().getAssignedUser());
 			if (projectResponse.getProject().getState().getStateId().equals(KeyConstants.FINISHED_STATE)
 					|| projectResponse.getProject().getState().getStateId().equals(KeyConstants.DECLINED_STATE)
 					|| projectResponse.getProject().getState().getStateId().equals(KeyConstants.SOLINI_STATE)) {
 				buildCustomException(KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT,
 						KeyConstants.ERROR_CREATE_ACTIVITY);
 			}
+			Activity activity = this.buildActivity(activityRequest.getActivity().getActivityName(),
+					activityRequest.getActivity().getStateActivity(), activityRequest.getActivity().getDateFrom(),
+					activityRequest.getActivity().getDateUntil(), projectResponse.getProject(),
+					activityRequest.getActivity().getAssignedUser());
+
 			activityRepository.save(activity);
 
 		} catch (ProjectManagementException e) {
@@ -175,7 +176,7 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 		Activity activity = null;
 		try {
 			activity = this.findActivityById(activityId);
-			if (!activity.getComments().isEmpty()) {
+			if (activity.getComments() != null) {
 				buildCustomException(KeyConstants.ERROR_DELETE_ACTIVITY, KeyConstants.ERROR_CODE_DELETE_ACTIVITY);
 			}
 			activityRepository.delete(activity);

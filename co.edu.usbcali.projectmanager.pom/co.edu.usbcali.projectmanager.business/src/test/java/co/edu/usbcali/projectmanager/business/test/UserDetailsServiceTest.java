@@ -107,7 +107,7 @@ public class UserDetailsServiceTest implements IDataModelUtilTest {
 	@Order(6)
 	void deleteUserTest() throws ProjectManagementException {
 		Mockito.doReturn(buildUserApp()).when(userAppRepository).findByUserName(Mockito.any());
-		assertDoesNotThrow(() -> userDetailsServiceImpl.updateUser(buildSignupRequest()));
+		assertDoesNotThrow(() -> userDetailsServiceImpl.deleteUser(Mockito.any()));
 	}
 
 }

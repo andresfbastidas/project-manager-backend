@@ -12,6 +12,7 @@ import co.edu.usbcali.projectmanager.model.dto.ProjectRequestDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectsListDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
+import co.edu.usbcali.projectmanager.model.entities.Activity;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.Project;
@@ -20,8 +21,10 @@ import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.ProjectUser;
 import co.edu.usbcali.projectmanager.model.entities.ResearchTypology;
 import co.edu.usbcali.projectmanager.model.entities.State;
+import co.edu.usbcali.projectmanager.model.entities.StateActivity;
 import co.edu.usbcali.projectmanager.model.entities.StateProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
+import co.edu.usbcali.projectmanager.model.request.ActivityRequest;
 import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
@@ -472,11 +475,48 @@ public interface IDataModelUtilTest {
 		updateProjectState.setProjectId(12345L);
 		return updateProjectState;
 	}
-	
+
 	default SignupRequest buildSignupRequest() {
 		SignupRequest signupRequest = new SignupRequest();
 		signupRequest.setUserapp(buildUserApp());
 		return signupRequest;
+	}
+
+	default StateActivity buildStateActivity(Long stateActivityId) {
+		StateActivity stateActivity = new StateActivity();
+		stateActivity.setStateActivityId(stateActivityId);
+		stateActivity.setNameStateActivity("EN PROGRESO");
+		return stateActivity;
+	}
+
+	default Activity buildActivity(Long stateActivityId) {
+		Activity activity = new Activity();
+		activity.setActivityName("ACTIVIDAD 1");
+		activity.setAssignedUser("andres.bastidas");
+		Date dateCurrent = Calendar.getInstance().getTime();
+		activity.setDateFrom(dateCurrent);
+		activity.setDateUntil(dateCurrent);
+		activity.setProject(buildProject());
+		activity.setStateActivity(buildStateActivity(stateActivityId));
+		return activity;
+	}
+
+	default ActivityRequest buildActivityRequest(Long stateActivityId) {
+		ActivityRequest activityRequest = new ActivityRequest();
+		activityRequest.setActivity(buildActivity(stateActivityId));
+		activityRequest.setProjectId(12345L);
+		return activityRequest;
+	}
+	
+	default List<Activity> buildActivityList(Long stateActivityId){
+		List<Activity> activities = new ArrayList<Activity>();
+		activities.add(buildActivity(stateActivityId));
+		return activities;
+	}
+	
+	default Page<Activity> buildActivityPage(Long stateActivity) {
+		Page<Activity> pagedResponse = new PageImpl<Activity>(buildActivityList(stateActivity));
+		return pagedResponse;
 	}
 
 }
