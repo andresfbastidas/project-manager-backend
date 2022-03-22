@@ -290,9 +290,9 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		Page<ProjectUserDirectorNameDTO> projectList = null;
 		try {
 			projectListResponse = new ProjectListResponse<ProjectUserDirectorNameDTO>();
-			projectList = projectUserDirectorNameRepository.findAllProjectsByUserName(page, KeyConstants.ROL_DIRECTORID,
-					userName);
-			if (projectList.getContent().isEmpty() || projectList.getContent() == null) {
+			projectList = projectUserDirectorNameRepository.findAllProjectsByUserNameDTO(page,
+					KeyConstants.ROL_DIRECTORID, userName);
+			if (projectList.getContent().isEmpty() || projectList == null) {
 				buildCustomException(KeyConstants.PROJECT_LIST_EMPTY, KeyConstants.ERROR_CODE_PROJECT_LIST_EMPTY);
 			}
 
@@ -318,7 +318,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProjectResponse = null;
 		try {
 			listUsersByProjectDTOs = usersByProjectsRepository.listAllUsersByProject(page, projectId);
-			if (listUsersByProjectDTOs.getContent().isEmpty() || listUsersByProjectDTOs.getContent() == null) {
+			if (listUsersByProjectDTOs.getContent().isEmpty() || listUsersByProjectDTOs == null) {
 				buildCustomException(KeyConstants.ERROR_USERS_BY_PROJECT, KeyConstants.ERROR_CODE_USERS_BY_PROJECT);
 			}
 			listUsersByProjectResponse = new ListUsersByProjectResponse<UsersByProjectDTO>();
@@ -345,7 +345,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		try {
 			listProjectRequests = projectRequestDTORepository.findProjectRequestByStateForDirector(page,
 					stateProjectRequestFirst, stateProjectRequestSecond, stateProjectRequestThird, userName);
-			if (listProjectRequests.getContent().isEmpty() || listProjectRequests.getContent() == null) {
+			if (listProjectRequests.getContent().isEmpty() || listProjectRequests == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
 						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
 			}
@@ -374,7 +374,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 		try {
 			listProjectRequests = projectRequestDTORepository.findProjectRequestByStateForUser(page,
 					stateProjectRequestFirst, stateProjectRequestSecond, stateProjectRequestThird, userName);
-			if (listProjectRequests.getContent().isEmpty() || listProjectRequests.getContent() == null) {
+			if (listProjectRequests.getContent().isEmpty() || listProjectRequests == null) {
 				buildCustomException(KeyConstants.ERROR_LIST_PROJECT_REQUEST_EMPTY,
 						KeyConstants.ERROR_CODE_LIST_PROJECT_REQUEST_EMPTY);
 			}

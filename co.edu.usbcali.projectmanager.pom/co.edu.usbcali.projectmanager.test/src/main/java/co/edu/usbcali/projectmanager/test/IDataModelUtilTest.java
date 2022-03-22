@@ -5,21 +5,30 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+
+import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
+import co.edu.usbcali.projectmanager.model.dto.ProjectsListDTO;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.ProjectDelivery;
+import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.ProjectUser;
 import co.edu.usbcali.projectmanager.model.entities.ResearchTypology;
 import co.edu.usbcali.projectmanager.model.entities.State;
+import co.edu.usbcali.projectmanager.model.entities.StateProjectRequest;
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
+import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectListResponse;
 import co.edu.usbcali.projectmanager.model.response.ProjectResponse;
 
 public interface IDataModelUtilTest {
 
-	default CreateProjectRequest buildProjectRequets() {
+	default CreateProjectRequest buildProjectCreateRequest() {
 		CreateProjectRequest createProjectRequest = new CreateProjectRequest();
 		createProjectRequest.setProject(buildProject());
 		createProjectRequest.setState(buildState());
@@ -46,6 +55,27 @@ public interface IDataModelUtilTest {
 		project.setResearchProblem("PROBLEMA");
 		project.setSpecificObjetive("OBJETIVO ESPECIFICO");
 		project.setState(buildState());
+		project.setCreateBy("andres.bastidas");
+		return project;
+
+	}
+
+	default Project buildProjectSolini() {
+		Date dateCurrent = Calendar.getInstance().getTime();
+		Project project = new Project();
+		project.setDateFrom(dateCurrent);
+		project.setDateUntil(dateCurrent);
+		project.setGeneralObjetive("Objetivo general");
+		project.setJustification("Justificacion");
+		project.setProjectDirector("andres.bastidas");
+		project.setProjectId(12345L);
+		project.setProjectMethology("SCRUM");
+		project.setProjectResearchTypologyId(1L);
+		project.setProjectSummary("RESUMEN");
+		project.setProjectTitle("PROJECTO DE PRUEBA");
+		project.setResearchProblem("PROBLEMA");
+		project.setSpecificObjetive("OBJETIVO ESPECIFICO");
+		project.setState(buildStateSolini());
 		project.setCreateBy("andres.bastidas");
 		return project;
 
@@ -95,6 +125,13 @@ public interface IDataModelUtilTest {
 		return state;
 	}
 
+	default State buildStateSolini() {
+		State state = new State();
+		state.setStateId(1L);
+		state.setStateName("SOLICITUD INICIAL");
+		return state;
+	}
+
 	default Userapp buildUserApp() {
 		Userapp userapp = new Userapp();
 		userapp.setUserName("andres.bastidas");
@@ -135,6 +172,138 @@ public interface IDataModelUtilTest {
 		projectUser.setProjectUserId(12345L);
 		projectUser.setUserapp(buildUserApp());
 		return projectUser;
+	}
+
+	default ProjectRequest buildProjectRequest() {
+		ProjectRequest projectRequest = new ProjectRequest();
+		projectRequest.setProject(buildProject());
+		projectRequest.setUserapp(buildUserApp());
+		projectRequest.setDetails("Detalle");
+		projectRequest.setStateProjectRequest(buildStateProjectRequest());
+		projectRequest.setProjectRequestId(1L);
+		return projectRequest;
+	}
+
+	default StateProjectRequest buildStateProjectRequest() {
+		StateProjectRequest stateProjectRequest = new StateProjectRequest();
+		stateProjectRequest.setStateProjectRequestId(1L);
+		stateProjectRequest.setStateNameProjectRequest("PENDIENTE");
+		return stateProjectRequest;
+	}
+
+	default List<ProjectsListDTO> buildProjectsAddListDTO() {
+		List<ProjectsListDTO> projectsListDTO = new ArrayList<ProjectsListDTO>();
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		projectsListDTO.add(buildProjectsListDTO());
+		return projectsListDTO;
+	}
+
+	default Page<ProjectsListDTO> buildProjectsPageListDTO() {
+		Page<ProjectsListDTO> pagedResponse = new PageImpl<ProjectsListDTO>(buildProjectsAddListDTO());
+		return pagedResponse;
+	}
+
+	default ProjectsListDTO buildProjectsListDTO() {
+		ProjectsListDTO projectsListDTO = new ProjectsListDTO();
+		Date dateCurrent = Calendar.getInstance().getTime();
+		projectsListDTO.setDateFrom(dateCurrent);
+		projectsListDTO.setDateUntil(dateCurrent);
+		projectsListDTO.setGeneralObjetive("Objetivo general");
+		projectsListDTO.setJustification("Justificacion");
+		projectsListDTO.setProjectDirector("andres.bastidas");
+		projectsListDTO.setProjectId(12345L);
+		projectsListDTO.setProjectMethology("SCRUM");
+		projectsListDTO.setTypologyDescription("PROYECTO DE GRADO");
+		projectsListDTO.setProjectSummary("RESUMEN");
+		projectsListDTO.setProjectTitle("PROJECTO DE PRUEBA");
+		projectsListDTO.setResearchProblem("PROBLEMA");
+		projectsListDTO.setSpecificObjetive("OBJETIVO ESPECIFICO");
+		projectsListDTO.setStateName("DISPONIBLE");
+		projectsListDTO.setCreateBy("andres.bastidas");
+		return projectsListDTO;
+	}
+
+	default ProjectListByStateResponse<Project> buildProjectListByStateResponse() {
+		ProjectListByStateResponse<Project> projectListByStateResponse = new ProjectListByStateResponse<Project>();
+		projectListByStateResponse.setProjectList(buildProjectsAddListDTO());
+		projectListByStateResponse.setTotalElements(11L);
+		projectListByStateResponse.setCurrentPage(0);
+		projectListByStateResponse.setTotalPages(10);
+		return projectListByStateResponse;
+	}
+
+	default ProjectUserDirectorNameDTO buildProjectUserDirectorNameDTO() {
+		ProjectUserDirectorNameDTO projectUserDirectorNameDTO = new ProjectUserDirectorNameDTO();
+		Date dateCurrent = Calendar.getInstance().getTime();
+		State state = new State();
+		state.setStateId(1L);
+		state.setStateName("DIRECTOR");
+		projectUserDirectorNameDTO.setDateFrom(dateCurrent);
+		projectUserDirectorNameDTO.setDateUntil(dateCurrent);
+		projectUserDirectorNameDTO.setGeneralObjetive("Objetivo general");
+		projectUserDirectorNameDTO.setJustification("Justificacion");
+		projectUserDirectorNameDTO.setProjectDirector("andres.bastidas");
+		projectUserDirectorNameDTO.setProjectId(12345L);
+		projectUserDirectorNameDTO.setState(state);
+		projectUserDirectorNameDTO.setProjectMethology("SCRUM");
+		projectUserDirectorNameDTO.setProjectSummary("RESUMEN");
+		projectUserDirectorNameDTO.setProjectTitle("PROJECTO DE PRUEBA");
+		projectUserDirectorNameDTO.setSpecificObjetive("OBJETIVO ESPECIFICO");
+		projectUserDirectorNameDTO.setCreateBy("andres.bastidas");
+		projectUserDirectorNameDTO.setUsers("andres.bastidas, alexandra.castano");
+		projectUserDirectorNameDTO.setProjectDirector("andres.bastidas");
+		projectUserDirectorNameDTO.setDirectorName("andres.bastidas");
+		projectUserDirectorNameDTO.setCreateByNames("andres.bastidas");
+		projectUserDirectorNameDTO.setProjectResearchTypologyId(1L);
+		return projectUserDirectorNameDTO;
+	}
+
+	default ProjectListResponse<ProjectUserDirectorNameDTO> buildProjectUserDirectorNameDTOResponse() {
+
+		ProjectListResponse<ProjectUserDirectorNameDTO> projectListResponse = new ProjectListResponse<ProjectUserDirectorNameDTO>();
+		projectListResponse.setProjectList(buildProjectsAddListProjectDirectorNameDTO());
+		projectListResponse.setTotalElements(20L);
+		projectListResponse.setCurrentPage(0);
+		projectListResponse.setTotalPages(10);
+		return projectListResponse;
+	}
+
+	default List<ProjectUserDirectorNameDTO> buildProjectsAddListProjectDirectorNameDTO() {
+		List<ProjectUserDirectorNameDTO> listProjectUserDirectorNameDTOs = new ArrayList<ProjectUserDirectorNameDTO>();
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		listProjectUserDirectorNameDTOs.add(buildProjectUserDirectorNameDTO());
+		return listProjectUserDirectorNameDTOs;
+	}
+
+	default Page<ProjectUserDirectorNameDTO> buildProjectUserDirectorNameDTOPage() {
+		Page<ProjectUserDirectorNameDTO> pagedResponse = new PageImpl<ProjectUserDirectorNameDTO>(
+				buildProjectsAddListProjectDirectorNameDTO());
+		return pagedResponse;
 	}
 
 }

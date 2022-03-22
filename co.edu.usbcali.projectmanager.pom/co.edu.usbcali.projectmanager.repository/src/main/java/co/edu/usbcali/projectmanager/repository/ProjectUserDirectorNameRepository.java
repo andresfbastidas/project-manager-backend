@@ -23,6 +23,6 @@ public interface ProjectUserDirectorNameRepository extends JpaRepository<Project
 			+ "			(select usw.user_name,usw.first_name, usw.surname from userapp usw where usw.user_name=?2) CREATE_BY\n"
 			+ "			where pu.user_name = up.user_name and pj.project_id = pu.project_id and up.user_name = CREATE_BY.user_name\n"
 			+ "			and pj.project_director = DIRECTOR.user_name and USERS.project_id=pj.project_id", nativeQuery = true)
-	public Page<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Pageable pageable, Long profileId,
+	public Page<ProjectUserDirectorNameDTO> findAllProjectsByUserNameDTO(Pageable pageable, Long profileId,
 			String userName);
 }

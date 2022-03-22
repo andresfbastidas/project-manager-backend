@@ -42,7 +42,7 @@ public interface IProjectService {
 
 	public ProjectsListDTO findProjectDTO(Long projectId) throws ProjectManagementException;
 
-	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Pageable page, String userName)
+	public ProjectListResponse<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Pageable page,String userName)
 			throws ProjectManagementException;
 
 	public ListUsersByProjectResponse<UsersByProjectDTO> listUsersByProject(Pageable page, Long projectId)
