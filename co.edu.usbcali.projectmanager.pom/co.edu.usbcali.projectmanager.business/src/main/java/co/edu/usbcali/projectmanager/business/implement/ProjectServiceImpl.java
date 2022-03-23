@@ -249,7 +249,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 			projectListResponse = new ProjectListByStateResponse<Project>();
 			projects = projectListRepository.findAllByProjectState(page, stateId);
 
-			if (projects.getContent().isEmpty() || projects.getContent() == null) {
+			if (projects.getContent().isEmpty() || projects == null) {
 				buildCustomException(KeyConstants.PROJECTS_NOT_FOUND, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
 

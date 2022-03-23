@@ -74,7 +74,7 @@ public class CommentServiceImpl extends ServiceUtils implements ICommentService 
 			activity = activityService.findActivityById(activityId);
 			listPageComment = commentRepository.findCommentsByActivityId(page, activity.getActivityId());
 
-			if (listPageComment.getContent().isEmpty() || listPageComment.getContent() == null) {
+			if (listPageComment.getContent().isEmpty() || listPageComment == null) {
 				buildCustomException(KeyConstants.ERROR_COMMENT_LIST_NOT_FOUND, KeyConstants.ERROR_CODE_LIST_COMMENT);
 			}
 

@@ -13,6 +13,7 @@ import co.edu.usbcali.projectmanager.model.dto.ProjectUserDirectorNameDTO;
 import co.edu.usbcali.projectmanager.model.dto.ProjectsListDTO;
 import co.edu.usbcali.projectmanager.model.dto.UsersByProjectDTO;
 import co.edu.usbcali.projectmanager.model.entities.Activity;
+import co.edu.usbcali.projectmanager.model.entities.Comment;
 import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.Project;
@@ -27,9 +28,11 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.request.ActivityRequest;
 import co.edu.usbcali.projectmanager.model.request.ApprovalRequest;
 import co.edu.usbcali.projectmanager.model.request.AssociatedUserProjectRequest;
+import co.edu.usbcali.projectmanager.model.request.CommentRequest;
 import co.edu.usbcali.projectmanager.model.request.CreateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.DeclineRequest;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
+import co.edu.usbcali.projectmanager.model.request.UpdateCommentRequest;
 import co.edu.usbcali.projectmanager.model.request.UpdateProjectRequest;
 import co.edu.usbcali.projectmanager.model.request.UpdateProjectState;
 import co.edu.usbcali.projectmanager.model.response.ProjectListByStateResponse;
@@ -497,6 +500,7 @@ public interface IDataModelUtilTest {
 		activity.setDateFrom(dateCurrent);
 		activity.setDateUntil(dateCurrent);
 		activity.setProject(buildProject());
+		activity.setActivityId(1L);
 		activity.setStateActivity(buildStateActivity(stateActivityId));
 		return activity;
 	}
@@ -507,16 +511,51 @@ public interface IDataModelUtilTest {
 		activityRequest.setProjectId(12345L);
 		return activityRequest;
 	}
-	
-	default List<Activity> buildActivityList(Long stateActivityId){
+
+	default List<Activity> buildActivityList(Long stateActivityId) {
 		List<Activity> activities = new ArrayList<Activity>();
 		activities.add(buildActivity(stateActivityId));
 		return activities;
 	}
-	
+
 	default Page<Activity> buildActivityPage(Long stateActivity) {
 		Page<Activity> pagedResponse = new PageImpl<Activity>(buildActivityList(stateActivity));
 		return pagedResponse;
+	}
+
+	default Comment buildComment() {
+		Comment comment = new Comment();
+		Long stateActivity = 2L;
+		comment.setActivity(buildActivity(stateActivity));
+		comment.setCommentDescription("Comnetario 1");
+		Date dateCurrent = Calendar.getInstance().getTime();
+		comment.setCreationDate(dateCurrent);
+		comment.setCommentId(1234L);
+		return comment;
+	}
+
+	default CommentRequest buildCommentRequest() {
+		CommentRequest commentRequest = new CommentRequest();
+		commentRequest.setComment(buildComment());
+		commentRequest.setActivityId(1234L);
+		return commentRequest;
+	}
+
+	default List<Comment> buildCommentList() {
+		List<Comment> listComments = new ArrayList<Comment>();
+		listComments.add(buildComment());
+		return listComments;
+	}
+
+	default Page<Comment> buildCommentPage() {
+		Page<Comment> pagedResponse = new PageImpl<Comment>(buildCommentList());
+		return pagedResponse;
+	}
+
+	default UpdateCommentRequest buildUpdateCommentRequest() {
+		UpdateCommentRequest updateCommentRequest = new UpdateCommentRequest();
+		updateCommentRequest.setComment(buildComment());
+		return updateCommentRequest;
 	}
 
 }
