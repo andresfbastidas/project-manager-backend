@@ -54,12 +54,14 @@ public class ActivityController {
 
 	@GetMapping(path = FcdConstants.FINDALL_ACTIVITIES_BY_PROJECT + "{projectId}")
 	@ResponseBody
-	public ResponseEntity<?> findAllActivitiesByProject(@Valid @PathVariable Long projectId, @RequestParam int numPage,
-			@RequestParam int size) throws ProjectManagementException {
+	public ResponseEntity<?> findAllActivitiesByProject(@Valid @PathVariable Long projectId,
+			@PathVariable Long progressState, @PathVariable Long createState, @PathVariable Long finishedState,
+			@RequestParam int numPage, @RequestParam int size) throws ProjectManagementException {
 
 		Pageable paging = PageRequest.of(numPage, size);
 		ListActivitiesResponse listActivitiesResponse = new ListActivitiesResponse();
-		listActivitiesResponse = activityService.findActivitiesByProject(paging, projectId);
+		listActivitiesResponse = activityService.findActivitiesByProjectAndState(paging, projectId, progressState,
+				createState, finishedState);
 		return new ResponseEntity<>(listActivitiesResponse, HttpStatus.OK);
 	}
 

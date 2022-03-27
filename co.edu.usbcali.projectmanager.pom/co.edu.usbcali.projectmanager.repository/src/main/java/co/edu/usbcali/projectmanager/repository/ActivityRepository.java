@@ -15,8 +15,10 @@ import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
-	@Query(value = "SELECT *\n" + "	FROM public.activity ac\n" + "	where ac.project_id=?1", nativeQuery = true)
-	public Page<Activity> findActivitiesByProjectId(Pageable pageable,Long projectId);
+	@Query(value = "SELECT * FROM public.activity ac where ac.project_id=?1 and ac.state_activity_id=?2 \n"
+			+ "or ac.state_activity_id=?3 or ac.state_activity_id=?4", nativeQuery = true)
+	public Page<Activity> findActivitiesByProjectId(Pageable pageable,Long projectId, 
+			Long progressState, Long createState, Long finishedState);
 
 	public Activity findByActivityId(Long activityId);
 

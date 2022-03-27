@@ -65,8 +65,8 @@ public class ActivityServiceTest implements IDataModelUtilTest {
 	@Order(2)
 	void findActivitiesByProjectTest() throws ProjectManagementException {
 		Long stateActivity = 2L;
-		Mockito.doReturn(buildActivityPage(stateActivity)).when(activityRepository).findActivitiesByProjectId(Mockito.any(), Mockito.any());
-		assertDoesNotThrow(() -> activityServiceImpl.findActivitiesByProject(Mockito.any(), Mockito.any()));
+		Mockito.doReturn(buildActivityPage(stateActivity)).when(activityRepository).findActivitiesByProjectId(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
+		assertDoesNotThrow(() -> activityServiceImpl.findActivitiesByProjectAndState(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()));
 	}
 	
 	@Test
