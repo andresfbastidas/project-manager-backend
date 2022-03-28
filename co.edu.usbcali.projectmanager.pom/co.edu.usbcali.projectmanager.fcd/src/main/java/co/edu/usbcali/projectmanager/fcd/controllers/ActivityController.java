@@ -52,7 +52,7 @@ public class ActivityController {
 
 	}
 
-	@GetMapping(path = FcdConstants.FINDALL_ACTIVITIES_BY_PROJECT + "{projectId}")
+	@GetMapping(path = FcdConstants.FINDALL_ACTIVITIES_BY_PROJECT + "{projectId}" +"+"+ "{progressState}"+"+"+"{createState}"+"+"+"{finishedState}")
 	@ResponseBody
 	public ResponseEntity<?> findAllActivitiesByProject(@Valid @PathVariable Long projectId,
 			@PathVariable Long progressState, @PathVariable Long createState, @PathVariable Long finishedState,

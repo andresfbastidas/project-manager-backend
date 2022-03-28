@@ -105,13 +105,14 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 	}
 
 	@Override
-	public ListActivitiesResponse findActivitiesByProject(Pageable page, Long projectId)
-			throws ProjectManagementException {
+	public ListActivitiesResponse findActivitiesByProjectAndState(Pageable page, Long projectId, Long progressState,
+			Long createState, Long finishedState) throws ProjectManagementException {
 		Page<Activity> listActivities = null;
 		ListActivitiesResponse listActivitiesResponse = null;
 		try {
 			listActivitiesResponse = new ListActivitiesResponse();
-			listActivities = activityRepository.findActivitiesByProjectId(page, projectId);
+			listActivities = activityRepository.findActivitiesByProjectId(page, projectId, progressState, createState,
+					finishedState);
 			if (listActivities.getContent().isEmpty() || listActivities.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_ACTIVITIES_LIST_NOT_FOUND,
 						KeyConstants.ERROR_CODE_ACTIVITIES_NOT_FOUND);

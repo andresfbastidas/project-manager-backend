@@ -13,7 +13,8 @@ public interface IActivityService {
 
 	public void createActivity(ActivityRequest activityRequest) throws ProjectManagementException;
 
-	public ListActivitiesResponse findActivitiesByProject(Pageable page,Long projectId) throws ProjectManagementException;
+	public ListActivitiesResponse findActivitiesByProjectAndState(Pageable page, Long projectId,
+			Long progressState, Long createState, Long finishedState) throws ProjectManagementException;
 
 	public GenericListResponse<StateActivity> findAllStatesActivities() throws ProjectManagementException;
 
