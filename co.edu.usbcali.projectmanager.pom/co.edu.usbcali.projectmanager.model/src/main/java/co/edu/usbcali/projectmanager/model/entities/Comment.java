@@ -1,11 +1,24 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.Date;
 
 /**
  * The persistent class for the comment database table.
@@ -32,6 +45,7 @@ public class Comment implements Serializable {
 	// bi-directional many-to-one association to Activity
 	@ManyToOne
 	@JoinColumn(name = "activity_id")
+	@NotFound(action = NotFoundAction.IGNORE)
 	private Activity activity;
 
 	@JsonProperty("activity_id")

@@ -17,7 +17,7 @@ public class KeyConstants {
 	public static final String UPDATE_ACTIVITY_STATE = "Fecha y estado de la actividad actualizado";
 	public static final String UPDATE_COMMENT = "Comentario actualizado";
 	public static final String DELETE_ACTIVITY = "Actividad borrada";
-	public static final String DELETE_COMMENT = "Comentario borrada";
+	public static final String DELETE_COMMENT = "Comentario borrado";
 
 	// Messages Errors
 	public static final String USER_NOT_FOUND = "El usuario no existe";
