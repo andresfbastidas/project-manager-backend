@@ -8,7 +8,6 @@
 		<version>1.0.0</version>
 	</parent>
 	<artifactId>projectmanagerfcd</artifactId>
-    <version>1.0.0</version>
     <packaging>jar</packaging>
     
      <name>ProjectManager</name>

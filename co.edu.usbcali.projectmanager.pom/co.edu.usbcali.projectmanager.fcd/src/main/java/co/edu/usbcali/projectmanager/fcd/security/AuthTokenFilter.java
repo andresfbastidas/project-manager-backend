@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import co.edu.usbcali.projectmanager.business.implement.UserDetailsServiceImpl;
+import co.edu.usbcali.projectmanager.business.jwt.JwtUtils;
 
 
 public class AuthTokenFilter extends OncePerRequestFilter {

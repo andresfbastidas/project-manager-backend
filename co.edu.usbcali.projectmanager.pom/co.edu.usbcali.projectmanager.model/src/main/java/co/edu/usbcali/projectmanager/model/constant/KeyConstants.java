@@ -3,7 +3,7 @@ package co.edu.usbcali.projectmanager.model.constant;
 public class KeyConstants {
 
 	// Mesagges Success
-	public static final String SUCCESS_CREATE_PROJECT = "Proyecto creado con exito. Nota: Si su perfil es estudiante o profesor, el proyecto deberá ser aprobado por un director";
+	public static final String SUCCESS_CREATE_PROJECT = "Proyecto creado con exito. Nota: Si su perfil es estudiante o profesor, el proyecto deberá ser aprobado por su director";
 	public static final String SUCCESS_CREATE_USER = "Usuario creado con exito";
 	public static final String SUCCESS_CREATE_ACTIVITY = "Actividad creada con exito";
 	public static final String SUCCESS_ASSOCIATED_PROJECT_USER = "Usuario asociado";
@@ -46,6 +46,7 @@ public class KeyConstants {
 	public static final String ERROR_PROJECT_STATE="Ocurrió un error al crear el proyecto, verifique el estado y vuelva intentar";
 	public static final String ERROR_UPDATE_ACTIVITY= "No fue posible actualizar la actividad, por favor revise el estado";
 	public static final String ERROR_DELETE_ACTIVITY= "No fue posible borrar la actividad, ya cuenta con comentarios asociados";
+	public static final String ERROR_LOGIN = "Usuario o contraseña invalidos";
 	
 	// Error Codes
 	public static final String ERROR_CODE_DELETE_ACTIVITY= "121";

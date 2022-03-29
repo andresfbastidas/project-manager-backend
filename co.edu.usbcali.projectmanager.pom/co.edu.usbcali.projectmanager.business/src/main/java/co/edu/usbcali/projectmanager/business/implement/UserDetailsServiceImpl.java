@@ -7,7 +7,10 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +39,9 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 
 	@Autowired
 	private PasswordEncoder encoder;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	@Override
 	@Transactional
@@ -165,6 +171,19 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
+	}
+
+	@Override
+	public Authentication validateUserNameAndPassword(String userName, String password)
+			throws BadCredentialsException {
+		Authentication authentication = null;
+		try {
+			authentication = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+		} catch (BadCredentialsException e) {
+			throw new BadCredentialsException("Usuario o contraseña invalidos", e);
+		}
+		return authentication;
 	}
 
 }

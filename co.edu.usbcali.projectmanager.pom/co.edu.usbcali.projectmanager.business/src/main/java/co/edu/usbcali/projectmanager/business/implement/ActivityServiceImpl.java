@@ -177,7 +177,7 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 		Activity activity = null;
 		try {
 			activity = this.findActivityById(activityId);
-			if (!activity.getComments().isEmpty()) {
+			if (activity.getComments() != null) {
 				buildCustomException(KeyConstants.ERROR_DELETE_ACTIVITY, KeyConstants.ERROR_CODE_DELETE_ACTIVITY);
 			}
 			activityRepository.delete(activity);

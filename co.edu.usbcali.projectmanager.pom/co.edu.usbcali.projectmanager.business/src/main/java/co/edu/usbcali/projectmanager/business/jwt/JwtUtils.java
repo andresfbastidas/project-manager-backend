@@ -1,4 +1,4 @@
-package co.edu.usbcali.projectmanager.fcd.security;
+package co.edu.usbcali.projectmanager.business.jwt;
 
 import java.util.Date;
 

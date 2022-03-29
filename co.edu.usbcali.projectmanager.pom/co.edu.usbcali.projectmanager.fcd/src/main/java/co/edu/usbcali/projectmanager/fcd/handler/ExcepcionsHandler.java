@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import co.edu.usbcali.projectmanager.model.commons.ErrorType;
 import co.edu.usbcali.projectmanager.model.commons.Fault;
 import co.edu.usbcali.projectmanager.model.commons.FaultRoot;
+import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -65,7 +66,12 @@ public class ExcepcionsHandler {
 		ErrorType error = new ErrorType();
 		error.setCodeError("100");
 		error.setTecnicalMessage(e.getMessage());
-		error.setUserMessage("No es posible porcesar la transaccion en este momento, por favor reintente mas tarde");
+		if (e.getMessage().equals(KeyConstants.ERROR_LOGIN)) {
+			error.setUserMessage(KeyConstants.ERROR_LOGIN);
+		} else {
+			error.setUserMessage(
+					"No es posible porcesar la transaccion en este momento, por favor reintente mas tarde");
+		}
 		List<ErrorType> errors = new ArrayList<>();
 		errors.add(error);
 

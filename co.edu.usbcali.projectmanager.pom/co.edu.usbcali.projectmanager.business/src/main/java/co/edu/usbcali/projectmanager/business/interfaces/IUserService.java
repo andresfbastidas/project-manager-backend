@@ -1,6 +1,7 @@
 package co.edu.usbcali.projectmanager.business.interfaces;
 
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import co.edu.usbcali.projectmanager.model.entities.Userapp;
@@ -21,5 +22,7 @@ public interface IUserService {
 	public void updateUser(SignupRequest signupRequest) throws ProjectManagementException;
 
 	public void deleteUser(String userName) throws ProjectManagementException;
+	
+	public Authentication validateUserNameAndPassword(String userName, String password) throws BadCredentialsException;
 
 }

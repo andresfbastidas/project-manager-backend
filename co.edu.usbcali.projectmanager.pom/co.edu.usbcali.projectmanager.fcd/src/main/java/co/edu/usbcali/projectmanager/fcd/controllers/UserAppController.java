@@ -8,8 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.usbcali.projectmanager.business.implement.UserDetailsServiceImpl;
-import co.edu.usbcali.projectmanager.fcd.security.JwtUtils;
+import co.edu.usbcali.projectmanager.business.jwt.JwtUtils;
 import co.edu.usbcali.projectmanager.model.constant.FcdConstants;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dao.UserDetailsDAO;
@@ -44,26 +43,23 @@ import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 public class UserAppController {
 
 	@Autowired
-	private AuthenticationManager authenticationManager;
-
-	@Autowired
 	private JwtUtils jwtUtils;
 
 	@Autowired
 	private UserDetailsServiceImpl userServiceImpl;
 
 	@PostMapping(path = FcdConstants.LOGIN, consumes = "application/json", produces = "application/json")
-	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws BadCredentialsException {
 
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		Authentication authentication = userServiceImpl.validateUserNameAndPassword(loginRequest.getUsername(),
+				loginRequest.getPassword());
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
-
 		UserDetailsDAO userDetails = (UserDetailsDAO) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
+		
 
 		return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getEmail(), roles));
 	}
