@@ -31,7 +31,7 @@ public class KeyConstants {
 	public static final String ERROR_ASSOCIATED_PROJECT_USER_PROFILE_DIRECTOR = "El proyecto no puede tener más de un director";
 	public static final String GENERIC_LIST_EMPTY = "La lista generica se encuentra vacia";
 	public static final String PROJECTS_NOT_FOUND = "No se encontraron proyectos";
-	public static final String PROJECT_LIST_EMPTY = "El usuario no tiene proyectos asociados";
+	public static final String PROJECT_LIST_EMPTY = "No tiene proyectos asociados";
 	public static final String ERROR_PROJECTUSER_ROL = "El usuario debe tener rol de director";
 	public static final String ERROR_ACTIVITIES_LIST_NOT_FOUND = "No se encontraron actividades asociadas al proyecto";
 	public static final String ERROR_COMMENT_LIST_NOT_FOUND = "No se encontraron comentarios para esta actividad";
