@@ -41,6 +41,7 @@ public class Activity implements Serializable {
 	//bi-directional many-to-one association to Project
 	@ManyToOne
 	@JoinColumn(name="project_id")
+	@JsonIgnore
 	private Project project;
 
 	//bi-directional many-to-one association to StateActivity

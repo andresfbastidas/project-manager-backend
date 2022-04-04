@@ -1,7 +1,5 @@
 package co.edu.usbcali.projectmanager.repository;
 
-import java.util.List;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +15,6 @@ public interface ProjectRequestRepository extends JpaRepository<ProjectRequest, 
 	public void updateProjectRequest(Long stateProjectRequestId, String details, Long projectRequestId)
 			throws ProjectManagementException;
 
-	@Query(value = "select * from project_request pr where pr.state_project_request_id = ?1", nativeQuery = true)
-	public List<ProjectRequest> findProjectRequestByState(Long stateProjectRequestId) throws ProjectManagementException;
+	public ProjectRequest findByProjectRequestId(Long projectId);
+
 }

@@ -7,12 +7,16 @@ import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import co.edu.usbcali.projectmanager.business.interfaces.IUserService;
 import co.edu.usbcali.projectmanager.business.utils.ServiceUtils;
 import co.edu.usbcali.projectmanager.model.constant.KeyConstants;
 import co.edu.usbcali.projectmanager.model.dao.UserDetailsDAO;
@@ -21,11 +25,10 @@ import co.edu.usbcali.projectmanager.model.entities.Userapp;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.SignupRequest;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
-import co.edu.usbcali.projectmanager.model.response.UserNameResponse;
 import co.edu.usbcali.projectmanager.repository.UserAppRepository;
 
 @Service
-public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsService {
+public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsService, IUserService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
@@ -36,6 +39,9 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 
 	@Autowired
 	private PasswordEncoder encoder;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	@Override
 	@Transactional
@@ -54,16 +60,14 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 	}
 
 	@Transactional
-	public UserNameResponse findByUserName(String userName) throws ProjectManagementException {
+	public Userapp findByUserName(String userName) throws ProjectManagementException {
 		Userapp userApp = null;
-		UserNameResponse userNameResponse = null;
 		try {
 			userApp = userAppRepository.findByUserName(userName);
 			if (userApp == null) {
 				buildCustomException(KeyConstants.USER_NOT_FOUND, KeyConstants.ERROR_CODE_USER_NOT_EXISTS);
 			}
-			userNameResponse = new UserNameResponse();
-			userNameResponse.setUserapp(userApp);
+
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -71,7 +75,7 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
-		return userNameResponse;
+		return userApp;
 	}
 
 	public GenericListResponse<Userapp> findAllUsersProfile() throws ProjectManagementException {
@@ -109,10 +113,10 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			user.setPassword(encoder.encode(signupRequest.getUserapp().getPassword()));
 			user.setFirstName(signupRequest.getUserapp().getFirstName());
 			user.setSurname(signupRequest.getUserapp().getSurname());
-		    user.setSecondName(signupRequest.getUserapp().getSecondName());
-		    user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
+			user.setSecondName(signupRequest.getUserapp().getSecondName());
+			user.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
 			Profile profile = new Profile();
-			profile.setProfileId(signupRequest.getProfile().getProfileId());
+			profile.setProfileId(signupRequest.getUserapp().getProfile().getProfileId());
 			user.setProfile(profile);
 
 			userAppRepository.save(user);
@@ -124,6 +128,62 @@ public class UserDetailsServiceImpl extends ServiceUtils implements UserDetailsS
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
+	}
+
+	@Override
+	public void updateUser(SignupRequest signupRequest) throws ProjectManagementException {
+		Userapp userapp = null;
+		try {
+			userapp = this.findByUserName(signupRequest.getUserapp().getUserName());
+			userapp.setUserName(signupRequest.getUserapp().getUserName());
+			userapp.setEmail(signupRequest.getUserapp().getEmail());
+			if (signupRequest.getUserapp().getPassword() != null) {
+				userapp.setPassword(encoder.encode(signupRequest.getUserapp().getPassword()));
+			}
+			userapp.setFirstName(signupRequest.getUserapp().getFirstName());
+			userapp.setSurname(signupRequest.getUserapp().getSurname());
+			userapp.setSecondName(signupRequest.getUserapp().getSecondName());
+			userapp.setSecondSurname(signupRequest.getUserapp().getSecondSurname());
+			Profile profile = new Profile();
+			profile.setProfileId(signupRequest.getUserapp().getProfile().getProfileId());
+			userapp.setProfile(profile);
+			userAppRepository.save(userapp);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+	}
+
+	@Override
+	public void deleteUser(String userName) throws ProjectManagementException {
+		Userapp userapp = null;
+		try {
+			userapp = this.findByUserName(userName);
+
+			userAppRepository.delete(userapp);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+	}
+
+	@Override
+	public Authentication validateUserNameAndPassword(String userName, String password)
+			throws BadCredentialsException {
+		Authentication authentication = null;
+		try {
+			authentication = authenticationManager
+					.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+		} catch (BadCredentialsException e) {
+			throw new BadCredentialsException("Usuario o contraseña invalidos", e);
+		}
+		return authentication;
 	}
 
 }

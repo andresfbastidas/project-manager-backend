@@ -1,29 +1,37 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * The persistent class for the state_project_request database table.
  * 
  */
 @Entity
-@Table(name="state_project_request")
-@NamedQuery(name="StateProjectRequest.findAll", query="SELECT s FROM StateProjectRequest s")
+@Table(name = "state_project_request")
+@NamedQuery(name = "StateProjectRequest.findAll", query = "SELECT s FROM StateProjectRequest s")
 public class StateProjectRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="state_project_request_id")
+	@Column(name = "state_project_request_id")
 	private Long stateProjectRequestId;
 
-	@Column(name="state_name_project_request")
+	@Column(name = "state_name_project_request")
 	private String stateNameProjectRequest;
 
-	//bi-directional many-to-one association to ProjectRequest
-	@OneToMany(mappedBy="stateProjectRequest")
+	// bi-directional many-to-one association to ProjectRequest
+	@OneToMany(mappedBy = "stateProjectRequest")
+	@JsonBackReference
 	private List<ProjectRequest> projectRequests;
 
 	public StateProjectRequest() {

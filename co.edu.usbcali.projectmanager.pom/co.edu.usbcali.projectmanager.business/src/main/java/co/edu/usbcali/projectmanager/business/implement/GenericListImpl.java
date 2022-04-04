@@ -14,11 +14,13 @@ import co.edu.usbcali.projectmanager.model.entities.Delivery;
 import co.edu.usbcali.projectmanager.model.entities.Profile;
 import co.edu.usbcali.projectmanager.model.entities.ResearchTypology;
 import co.edu.usbcali.projectmanager.model.entities.State;
+import co.edu.usbcali.projectmanager.model.entities.StateProjectRequest;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 import co.edu.usbcali.projectmanager.repository.DeliveryRepository;
 import co.edu.usbcali.projectmanager.repository.ProfileRepository;
 import co.edu.usbcali.projectmanager.repository.ResearchTyplogyRepository;
+import co.edu.usbcali.projectmanager.repository.StateProjectRequestRepository;
 import co.edu.usbcali.projectmanager.repository.StateRepository;
 
 @Service
@@ -40,6 +42,9 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 	@Autowired
 	private ProfileRepository profileRepository;
 
+	@Autowired
+	private StateProjectRequestRepository stateProjectRequestRepository;
+
 	@Override
 	public GenericListResponse<Delivery> findAllDeliverysList() throws ProjectManagementException {
 		GenericListResponse<Delivery> genericListResponse = null;
@@ -48,7 +53,7 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 			genericListResponse = new GenericListResponse<Delivery>();
 			deliveries = deliveryRepository.findAllDeliveriesList();
 			if (deliveries.isEmpty() || deliveries == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
 			genericListResponse.setGenericList(deliveries);
 		} catch (ProjectManagementException e) {
@@ -68,7 +73,7 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 			genericListResponse = new GenericListResponse<ResearchTypology>();
 			researchTypologies = researchTyplogyRepository.findAllResearchTypologiesList();
 			if (researchTypologies.isEmpty() || researchTypologies == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
 			genericListResponse.setGenericList(researchTypologies);
 		} catch (ProjectManagementException e) {
@@ -81,15 +86,15 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 	}
 
 	@Override
-	public GenericListResponse<State> findStatesProgressAndAvalaible() throws ProjectManagementException {
+	public GenericListResponse<State> findAllStatesProjects(Long solini, Long decline, Long finished, Long progress,
+			Long avalaible) throws ProjectManagementException {
 		GenericListResponse<State> genericListResponse = null;
 		List<State> states = null;
 		try {
 			genericListResponse = new GenericListResponse<State>();
-			states = stateRepository.findStatesProjectDirector(KeyConstants.AVALAIBLE_STATE,
-					KeyConstants.PROGRESS_STATE);
+			states = stateRepository.findAllStatesProjects(solini, decline, finished, progress, avalaible);
 			if (states.isEmpty() || states == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
 			genericListResponse.setGenericList(states);
 		} catch (ProjectManagementException e) {
@@ -109,7 +114,7 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 			genericListResponse = new GenericListResponse<Profile>();
 			profiles = profileRepository.findAllProfiles();
 			if (profiles.isEmpty() || profiles == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
 			genericListResponse.setGenericList(profiles);
 		} catch (ProjectManagementException e) {
@@ -122,16 +127,16 @@ public class GenericListImpl extends ServiceUtils implements IGenericListService
 	}
 
 	@Override
-	public GenericListResponse<State> findStatesSolini() throws ProjectManagementException {
-		GenericListResponse<State> genericListResponse = null;
-		List<State> states = null;
+	public GenericListResponse<StateProjectRequest> findAllStateProjectRequest() throws ProjectManagementException {
+		GenericListResponse<StateProjectRequest> genericListResponse = null;
+		List<StateProjectRequest> listStateProjectRequests = null;
 		try {
-			genericListResponse = new GenericListResponse<State>();
-			states = stateRepository.findStatesProjectStudent(KeyConstants.SOLINI_STATE);
-			if (states.isEmpty() || states == null) {
-				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+			genericListResponse = new GenericListResponse<StateProjectRequest>();
+			listStateProjectRequests = stateProjectRequestRepository.findAll();
+			if (listStateProjectRequests.isEmpty() || listStateProjectRequests == null) {
+				buildCustomException(KeyConstants.GENERIC_LIST_EMPTY, KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY);
 			}
-			genericListResponse.setGenericList(states);
+			genericListResponse.setGenericList(listStateProjectRequests);
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {

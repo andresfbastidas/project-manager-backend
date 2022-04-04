@@ -1,7 +1,7 @@
 package co.edu.usbcali.projectmanager.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -19,10 +19,10 @@ public interface ProjectUserDirectorNameRepository extends JpaRepository<Project
 			+ "			(SELECT pju.project_id,\n"
 			+ "			array_to_string(array_agg(usr.first_name ||' '|| usr.surname),',') AS USERS\n"
 			+ "			FROM project_user pju, userapp usr, project pj WHERE pju.project_id=pj.project_id and\n"
-			+ "			usr.user_name= pju.user_name\n"
-			+ "			GROUP BY pju.project_id) USERS,\n"
+			+ "			usr.user_name= pju.user_name\n" + "			GROUP BY pju.project_id) USERS,\n"
 			+ "			(select usw.user_name,usw.first_name, usw.surname from userapp usw where usw.user_name=?2) CREATE_BY\n"
 			+ "			where pu.user_name = up.user_name and pj.project_id = pu.project_id and up.user_name = CREATE_BY.user_name\n"
 			+ "			and pj.project_director = DIRECTOR.user_name and USERS.project_id=pj.project_id", nativeQuery = true)
-	public List<ProjectUserDirectorNameDTO> findAllProjectsByUserName(Long profileId, String userName);
+	public Page<ProjectUserDirectorNameDTO> findAllProjectsByUserNameDTO(Pageable pageable, Long profileId,
+			String userName);
 }

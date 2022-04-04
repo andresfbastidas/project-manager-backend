@@ -1,11 +1,14 @@
 package co.edu.usbcali.projectmanager.business.implement;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,13 +22,16 @@ import co.edu.usbcali.projectmanager.model.entities.Project;
 import co.edu.usbcali.projectmanager.model.entities.StateActivity;
 import co.edu.usbcali.projectmanager.model.exception.ProjectManagementException;
 import co.edu.usbcali.projectmanager.model.request.ActivityRequest;
+import co.edu.usbcali.projectmanager.model.response.GenericListResponse;
 import co.edu.usbcali.projectmanager.model.response.ListActivitiesResponse;
+import co.edu.usbcali.projectmanager.model.response.ProjectResponse;
 import co.edu.usbcali.projectmanager.repository.ActivityRepository;
+import co.edu.usbcali.projectmanager.repository.StateActivityRepository;
 
 @Service
 public class ActivityServiceImpl extends ServiceUtils implements IActivityService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ActivityServiceImpl.class);
 
 	private static final String CLASS_NAME = "ActivityServiceImpl";
 
@@ -35,21 +41,26 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 	@Autowired
 	private IProjectService projectService;
 
+	@Autowired
+	private StateActivityRepository stateActivityRepository;
+
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public void createActivity(ActivityRequest activityRequest) throws ProjectManagementException {
-		Project project = null;
 		try {
-			project = projectService.findByProjectId(activityRequest.getActivity().getProject().getProjectId());
+			ProjectResponse projectResponse = new ProjectResponse();
+			projectResponse = projectService.findByProjectId(activityRequest.getProjectId());
+			if (projectResponse.getProject().getState().getStateId().equals(KeyConstants.FINISHED_STATE)
+					|| projectResponse.getProject().getState().getStateId().equals(KeyConstants.DECLINED_STATE)
+					|| projectResponse.getProject().getState().getStateId().equals(KeyConstants.SOLINI_STATE)) {
+				buildCustomException(KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT,
+						KeyConstants.ERROR_CREATE_ACTIVITY);
+			}
 			Activity activity = this.buildActivity(activityRequest.getActivity().getActivityName(),
 					activityRequest.getActivity().getStateActivity(), activityRequest.getActivity().getDateFrom(),
-					activityRequest.getActivity().getDateUntil(), project,
+					activityRequest.getActivity().getDateUntil(), projectResponse.getProject(),
 					activityRequest.getActivity().getAssignedUser());
-			if (!project.getState().getStateId().equals(KeyConstants.AVALAIBLE_STATE)
-					|| !project.getState().getStateId().equals(KeyConstants.PROGRESS_STATE)) {
-				buildCustomException(KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT,
-						KeyConstants.ERROR_CODE_NOT_ASSOCIATED_USER_PROJECT);
-			}
+
 			activityRepository.save(activity);
 
 		} catch (ProjectManagementException e) {
@@ -59,6 +70,26 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 
+	}
+
+	@Override
+	public GenericListResponse<StateActivity> findAllStatesActivities() throws ProjectManagementException {
+		GenericListResponse<StateActivity> genericListResponse = null;
+		List<StateActivity> listStateActivities = null;
+		try {
+			genericListResponse = new GenericListResponse<StateActivity>();
+			listStateActivities = stateActivityRepository.findAll();
+			if (listStateActivities.isEmpty() || listStateActivities == null) {
+				buildCustomException(KeyConstants.ERROR_CODE_GENERIC_LIST_EMPTY, KeyConstants.GENERIC_LIST_EMPTY);
+			}
+			genericListResponse.setGenericList(listStateActivities);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return genericListResponse;
 	}
 
 	public Activity buildActivity(String activityName, StateActivity stateActivity, Date dateFrom, Date dateUntil,
@@ -74,17 +105,22 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 	}
 
 	@Override
-	public ListActivitiesResponse findActivitiesByProject(Long projectId) throws ProjectManagementException {
-		List<Activity> lisActivities = null;
+	public ListActivitiesResponse findActivitiesByProjectAndState(Pageable page, Long projectId, Long progressState,
+			Long createState, Long finishedState) throws ProjectManagementException {
+		Page<Activity> listActivities = null;
 		ListActivitiesResponse listActivitiesResponse = null;
 		try {
 			listActivitiesResponse = new ListActivitiesResponse();
-			lisActivities = activityRepository.findActivitiesByProjectId(projectId);
-			if (lisActivities.isEmpty() || lisActivities == null) {
+			listActivities = activityRepository.findActivitiesByProjectId(page, projectId, progressState, createState,
+					finishedState);
+			if (listActivities.getContent().isEmpty() || listActivities.getContent() == null) {
 				buildCustomException(KeyConstants.ERROR_ACTIVITIES_LIST_NOT_FOUND,
 						KeyConstants.ERROR_CODE_ACTIVITIES_NOT_FOUND);
 			}
-			listActivitiesResponse.setListActivities(lisActivities);
+			listActivitiesResponse.setListActivities(listActivities.getContent());
+			listActivitiesResponse.setCurrentPage(listActivities.getNumber());
+			listActivitiesResponse.setTotalElements(listActivities.getTotalElements());
+			listActivitiesResponse.setTotalPages(listActivities.getTotalPages());
 		} catch (ProjectManagementException e) {
 			throw e;
 		} catch (Exception e) {
@@ -92,6 +128,66 @@ public class ActivityServiceImpl extends ServiceUtils implements IActivityServic
 			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
 		}
 		return listActivitiesResponse;
+	}
+
+	@Override
+	public Activity findActivityById(Long activityId) throws ProjectManagementException {
+		Activity activity = null;
+		try {
+			activity = activityRepository.findByActivityId(activityId);
+			if (activity == null) {
+				buildCustomException(KeyConstants.ERROR_FIND_ACTIVITY, KeyConstants.ERROR_CODE_FIND_ACTIVITY);
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+		return activity;
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+	public void updateActivity(Long activityId) throws ProjectManagementException {
+		Activity activity = null;
+		try {
+			activity = this.findActivityById(activityId);
+			Date dateCurrent = Calendar.getInstance().getTime();
+			if (activity.getStateActivity().getStateActivityId() == KeyConstants.CREATE_STATE_ACTIVITY) {
+				activityRepository.updateStateActivityandDateUntil(dateCurrent, KeyConstants.PROGRESS_STATE_ACTIVITY,
+						activity.getActivityId());
+			} else if (activity.getStateActivity().getStateActivityId() == KeyConstants.PROGRESS_STATE_ACTIVITY) {
+				activityRepository.updateStateActivityandDateFrom(dateCurrent, KeyConstants.FINISHED_STATE_ACTIVITY,
+						activity.getActivityId());
+			} else {
+				buildCustomException(KeyConstants.ERROR_UPDATE_ACTIVITY, KeyConstants.ERROR_CODE_UPDATE_ACTIVITY);
+			}
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
+	}
+
+	@Override
+	public void deleteActivity(Long activityId) throws ProjectManagementException {
+		Activity activity = null;
+		try {
+			activity = this.findActivityById(activityId);
+			if (activity.getComments() != null) {
+				buildCustomException(KeyConstants.ERROR_DELETE_ACTIVITY, KeyConstants.ERROR_CODE_DELETE_ACTIVITY);
+			}
+			activityRepository.delete(activity);
+		} catch (ProjectManagementException e) {
+			throw e;
+		} catch (Exception e) {
+			LOGGER.error(KeyConstants.UNEXPECTED_ERROR, e);
+			callCustomException(KeyConstants.COMMON_ERROR, e, CLASS_NAME);
+		}
+
 	}
 
 }

@@ -5,9 +5,19 @@ import java.util.List;
 
 import co.edu.usbcali.projectmanager.model.entities.ProjectRequest;
 
-public class ApprovalDeclineRequest implements Serializable {
+public class ApprovalRequest implements Serializable {
 
 	private List<ProjectRequest> listProjectRequests;
+
+	private String projectDirector;
+
+	public String getProjectDirector() {
+		return projectDirector;
+	}
+
+	public void setProjectDirector(String projectDirector) {
+		this.projectDirector = projectDirector;
+	}
 
 	public List<ProjectRequest> getListProjectRequests() {
 		return listProjectRequests;

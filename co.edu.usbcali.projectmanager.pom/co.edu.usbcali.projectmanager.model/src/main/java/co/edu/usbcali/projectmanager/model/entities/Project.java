@@ -14,10 +14,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * The persistent class for the project database table.
@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @NamedQuery(name = "Project.findAll", query = "SELECT p FROM Project p")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Project implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -34,11 +35,11 @@ public class Project implements Serializable {
 	@Column(name = "project_id")
 	private Long projectId;
 
-	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "date_from")
 	private Date dateFrom;
 
-	@Temporal(TemporalType.DATE)
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "date_until")
 	private Date dateUntil;
 
@@ -69,6 +70,9 @@ public class Project implements Serializable {
 	@Column(name = "create_by")
 	private String createBy;
 
+	@Column(name = "research_problem")
+	private String researchProblem;
+
 	// bi-directional many-to-one association to Activity
 	@OneToMany(mappedBy = "project")
 	@JsonIgnore
@@ -95,6 +99,14 @@ public class Project implements Serializable {
 	private List<ProjectUser> projectUsers;
 
 	public Project() {
+	}
+
+	public String getResearchProblem() {
+		return researchProblem;
+	}
+
+	public void setResearchProblem(String researchProblem) {
+		this.researchProblem = researchProblem;
 	}
 
 	public String getCreateBy() {

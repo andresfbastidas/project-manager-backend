@@ -1,11 +1,19 @@
 package co.edu.usbcali.projectmanager.model.entities;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.List;
 
 /**
  * The persistent class for the userapp database table.
@@ -18,10 +26,14 @@ public class Userapp implements Serializable {
 
 	@Id
 	@Column(name = "user_name")
+	@NotNull
 	private String userName;
 
+	@Email
+	@NotNull
 	private String email;
 
+	@NotNull
 	@Column(name = "first_name")
 	private String firstName;
 
@@ -33,6 +45,7 @@ public class Userapp implements Serializable {
 	@Column(name = "second_surname")
 	private String secondSurname;
 
+	@NotNull
 	@Column(name = "surname")
 	private String surname;
 
@@ -49,6 +62,7 @@ public class Userapp implements Serializable {
 	// bi-directional many-to-one association to Profile
 	@ManyToOne
 	@JoinColumn(name = "profile_id")
+	@NotNull
 	private Profile profile;
 
 	public Userapp() {

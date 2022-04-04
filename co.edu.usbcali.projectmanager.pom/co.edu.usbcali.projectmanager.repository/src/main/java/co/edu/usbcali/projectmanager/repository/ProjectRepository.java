@@ -1,6 +1,6 @@
 package co.edu.usbcali.projectmanager.repository;
 
-import java.util.List;
+import java.util.Date;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,16 +15,18 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
 	public Project findByProjectId(Long projectId);
 
-	@Query(value = "SELECT * FROM public.project p where p.state_id =?1", nativeQuery = true)
-	public List<Project> findAllByProjectState(Long stateId);
-
 	@Modifying(clearAutomatically = true)
 	@Query(value = "UPDATE public.project pj\n" + "	SET state_id=?1\n" + "	WHERE pj.project_id=?2", nativeQuery = true)
-	public void updateStateProject(Long stateId,Long projectId) throws ProjectManagementException;
-	
+	public void updateStateProject(Long stateId, Long projectId) throws ProjectManagementException;
+
 	@Modifying(clearAutomatically = true)
-	@Query(value = "DELETE FROM public.project pj\n"
-			+ "	WHERE pj.project_id=?1", nativeQuery = true)
-	public void deleteProject(Long projectId) throws ProjectManagementException;
+	@Query(value = "UPDATE public.project SET state_id=?1, date_from=?2 WHERE project_id=?3", nativeQuery = true)
+	public void updateStateProjectandDateFrom(Long stateId, Date dateFrom, Long projectId)
+			throws ProjectManagementException;
+
+	@Modifying(clearAutomatically = true)
+	@Query(value = "UPDATE public.project SET state_id=?1, date_until=?2 WHERE project_id=?3", nativeQuery = true)
+	public void updateStateProjectandDateUntil(Long stateId, Date dateUntil, Long projectId)
+			throws ProjectManagementException;
 
 }
