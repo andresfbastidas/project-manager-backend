@@ -9,7 +9,9 @@
 
 	<name>Project Manager by Ubscali</name>
 	<description>Project Manager by Ubscali</description>
-
+	<properties>
+		<java.version>11</java.version>
+	</properties>
 	<modules>
 		<module>co.edu.usbcali.projectmanager.repository</module>
 		<module>co.edu.usbcali.projectmanager.business</module>
