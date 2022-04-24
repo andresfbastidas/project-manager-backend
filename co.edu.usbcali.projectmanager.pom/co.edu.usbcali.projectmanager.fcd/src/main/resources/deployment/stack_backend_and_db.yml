@@ -1,6 +1,20 @@
 version: '3.8'
 
 services:
+  project-manager-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - JAR_FILE=*.jar
+    container_name: project-manager-backend   
+    image: project-manager-backend:latest
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_container:5432/projectmanagerdb         
+    ports:
+      - 8090:8090   
+    networks:
+    - project-manager-network
   postgres_db:
     container_name: postgres_container
     image: postgres:latest
@@ -18,4 +32,5 @@ services:
     - project-manager-network
 networks:  
     project-manager-network:
-        driver: bridge     
+        driver: bridge       
+  

@@ -1,4 +1,4 @@
-CREATE DATABASE projectmanagerdb2;
+CREATE DATABASE projectmanagerdb;
 create sequence Activity_SEQ increment by 1 no minvalue no maxvalue start with 1;
 create sequence Comment_SEQ increment by 1 no minvalue no maxvalue start with 1;
 create sequence Project_SEQ increment by 1 no minvalue no maxvalue start with 1;
@@ -110,20 +110,6 @@ alter table Activity add constraint FKActivity645069 foreign key (state_activity
 alter table Project_Request add constraint FKProject_Re48220 foreign key (project_id) references Project (project_id);
 alter table Project_Request add constraint FKProject_Re904141 foreign key (user_name) references UserApp (user_name);
 alter table Project_Request add constraint FKProject_Re638018 foreign key (state_project_request_id) references State_Project_Request (state_project_request_id);
-alter table if exists Project_User drop constraint FKProject_Us617757;
-alter table if exists Project_User drop constraint FKProject_Us761835;
-alter table if exists UserApp drop constraint FKUserApp447612;
-alter table if exists Comment drop constraint FKComment829094;
-alter table if exists Link_Attached drop constraint FKLink_Attac718125;
-alter table if exists Activity drop constraint FKActivity46817;
-alter table if exists Project_Delivery drop constraint FKProject_De969291;
-alter table if exists Project_Delivery drop constraint FKProject_De35226;
-alter table if exists Project drop constraint FKProject342473;
-alter table if exists Project drop constraint FKProject25763;
-alter table if exists Activity drop constraint FKActivity645069;
-alter table if exists Project_Request drop constraint FKProject_Re48220;
-alter table if exists Project_Request drop constraint FKProject_Re904141;
-alter table if exists Project_Request drop constraint FKProject_Re638018;
 
 INSERT INTO public.research_typology(
 	project_research_typology_id, typology_description)
