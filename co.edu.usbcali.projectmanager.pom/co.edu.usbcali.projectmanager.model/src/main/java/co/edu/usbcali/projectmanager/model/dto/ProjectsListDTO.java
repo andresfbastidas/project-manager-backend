@@ -16,6 +16,7 @@ public class ProjectsListDTO implements Serializable {
 	@Column(name = "project_id")
 	private Long projectId;
 
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	@Column(name = "date_from")
 	private Date dateFrom;
 

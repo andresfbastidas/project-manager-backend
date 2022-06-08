@@ -506,7 +506,7 @@ public class ProjectServiceImpl extends ServiceUtils implements IProjectService 
 				projectRepository.updateStateProjectandDateFrom(KeyConstants.PROGRESS_STATE, dateCurrent,
 						updateProjectState.getProjectId());
 			} else if (projectResponse.getProject().getState().getStateId() == KeyConstants.PROGRESS_STATE) {
-				projectRepository.updateStateProjectandDateFrom(KeyConstants.FINISHED_STATE, dateCurrent,
+				projectRepository.updateStateProjectandDateUntil(KeyConstants.FINISHED_STATE, dateCurrent,
 						updateProjectState.getProjectId());
 			} else {
 				buildCustomException(KeyConstants.ERROR_UPDATE_PROJECT_REQUEST,
