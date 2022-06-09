@@ -70,7 +70,7 @@ public class ExcepcionsHandler {
 			error.setUserMessage(KeyConstants.ERROR_LOGIN);
 		} else {
 			error.setUserMessage(
-					"No es posible porcesar la transaccion en este momento, por favor reintente mas tarde");
+					"No es posible procesar la transaccion en este momento, por favor reintente mas tarde");
 		}
 		List<ErrorType> errors = new ArrayList<>();
 		errors.add(error);
