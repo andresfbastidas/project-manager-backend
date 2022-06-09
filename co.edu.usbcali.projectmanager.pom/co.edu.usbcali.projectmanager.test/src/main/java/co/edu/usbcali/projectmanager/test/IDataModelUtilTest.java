@@ -504,6 +504,20 @@ public interface IDataModelUtilTest {
 		activity.setStateActivity(buildStateActivity(stateActivityId));
 		return activity;
 	}
+	
+	default Activity buildActivity2(Long stateActivityId) {
+		Activity activity = new Activity();
+		activity.setActivityName("ACTIVIDAD 1");
+		activity.setAssignedUser("andres.bastidas");
+		Date dateCurrent = Calendar.getInstance().getTime();
+		activity.setComments(buildCommentList());
+		activity.setDateFrom(dateCurrent);
+		activity.setDateUntil(dateCurrent);
+		activity.setProject(buildProject());
+		activity.setActivityId(1L);
+		activity.setStateActivity(buildStateActivity(stateActivityId));
+		return activity;
+	}
 
 	default ActivityRequest buildActivityRequest(Long stateActivityId) {
 		ActivityRequest activityRequest = new ActivityRequest();

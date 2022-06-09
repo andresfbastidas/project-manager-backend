@@ -1,6 +1,7 @@
 package co.edu.usbcali.projectmanager.business.test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -86,16 +87,18 @@ public class ActivityServiceTest implements IDataModelUtilTest {
 		Mockito.doReturn(buildActivity(stateActivity)).when(activityRepository).findByActivityId(Mockito.any());
 		assertDoesNotThrow(() -> activityServiceImpl.updateActivity(Mockito.any()));
 	}
+
 	
 	@Test
 	@DisplayName("Test deleteActivity")
 	@Order(5)
 	void deleteActivityTest() throws ProjectManagementException {
 		Long stateActivity = 2L;
-		Mockito.doReturn(buildActivity(stateActivity)).when(activityRepository).findByActivityId(Mockito.any());
-		assertDoesNotThrow(() -> activityServiceImpl.deleteActivity(Mockito.any()));
+		Mockito.doReturn(buildActivity2(stateActivity)).when(activityRepository).findByActivityId(Mockito.any());
+		assertThrows(ProjectManagementException.class,
+				() -> activityServiceImpl.deleteActivity(Mockito.any()));
 	}
-	
+
 	
 
 }
